@@ -1,0 +1,138 @@
+/* ===== Radio Page ===== */
+.radio-intro {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1rem;
+}
+
+.radio-intro h2 {
+  font-family: var(--font-arabic);
+  color: var(--color-teal-dark);
+  margin-bottom: 0.5rem;
+}
+
+.radio-intro p {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+.radio-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--color-bg-card, var(--color-white));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(13, 148, 136, 0.1);
+}
+
+.radio-item .radio-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-teal-dark) 100%);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.radio-item .radio-name {
+  flex: 1;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.radio-item .play-btn {
+  padding: 0.6rem 1.25rem;
+  background: var(--color-teal);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+#radiomsr{
+  margin-bottom: 1rem;
+}
+.radio-item .play-btn:hover {
+  background: var(--color-teal-dark);
+  transform: scale(1.02);
+}
+
+.radio-item .play-btn.playing {
+  background: var(--color-gold);
+}
+
+.radio-player-bar {
+  display: none;
+  background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-teal-dark) 100%);
+  color: var(--color-white);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-lg);
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-card);
+}
+
+.radio-player-bar.active {
+  display: block;
+}
+
+.radio-player-title {
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.radio-player-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.radio-player-controls .ctrl-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.25);
+  color: var(--color-white);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.radio-player-controls .ctrl-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(1.02);
+}
+
+.radio-player-controls .ctrl-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.radio-player-controls .ctrl-play {
+  min-width: 100px;
+}
+
+.radio-loading, .radio-error {
+  text-align: center;
+  padding: 2rem;
+  color: var(--color-text-muted);
+}
+
+.radio-error {
+  color: #b91c1c;
+}

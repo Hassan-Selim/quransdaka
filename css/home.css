@@ -1,0 +1,129 @@
+/* ===== Home Page ===== */
+.home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.home-logo {
+  margin-bottom: 1rem;
+}
+
+.home-logo h3 {
+  font-weight: 500;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+}
+
+.home-logo .address {
+  max-width: 500px;
+  margin-bottom: 0.5rem;
+}
+.home-logo .name {
+  max-width: 400px;
+  margin-bottom: 1rem;
+}
+.home-logo p {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+.home-buttons {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 320px;
+  margin-top: 2rem;
+}
+
+.home-btn {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--color-bg-card, var(--color-white));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 2px solid rgba(13, 148, 136, 0.15);
+  color: var(--color-text);
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.25s;
+}
+
+.home-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(13, 148, 136, 0.2);
+  border-color: var(--color-teal);
+  color: var(--color-teal-dark);
+}
+
+.home-btn .btn-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(-50%);
+  font-size: 1.7rem;
+  flex-shrink: 0;
+}
+
+.home-btn.quran .btn-icon {
+  background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-teal-dark) 100%);
+  color: var(--color-white);
+}
+
+.home-btn.ruqyah .btn-icon {
+  background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-gold) 100%);
+  color: var(--color-white);
+}
+
+.home-btn.radio .btn-icon {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: var(--color-white);
+}
+
+.home-btn.read .btn-icon {
+  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+  color: var(--color-white);
+}
+
+@media (min-width: 500px) {
+  .home-buttons {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 480px;
+  }
+}
+
+@media (min-width: 700px) {
+  .home-buttons {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .home-logo .icon {
+    width: 100px;
+    height: 100px;
+    font-size: 3rem;
+  }
+  .home-logo h1 {
+    font-size: 2.5rem;
+  }
+  .home-btn {
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+  }
+}

@@ -1,0 +1,257 @@
+/* ===== Quran Sadaka - Global Islamic Design ===== */
+:root {
+  --color-teal: #0d9488;
+  --color-teal-dark: #0f766e;
+  --color-teal-light: #5eead4;
+  --color-gold: #b45309;
+  --color-gold-light: #d97706;
+  --color-beige: #fef3c7;
+  --color-cream: #fffbeb;
+  --color-white: #ffffff;
+  --color-text: #1e293b;
+  --color-text-muted: #64748b;
+  --color-bg-card: #ffffff;
+  --font-arabic: 'Amiri', 'Traditional Arabic', 'Scheherazade New', serif;
+  --font-body: 'Segoe UI', Tahoma, sans-serif;
+  --shadow-soft: 0 4px 14px rgba(13, 148, 136, 0.12);
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --radius: 12px;
+  --radius-lg: 20px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: linear-gradient(180deg, var(--color-cream) 0%, var(--color-white) 50%);
+  min-height: 100vh;
+  line-height: 1.6;
+  direction: rtl;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.english {
+  direction: ltr;
+}
+
+a {
+  color: var(--color-teal-dark);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-gold);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Header / Nav */
+.page-header {
+  background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-teal-dark) 100%);
+  color: var(--color-white);
+  padding: 1rem 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-around;
+  box-shadow: var(--shadow-soft);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.page-header h1 {
+  font-family: var(--font-arabic);
+  font-size: 1.5rem;
+  font-weight: 700;
+
+}
+header .address {
+ max-width: 200px;
+ filter: brightness(0) saturate(100%) invert(91%) sepia(16%) saturate(377%) hue-rotate(12deg);
+}
+.menu-icon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+header .close-nav {
+  display: grid;
+  align-items: center;
+  text-align: right;
+  gap: 0.25rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  background: var(--color-teal);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  display: none;
+}
+.page-header .back-link {
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  transition: background 0.2s;
+}
+
+.back-link .home{
+  width: 40px;
+  height: 40px;
+}
+.page-header .back-link:hover {
+  background: #ffffff33;
+  color: var(--color-white);
+}
+
+/* Main content area */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-teal-dark) 100%);
+  color: var(--color-white);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-gold) 100%);
+  color: var(--color-white);
+}
+
+/* Cards */
+.card {
+  background: var(--color-bg-card, var(--color-white));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(13, 148, 136, 0.1);
+  transition: background 0.3s;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-bg-card);
+  color: var(--color-text);
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, background 0.2s;
+}
+.theme-toggle:hover {
+  transform: scale(1.08);
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --color-bg: #0f172a;
+  --color-bg-card: #1e293b;
+  --color-bg-soft: #334155;
+  --color-text: #f1f5f9;
+  --color-text-muted: #94a3b8;
+  --color-cream: #0f172a;
+  --color-white: #1e293b;
+  --shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] body {
+  background: linear-gradient(180deg, var(--color-bg) 0%, #1e293b 50%);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] a {
+  color: var(--color-teal-light);
+}
+[data-theme="dark"] a:hover {
+  color: var(--color-gold-light);
+}
+
+[data-theme="dark"] .card,
+[data-theme="dark"] .page-header {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] {
+  --color-bg: #fffbeb;
+  --color-bg-card: #ffffff;
+  --color-bg-soft: #fef3c7;
+  --color-text: #1e293b;
+  --color-text-muted: #64748b;
+}
+
+
+/* Responsive */
+@media (max-width: 600px) {
+  .page-header h1 {
+    font-size: 1.25rem;
+  }
+  main {
+    padding: 1rem;
+  }
+  .theme-toggle {
+    top: 0.75rem;
+    left: 0.75rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  header .address{
+    max-width: 120px;
+  }
+}

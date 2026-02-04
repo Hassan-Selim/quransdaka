@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>القرآن الكريم | قرآن صدقة</title>
+    <script>
+      (function () {
+        var t = localStorage.getItem("quran-sadaka-theme");
+        document.documentElement.setAttribute(
+          "data-theme",
+          t === "dark" ? "dark" : "light",
+        );
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=home"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/quran.css" />
+  </head>
+  <body>
+    <button
+      type="button"
+      id="themeToggle"
+      class="theme-toggle"
+      aria-label="الوضع الداكن"
+    >
+      🌙
+    </button>
+    <header class="page-header">
+    <a href="index.html" class="back-link"><img class="home" src="img/home.svg"  alt="الرئيسية"></a>
+<img class="address" src="img/q.svg" alt="شعار موقع القرآن الكريم" />
+    <div>
+      <img class="menu-icon" id="menu-icon" onclick="toggleMenu()" src="img/menu.svg" alt="">
+      <nav class="close-nav" id="close-nav">
+        <a href="quran.html">  <img src="img/qsound.svg" alt="القرآن الصوتي"> استمع للقرآن</a>
+        <a href="quran-read.html"><img src="img/read.svg" alt="قراءة القرآن"> إقرأ القرآن</a>
+        <a href="ruqyah.html"><img src="img/ruqya.svg" alt="الرقية الشرعية"> الرقية الشرعية</a>
+        <a href="radio.html"><img src="img/radio.svg" alt="الراديو"> الراديو</a>
+      </nav>
+    </div>
+  </header>
+    <main>
+      <div class="quran-layout">
+        <div class="quran-controls">
+          <label for="reciter">اختر القارئ:</label>
+          <select id="reciter">
+            <option value="">-- جاري التحميل --</option>
+          </select>
+          <label for="moshaf">نوع القراءة:</label>
+          <select id="moshaf">
+            <option value="0">-- اختر القارئ أولاً --</option>
+          </select>
+        </div>
+        <div class="player-bar" id="playerBar">
+          <div class="surah-name" id="playerSurahName"></div>
+          <div class="player-controls">
+            <button
+              type="button"
+              id="btnNext"
+              class="ctrl-btn"
+              aria-label="التالي"
+            >
+              التالي ⏭
+            </button>
+            <button
+              type="button"
+              id="btnPlayPause"
+              class="ctrl-btn ctrl-play"
+              aria-label="إيقاف"
+            >
+              ⏸ إيقاف
+            </button>
+             <button
+              type="button"
+              id="btnPrev"
+              class="ctrl-btn"
+              aria-label="السابق"
+            >
+              ⏮ السابق
+            </button>
+           
+          </div>
+          <audio id="mainAudio" controls></audio>
+        </div>
+        <div class="loading" id="loading">جاري تحميل السور...</div>
+        <div class="error-msg" id="errorMsg" style="display: none"></div>
+        <div class="surah-list" id="surahList"></div>
+      </div>
+    </main>
+    <script src="js/theme.js"></script>
+    <script src="js/quran.js"></script>
+  </body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>موقع القرآن الكريم | صدقة جارية</title>
+  <script>
+    (function(){var t=localStorage.getItem('quran-sadaka-theme');document.documentElement.setAttribute('data-theme',t==='dark'?'dark':'light');})();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+  <button type="button" id="themeToggle" class="theme-toggle" aria-label="الوضع الداكن">🌙</button>
+  <section class="home">
+    <div class="home-logo">
+      <img class="address" src="img/q.svg" alt="شعار موقع القرآن الكريم">
+      <h3>صدقة جارية عن والدي رحمه الله</h3>
+      <img class="name" src="img/name.svg" alt="إسم صاحب الموقع">
+      <p>عَنْ أَبِي هُرَيْرَةَ رضي الله تعالى عنه: أَنَّ رَسُولَ اللَّهِ ﷺ قَالَ: 
+        "إِذَا مَاتَ ابنُ آدم انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثٍ: صَدَقَةٍ جَارِيَةٍ،
+         أو عِلْمٍ يُنْتَفَعُ بِهِ، أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ". رَوَاهُ مُسْلِمٌ.</p>
+    </div>
+    <nav class="home-buttons">
+      <a href="quran.html" class="home-btn quran">
+        <span class="btn-icon" aria-hidden="true">📖</span>
+        <span>القرآن الكريم</span>
+      </a>
+      <a href="quran-read.html" class="home-btn read">
+          <span class="btn-icon" aria-hidden="true">📜</span>
+          <span>قراءة القرآن</span>
+        </a>
+      <a href="ruqyah.html" class="home-btn ruqyah">
+        <span class="btn-icon" aria-hidden="true">🛡️</span>
+        <span>الرقية الشرعية</span>
+      </a>
+      <a href="radio.html" class="home-btn radio">
+        <span class="btn-icon" aria-hidden="true">📻</span>
+        <span>راديو القرآن الكريم</span>
+        
+      </a>
+    </nav>
+   
+  </section>
+  
+  <script src="js/theme.js"></script>
+  <script>
+    (function () {
+    const year = new Date().getFullYear();
+    const ownerName = "Hassan Selim";
+    const website = "https://www.hassanselim.art/";
+
+    const copyright = document.createElement("div");
+
+    copyright.style.textAlign = "center";
+    copyright.style.padding = "15px";
+    copyright.style.fontSize = "14px";
+    copyright.style.color = "#999";
+
+    copyright.innerHTML = `
+        جميع الحقوق محفوظة © ${year} —
+        <a href="${website}" target="_blank" style="color:#999;text-decoration:none;">
+            ${ownerName}
+        </a>
+    `;
+
+    document.body.appendChild(copyright);
+    })();
+  </script>
+</body>
+</html>
