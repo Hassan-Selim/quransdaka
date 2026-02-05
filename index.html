@@ -17,7 +17,7 @@
 <meta property="og:title" content="القرآن الكريم – صدقة جارية واستماع الرقية الشرعية">
 <meta property="og:description" content="استمع للقرآن الكريم بصوت أشهر القراء وشارك في صدقة جارية من خلال تلاوة وقراءة الرقية الشرعية بصوت الشيخ ماهر المعيقلي.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.hassanselim.art/">
+<meta property="og:url" content="https://hassan-selim.github.io/quransdaka/index.html">
 <meta property="og:image" content="https://www.hassanselim.art/path-to-your-image.jpg">
 
 <meta name="twitter:card" content="summary_large_image">
@@ -32,7 +32,7 @@
 
 <!-- ترميز اللغة -->
 <meta http-equiv="Content-Language" content="ar">
-<link rel="canonical" href="https://www.hassanselim.art/">
+<link rel="canonical" href="https://hassan-selim.github.io/quransdaka/index.html">
 
   <script>
     (function(){var t=localStorage.getItem('quran-sadaka-theme');document.documentElement.setAttribute('data-theme',t==='dark'?'dark':'light');})();
@@ -73,10 +73,33 @@
         <span>راديو القرآن الكريم</span>
         
       </a>
+      <a href="tasbeeh.html" class="home-btn tasbeeh">
+        <span class="btn-icon" aria-hidden="true">📿</span>
+        <span>السبحة الإليكترونية</span>
+        
+      </a>
     </nav>
    
   </section>
   
+  <!-- // إضافة زر المشاركة// -->
+  <button class="shareBtn" onclick="shareSite()"><img src="img/share.svg" alt=""></button>
+
+<script>
+function shareSite() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'موقع القرآن الكريم | صدقة جارية',
+      text: 'شارك في صدقة جارية من خلال الاستماع للقرآن الكريم وقراءة الرقية الشرعية.',
+      url: window.location.href
+    })
+    .then(() => console.log('تمت المشاركة بنجاح'))
+    .catch((error) => console.log('خطأ في المشاركة:', error));
+  } else {
+    alert('هذا التصفح لا يدعم ميزة المشاركة. الرجاء نسخ الرابط ومشاركته يدوياً.');
+  }
+}
+</script>
   <script src="js/theme.js"></script>
   <script>
     (function () {

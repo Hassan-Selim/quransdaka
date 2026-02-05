@@ -11,8 +11,8 @@
   --color-text: #1e293b;
   --color-text-muted: #64748b;
   --color-bg-card: #ffffff;
-  --font-arabic: 'Amiri', 'Traditional Arabic', 'Scheherazade New', serif;
-  --font-body: 'Segoe UI', Tahoma, sans-serif;
+  --font-arabic: "Amiri", "Traditional Arabic", "Scheherazade New", serif;
+  --font-body: "Segoe UI", Tahoma, sans-serif;
   --shadow-soft: 0 4px 14px rgba(13, 148, 136, 0.12);
   --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.08);
   --radius: 12px;
@@ -32,11 +32,17 @@ html {
 body {
   font-family: var(--font-body);
   color: var(--color-text);
-  background: linear-gradient(180deg, var(--color-cream) 0%, var(--color-white) 50%);
+  background: linear-gradient(
+    180deg,
+    var(--color-cream) 0%,
+    var(--color-white) 50%
+  );
   min-height: 100vh;
   line-height: 1.6;
   direction: rtl;
-  transition: background 0.3s, color 0.3s;
+  transition:
+    background 0.3s,
+    color 0.3s;
 }
 
 body.english {
@@ -59,7 +65,11 @@ img {
 
 /* Header / Nav */
 .page-header {
-  background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-teal-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-teal) 0%,
+    var(--color-teal-dark) 100%
+  );
   color: var(--color-white);
   padding: 1rem 1.5rem;
   font-size: 1.3rem;
@@ -78,11 +88,11 @@ img {
   font-family: var(--font-arabic);
   font-size: 1.5rem;
   font-weight: 700;
-
 }
 header .address {
- max-width: 200px;
- filter: brightness(0) saturate(100%) invert(91%) sepia(16%) saturate(377%) hue-rotate(12deg);
+  max-width: 200px;
+  filter: brightness(0) saturate(100%) invert(91%) sepia(16%) saturate(377%)
+    hue-rotate(12deg);
 }
 .menu-icon {
   width: 40px;
@@ -103,7 +113,9 @@ header .close-nav {
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
+  transition:
+    background 0.2s,
+    transform 0.2s;
   display: none;
 }
 .page-header .back-link {
@@ -116,7 +128,7 @@ header .close-nav {
   transition: background 0.2s;
 }
 
-.back-link .home{
+.back-link .home {
   width: 40px;
   height: 40px;
 }
@@ -144,7 +156,9 @@ main {
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .btn:hover {
@@ -153,12 +167,20 @@ main {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-teal-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-teal) 0%,
+    var(--color-teal-dark) 100%
+  );
   color: var(--color-white);
 }
 
 .btn-gold {
-  background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-gold) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-gold-light) 0%,
+    var(--color-gold) 100%
+  );
   color: var(--color-white);
 }
 
@@ -191,7 +213,9 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s, background 0.2s;
+  transition:
+    transform 0.2s,
+    background 0.2s;
 }
 .theme-toggle:hover {
   transform: scale(1.08);
@@ -234,7 +258,31 @@ main {
   --color-text: #1e293b;
   --color-text-muted: #64748b;
 }
-
+.shareBtn {
+  position: fixed;
+  top: 5.5rem;
+  left: 1rem;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    var(--color-teal) 0%,
+    var(--color-teal-dark) 100%
+  );
+  color: var(--color-text);
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* Responsive */
 @media (max-width: 600px) {
@@ -251,7 +299,7 @@ main {
     height: 40px;
     font-size: 1.2rem;
   }
-  header .address{
+  header .address {
     max-width: 120px;
   }
 }

@@ -77,6 +77,24 @@
     </div>
     <div class="radio-list" id="radioList"></div>
   </main>
+ <button class="shareBtn" onclick="shareSite()"><img src="img/share.svg" alt=""></button>
+
+<script>
+function shareSite() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'موقع القرآن الكريم | صدقة جارية',
+      text: 'شارك في صدقة جارية من خلال الاستماع للقرآن الكريم وقراءة الرقية الشرعية.',
+      url: window.location.href
+    })
+    .then(() => console.log('تمت المشاركة بنجاح'))
+    .catch((error) => console.log('خطأ في المشاركة:', error));
+  } else {
+    alert('هذا التصفح لا يدعم ميزة المشاركة. الرجاء نسخ الرابط ومشاركته يدوياً.');
+  }
+}
+</script>
+
   <script src="js/theme.js"></script>
   <script src="js/radio.js"></script>
 </body>

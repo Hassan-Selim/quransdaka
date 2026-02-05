@@ -99,6 +99,11 @@
   color: var(--color-white);
 }
 
+.home-btn.tasbeeh .btn-icon {
+  background: linear-gradient(135deg, #e7dc0e 0%, #f3cbbb 100%);
+  color: var(--color-white);
+}
+
 @media (min-width: 500px) {
   .home-buttons {
     grid-template-columns: repeat(2, 1fr);
