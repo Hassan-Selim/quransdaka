@@ -35,10 +35,10 @@
 
 .home-buttons {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.25rem;
   width: 100%;
-  max-width: 320px;
+  max-width: 300px;
   margin-top: 2rem;
 }
 
@@ -102,6 +102,15 @@
 .home-btn.tasbeeh .btn-icon {
   background: linear-gradient(135deg, #e7dc0e 0%, #f3cbbb 100%);
   color: var(--color-white);
+}
+
+.home-btn.about .btn-icon {
+  background: linear-gradient(135deg, #034485 0%, #046393 100%);
+  color: var(--color-white);
+  img{
+    width: 240px;
+    height: 240px;
+  }
 }
 
 @media (min-width: 500px) {

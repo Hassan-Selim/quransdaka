@@ -1,0 +1,56 @@
+
+.about-page{
+  max-width:900px;
+  margin:auto;
+  padding:40px 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.about-page h1{
+  text-align:center;
+  background-color: #0d9488;
+  border-radius: 10px;
+  padding: 10px 10px;
+  margin-bottom:30px;
+  font-size: 2rem;
+}
+
+.about-page h2{
+  margin-top:35px;
+  background-color: #0d9488;
+  border-radius: 10px;
+  padding: 10px;
+  border-right:4px solid #e7770e;
+  padding-right:10px;
+}
+
+.about-page p{
+  margin:15px 0;
+  font-size: 1rem;
+}
+
+.about-page ul{
+  padding-right:20px;
+}
+
+.about-page li{
+  margin:10px 0;
+}
+
+.about-page strong{
+  color:#e7770e;
+}
+
+/* موبايل */
+
+@media(max-width:600px){
+
+.about-page h1{
+  font-size:26px;
+}
+
+.about-page p{
+  font-size:16px;
+}
+
+}
