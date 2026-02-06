@@ -1,0 +1,22 @@
+{
+  "name": "القرآن الكريم | صدقة جارية",
+  "short_name": "قرآن",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5efe6",
+  "theme_color": "#e7770e",
+  "orientation": "portrait",
+  "lang": "ar",
+  "icons": [
+    {
+      "src": "img/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
