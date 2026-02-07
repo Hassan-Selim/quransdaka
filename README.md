@@ -26,7 +26,7 @@
 ├── index.html      الصفحة الرئيسية
 ├── quran.html      القرآن الكريم
 ├── ruqyah.html     الرقية الشرعية
-├── radio.html      راديو القرآن
+├── radio.html      راديو القرآن    
 ├── css/
 │   ├── style.css   تنسيقات عامة
 │   ├── home.css

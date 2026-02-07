@@ -129,7 +129,11 @@
 
   function fillReadReciterSelect() {
     elReadReciter.innerHTML = '<option value="">-- اختر القارئ --</option>';
-    reciters.forEach(function (r) {
+    const sortedReciters = [...reciters].sort(function(a, b) {
+      return a.name.localeCompare(b.name, 'ar'); // للغة العربية
+    });
+
+    sortedReciters.forEach(function (r) {
       var opt = document.createElement("option");
       opt.value = r.id;
       opt.textContent = r.name;
