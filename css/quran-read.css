@@ -234,4 +234,8 @@
     font-size: 0.7em;
   }
 }
-
+.verse-text.active {
+  color: #2e86de;
+  background-color: #f1f1f1;
+  transition: 0.3s;
+}

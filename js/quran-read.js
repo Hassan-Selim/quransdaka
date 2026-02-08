@@ -29,6 +29,10 @@
   var currentReciter = null;
   var currentMoshaf = null;
   var currentSurahNumber = 0;
+  var API_AYAT_TIMING = "https://mp3quran.net/api/v3/ayat_timing";
+var ayahTimings = [];
+var verseSpans = [];
+
 
   function pad(num) {
     return String(num).padStart(3, "0");

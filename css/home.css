@@ -103,6 +103,35 @@
   background: linear-gradient(135deg, #e7dc0e 0%, #f3cbbb 100%);
   color: var(--color-white);
 }
+.ramadan{
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  height: 4rem;
+  gap: 0.5rem;
+  font-size: 2rem;
+  background-color: rgb(255, 204, 0);
+  animation: floatMoon 0.9s ease-in-out infinite;
+}
+.ramadan span{
+  color: #023d3b;
+  font-weight: 600;
+}
+.ramadan .btn-icon{
+  font-size: 1.8rem;
+  background-color: #023d3b;
+  border-radius: 50%;
+  animation: iconRotate 0.9s infinite alternate ease-in-out;
+}
+@keyframes floatMoon {
+  0%, 100% { transform: scale(0.9); }
+  50% { transform: scale(1); }
+}
+@keyframes iconRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(90deg); }
+}
+
 
 .home-btn.about .btn-icon {
   background: linear-gradient(135deg, #034485 0%, #046393 100%);
@@ -139,5 +168,8 @@
   .home-btn {
     flex-direction: column;
     padding: 2rem 1.5rem;
+  }
+  .ramadan{
+    flex-direction: row;
   }
 }
