@@ -24,7 +24,7 @@ function highlightNextPrayer() {
   });
 }
 function updateCountdown() {
-  // تاريخ بداية رمضان المتوقع (20 فبراير 2026)
+  // تاريخ بداية رمضان المتوقع (18 فبراير 2026)
   const ramadanStart = new Date("2026-02-20T00:00:00");
   const ramadanEnd = new Date("2026-03-21T00:00:00"); // تقريبًا 30 يوم
 
