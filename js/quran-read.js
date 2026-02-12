@@ -1,9 +1,8 @@
 (function () {
   "use strict";
 
-  var API_SUWAR = "https://api.alquran.cloud/v1/surah";
-  var API_SURAH = "https://api.alquran.cloud/v1/surah/";
-  var API_RECITERS = "https://mp3quran.net/api/v3/reciters?language=ar";
+  var API_SUWAR = "../json/surah-name.json";
+  var API_RECITERS = "../json/reciters.json";
   var STORAGE_RECITER = "quran-sadaka-reciter";
   var STORAGE_MOSHAF = "quran-sadaka-moshaf";
 
@@ -23,7 +22,7 @@
   var elReadPlayPause = document.getElementById("readPlayPause");
   var elReadFwd5 = document.getElementById("readFwd5");
   var elReadAudio = document.getElementById("readAudio");
-
+  
   var suwar = [];
   var reciters = [];
   var currentReciter = null;
@@ -296,38 +295,46 @@ var verseSpans = [];
       }
     }
 
-    fetch(API_SURAH + number)
-      .then(function (res) {
-        return res.json();
-      })
-      .then(function (data) {
-        elVersesLoading.style.display = "none";
-        if (data.code === 200 && data.data && data.data.ayahs) {
-          var ayahs = data.data.ayahs;
-          var block = document.createElement("div");
-          block.className = "mushaf-block";
-          ayahs.forEach(function (a) {
-            var textSpan = document.createElement("span");
-            textSpan.className = "verse-text";
-            textSpan.textContent = (a.text || "").trim();
-            var markerSpan = document.createElement("span");
-            markerSpan.className = "verse-marker";
-            markerSpan.textContent = a.numberInSurah;
-            block.appendChild(textSpan);
-            block.appendChild(markerSpan);
-          });
-          elVersesContainer.appendChild(block);
-        } else {
-          elVersesContainer.innerHTML =
-            '<p class="read-error">تعذر تحميل الآيات.</p>';
-        }
-      })
-      .catch(function (err) {
-        elVersesLoading.style.display = "none";
-        elVersesContainer.innerHTML =
-          '<p class="read-error">حدث خطأ. تحقق من الاتصال.</p>';
-        console.error(err);
+    fetch("../json/quran.json")
+  .then(function (res) {
+    return res.json();
+  })
+  .then(function (allSurahs) {
+    elVersesLoading.style.display = "none";
+
+    var surahData = allSurahs.find(function (s) {
+      return s.number === number;
+    });
+
+    if (surahData && surahData.ayahs) {
+      var block = document.createElement("div");
+      block.className = "mushaf-block";
+
+      surahData.ayahs.forEach(function (a) {
+        var textSpan = document.createElement("span");
+        textSpan.className = "verse-text";
+        textSpan.textContent = a.text.trim();
+
+        var markerSpan = document.createElement("span");
+        markerSpan.className = "verse-marker";
+        markerSpan.textContent = a.number;
+
+        block.appendChild(textSpan);
+        block.appendChild(markerSpan);
       });
+
+      elVersesContainer.appendChild(block);
+    } else {
+      elVersesContainer.innerHTML =
+        '<p class="read-error">تعذر تحميل الآيات.</p>';
+    }
+  })
+  .catch(function (err) {
+    elVersesLoading.style.display = "none";
+    elVersesContainer.innerHTML =
+      '<p class="read-error">حدث خطأ في تحميل الملف المحلي.</p>';
+    console.error(err);
+  });
   }
 
   elReadReciter.addEventListener("change", onReadReciterChange);

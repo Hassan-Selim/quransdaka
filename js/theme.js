@@ -89,3 +89,13 @@
     document.body.appendChild(copyright);
   })();
 })();
+const menuIcon = document.getElementById('menu-icon');
+const moreLinks = document.getElementById('more-links');
+
+function toggleMenu() {
+  if(moreLinks.style.display === 'flex') {
+    moreLinks.style.display = 'none';
+  } else {
+    moreLinks.style.display = 'flex';
+  }
+}

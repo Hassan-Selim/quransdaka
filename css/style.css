@@ -43,6 +43,7 @@ body {
   transition:
     background 0.3s,
     color 0.3s;
+    
 }
 
 body.english {
@@ -98,6 +99,7 @@ header .address {
   width: 40px;
   height: 40px;
   cursor: pointer;
+  
 }
 header .close-nav {
   display: grid;
@@ -117,7 +119,11 @@ header .close-nav {
     background 0.2s,
     transform 0.2s;
   display: none;
+  a{
+    color: var(--color-white);
+  }
 }
+
 .page-header .back-link {
   color: var(--color-white);
   display: flex;
@@ -201,8 +207,8 @@ main {
   top: 1rem;
   left: 1rem;
   z-index: 100;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: 50%;
   background: var(--color-bg-card);
@@ -266,8 +272,8 @@ main {
   height: 40px;
   font-size: 1.2rem;
   z-index: 100;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: 50%;
   background: linear-gradient(
@@ -282,7 +288,11 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: 0.3s ease-in-out;
 }
+.shareBtn:hover {
+  transform: scale(1.08);
+} 
 
 /* Responsive */
 @media (max-width: 600px) {

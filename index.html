@@ -54,35 +54,35 @@
         "إِذَا مَاتَ ابنُ آدم انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثٍ: صَدَقَةٍ جَارِيَةٍ،
          أو عِلْمٍ يُنْتَفَعُ بِهِ، أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ". رَوَاهُ مُسْلِمٌ.</p>
     </div>
-     <a href="ramadan.html" class="home-btn ramadan">
+     <a href="ramadan" class="home-btn ramadan">
       <span>رمضان كريم</span>  
       <span class="btn-icon" aria-hidden="true">🌙</span>
         
       </a>
     <nav class="home-buttons">
-      <a href="quran.html" class="home-btn quran">
+      <a href="quran" class="home-btn quran">
         <span class="btn-icon" aria-hidden="true">📖</span>
         <span>القرآن الكريم</span>
       </a>
-      <a href="quran-read.html" class="home-btn read">
+      <a href="quran-read" class="home-btn read">
           <span class="btn-icon" aria-hidden="true">📜</span>
           <span>قراءة القرآن</span>
         </a>
-      <a href="ruqyah.html" class="home-btn ruqyah">
+      <a href="ruqyah" class="home-btn ruqyah">
         <span class="btn-icon" aria-hidden="true">🛡️</span>
         <span>الرقية الشرعية</span>
       </a>
-      <a href="radio.html" class="home-btn radio">
+      <a href="radio" class="home-btn radio">
         <span class="btn-icon" aria-hidden="true">📻</span>
         <span>راديو القرآن الكريم</span>
         
       </a>
-      <a href="tasbeeh.html" class="home-btn tasbeeh">
+      <a href="tasbeeh" class="home-btn tasbeeh">
         <span class="btn-icon" aria-hidden="true">📿</span>
         <span>السبحة الإليكترونية</span>
         
      
-      <a href="about.html" class="home-btn about">
+      <a href="about" class="home-btn about">
         <span class="btn-icon" aria-hidden="true"><img src="img/about.svg" alt=""></span>
         <span>عن الموقع</span>
         
@@ -90,26 +90,16 @@
     </nav>
    
   </section>
-  
+  <div id="welcomePopup" class="popup-message">نسألكم الدعاء بالرحمة والمغفرة لوالدي ولموتى المسلمين  🤍
+</div>
+
   <!-- // إضافة زر المشاركة// -->
   <button class="shareBtn" onclick="shareSite()"><img src="img/share.svg" alt=""></button>
 
-<script>
-function shareSite() {
-  if (navigator.share) {
-    navigator.share({
-      title: 'موقع القرآن الكريم | صدقة جارية',
-      text: 'شارك في صدقة جارية من خلال الاستماع للقرآن الكريم وقراءة الرقية الشرعية.',
-      url: window.location.href
-    })
-    .then(() => console.log('تمت المشاركة بنجاح'))
-    .catch((error) => console.log('خطأ في المشاركة:', error));
-  } else {
-    alert('هذا التصفح لا يدعم ميزة المشاركة. الرجاء نسخ الرابط ومشاركته يدوياً.');
-  }
-}
-</script>
+
   <script src="js/theme.js"></script>
+  <script src="js/home.js"></script>
+
   <script>
     (function () {
     const year = new Date().getFullYear();
@@ -133,6 +123,21 @@ function shareSite() {
     document.body.appendChild(copyright);
     })();
   </script>
+  <script>
+function shareSite() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'موقع القرآن الكريم | صدقة جارية',
+      text: 'شارك في صدقة جارية من خلال الاستماع للقرآن الكريم وقراءة الرقية الشرعية.',
+      url: window.location.href
+    })
+    .then(() => console.log('تمت المشاركة بنجاح'))
+    .catch((error) => console.log('خطأ في المشاركة:', error));
+  } else {
+    alert('هذا التصفح لا يدعم ميزة المشاركة. الرجاء نسخ الرابط ومشاركته يدوياً.');
+  }
+}
+</script>
 
 </body>
 </html>

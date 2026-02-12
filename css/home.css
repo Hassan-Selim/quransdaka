@@ -141,6 +141,28 @@
     height: 240px;
   }
 }
+.popup-message {
+  display: flex;
+  position: fixed;
+  top: 30%;
+  place-self: center;
+  transform: translateX(50%);
+  background: #87010179;
+  color: #ffffff;
+  border-radius: 2rem 00 2rem;
+  padding: 2rem;
+  font-size: 1rem;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 9999;
+  animation: floatMoon 2s ease-in-out infinite;
+}
+
+.show {
+  opacity: 1;
+}
 
 @media (min-width: 500px) {
   .home-buttons {

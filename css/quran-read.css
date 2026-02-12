@@ -63,8 +63,8 @@
 
 .read-surah-item .surah-name-ar {
   font-family: var(--font-arabic);
-  font-size: 1.3rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 800;
   color: var(--color-text);
   display: block;
 }
@@ -238,4 +238,27 @@
   color: #2e86de;
   background-color: #f1f1f1;
   transition: 0.3s;
+}
+.verse.highlight {
+  background-color: #fffa8c;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+#resumeBtn{ 
+  display: flex;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-teal);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  margin-bottom: 1rem;
+  place-self: center;
+  transition: 0.5s ease-in-out;
+}
+#resumeBtn:hover {
+  background-color: var(--color-teal-dark);
+  transform: scale(1.1)
 }
