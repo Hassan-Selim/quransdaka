@@ -42,6 +42,8 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/home.css">
   <link rel="shortcut icon" href="img/icon.png" type="image/x-icon">
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2e86de">
 </head>
 <body>
   <button type="button" id="themeToggle" class="theme-toggle" aria-label="الوضع الداكن">🌙</button>
@@ -92,14 +94,17 @@
   </section>
   <div id="welcomePopup" class="popup-message">نسألكم الدعاء بالرحمة والمغفرة لوالدي ولموتى المسلمين  🤍
 </div>
-
+<div id="splash">
+  <img src="../img/icon.png" alt="المصحف" />
+  
+</div>
   <!-- // إضافة زر المشاركة// -->
   <button class="shareBtn" onclick="shareSite()"><img src="img/share.svg" alt=""></button>
 
 
   <script src="js/theme.js"></script>
   <script src="js/home.js"></script>
-
+  <script src="service-worker.js"></script>
   <script>
     (function () {
     const year = new Date().getFullYear();
@@ -138,6 +143,7 @@ function shareSite() {
   }
 }
 </script>
+
 
 </body>
 </html>

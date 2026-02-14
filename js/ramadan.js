@@ -60,13 +60,7 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000 * 60);
 
-// تعديل الكود الأصلي لـ getPrayerTimes عشان يستدعي highlightNextPrayer بعد تحميل التوقيتات
 function getPrayerTimes() {
-  if (!navigator.geolocation) {
-    alert("لا يمكن تحديد الموقع. سيتم استخدام التوقيت الافتراضي.");
-    return;
-  }
-
   const prayerMap = {
     "الفجر": "Fajr",
     "الشروق": "Sunrise",
@@ -76,37 +70,65 @@ function getPrayerTimes() {
     "العشاء": "Isha"
   };
 
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
+  const savedLat = localStorage.getItem("latitude");
+  const savedLng = localStorage.getItem("longitude");
+  const locationBtn = document.getElementById("locationBtn");
 
-      fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=5`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.code === 200) {
-            const timings = data.data.timings;
-            const prayerRow = document.getElementById("prayerRow");
+  if (savedLat && savedLng) {
+    // عند وجود موقع محفوظ نخفي الزرار ونستخدمه مباشرة
+    if (locationBtn) locationBtn.style.display = "none";
+    fetchPrayerTimes(savedLat, savedLng, prayerMap);
+  } else {
+    // لو مفيش موقع محفوظ نظهر الزرار
+    if (locationBtn) {
+      locationBtn.style.display = "inline-block";
+      locationBtn.onclick = () => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+              localStorage.setItem("latitude", lat);
+              localStorage.setItem("longitude", lng);
 
-            prayerRow.querySelectorAll(".prayer-item").forEach(item => {
-              const arabicName = item.querySelector(".prayer-name").textContent;
-              const engName = prayerMap[arabicName];
-              item.querySelector(".prayer-time").textContent = timings[engName] || "--:--";
-            });
+              // نخفي الزرار بعد تحديد الموقع
+              locationBtn.style.display = "none";
 
-            // بعد ما المواقيت تتحط، نحدد الصلاة القادمة
-            highlightNextPrayer();
-          }
-        })
-        .catch(err => console.error(err));
-    },
-    (error) => {
-      console.error("خطأ في الحصول على الموقع:", error);
+              fetchPrayerTimes(lat, lng, prayerMap);
+            },
+            (error) => {
+              alert("تعذر الحصول على الموقع، تأكد من تشغيل الإنترنت");
+              console.error(error);
+            }
+          );
+        } else {
+          alert("المتصفح لا يدعم تحديد الموقع");
+        }
+      };
     }
-  );
+  }
 }
 
-// استدعاء الوظيفة عند تحميل الصفحة
+function fetchPrayerTimes(lat, lng, prayerMap) {
+  fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=5`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.code === 200) {
+        const timings = data.data.timings;
+        const prayerRow = document.getElementById("prayerRow");
+
+        prayerRow.querySelectorAll(".prayer-item").forEach(item => {
+          const arabicName = item.querySelector(".prayer-name").textContent;
+          const engName = prayerMap[arabicName];
+          item.querySelector(".prayer-time").textContent = timings[engName] || "--:--";
+        });
+
+        highlightNextPrayer();
+      }
+    })
+    .catch(err => console.error(err));
+}
+
 window.addEventListener("load", getPrayerTimes);
 // نستنى حتى يتم تحميل كل العناصر
 document.addEventListener("DOMContentLoaded", function () {

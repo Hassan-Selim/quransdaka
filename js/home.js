@@ -22,4 +22,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 4000);
   }, 3000);
 });
-
+window.addEventListener("load", () => {
+  const splash = document.getElementById("splash");
+  setTimeout(() => {
+    splash.style.display = "none";
+  }, 2000); // تختفي بعد ثانيتين
+});
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js")
+    .then(() => console.log("Service Worker مسجل بنجاح"))
+    .catch(err => console.error("فشل تسجيل Service Worker:", err));
+}

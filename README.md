@@ -24,19 +24,49 @@
 
 ```
 ├── index.html      الصفحة الرئيسية
-├── quran.html      القرآن الكريم
-├── ruqyah.html     الرقية الشرعية
-├── radio.html      راديو القرآن    
+├── quran      القرآن الكريم
+|   ├── index.html 
+├── ruqyah     الرقية الشرعية
+|   ├── index.html
+├── radio      راديو القرآن    
+|   ├── index.html
+├── quran-read      قراءة القرآن    
+|   ├── index.html
+├── ramadan      رمضان
+|   ├── index.html
+├── tasbeeh      تسبيح
+|   ├── index.html
+├── about      عن الموقع
+|   ├── index.html
 ├── css/
 │   ├── style.css   تنسيقات عامة
 │   ├── home.css
 │   ├── quran.css
+│   ├── quran-read.css
+│   ├── about.css
 │   ├── ruqyah.css
+│   ├── ramadan.css
+│   ├── tasbeeh.css
 │   └── radio.css
 ├── js/
 │   ├── quran.js
-│   ├── ruqyah.js
+│   ├── quran-read.js
+│   ├── home.js
+│   ├── ramadan.js
+│   ├── quran.js
+│   ├── tasbeeh.js
+│   ├── theme.js
 │   └── radio.js
+├── json/
+│   ├── quran.json
+│   ├── ayahTimings.json
+│   ├── reciters.json
+│   ├── surah-name.json
+├── img/
+│   ├── icon.png
+│   ├── banner.png
+├── manifset,json
+├── service-worker.js
 └── README.md
 ```
 

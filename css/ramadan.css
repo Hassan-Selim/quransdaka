@@ -56,6 +56,25 @@ border: #2db4a9 2px solid;
 }
 
 }
+#locationBtn{
+  display: flex;
+  background: #2db4a9;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 600;
+  transition: 0.3s ease-in-out;
+  margin: auto;
+  
+}
+#locationBtn:hover{
+  background: #d8b163;
+  transform: scale(1.1);
+}
 
 .ramadan-content {
   max-width: 900px;

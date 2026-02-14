@@ -104,6 +104,7 @@
   font-family: var(--font-arabic);
   font-size: 1.75rem;
   color: var(--color-teal-dark);
+  text-align: center;
 }
 
 /* شريط الصوت أعلى السورة */
