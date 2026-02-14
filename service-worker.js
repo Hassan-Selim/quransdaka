@@ -86,9 +86,19 @@ self.addEventListener("activate", (event) => {
 
 // جلب الملفات من الكاش أو الشبكة
 self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    })
-  );
+  const url = event.request.url;
+
+  // لو الطلب خاص بالـ API أو JSON → جرب الشبكة الأول
+  if (url.includes("api") || url.includes("json")) {
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match(event.request))
+    );
+  } else {
+    // باقي الملفات من الكاش أو الشبكة
+    event.respondWith(
+      caches.match(event.request).then((response) => {
+        return response || fetch(event.request);
+      })
+    );
+  }
 });
