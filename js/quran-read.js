@@ -253,6 +253,28 @@ elBackToList.addEventListener("click", function () {
     localStorage.setItem("lastAyah", 1);
   }
 
+  if (reciters.length > 0) {
+    fillReadReciterSelect();
+    fillReadMoshafSelect();
+    var savedR = null, savedM = null;
+    try {
+      savedR = localStorage.getItem(STORAGE_RECITER);
+      savedM = localStorage.getItem(STORAGE_MOSHAF);
+    } catch (e) {}
+    if (savedR && reciters.some(r => String(r.id) === savedR)) {
+      elReadReciter.value = savedR;
+      onReadReciterChange();
+      if (savedM !== null && currentReciter && currentReciter.moshaf) {
+        var idx = parseInt(savedM, 10);
+        if (idx >= 0 && idx < currentReciter.moshaf.length) {
+          elReadMoshaf.value = String(idx);
+          onReadMoshafChange();
+        }
+      }
+    }
+    
+  }
+
   fetch("../json/quran.json")
     .then(res => res.json())
     .then(allSurahs => {
@@ -264,37 +286,26 @@ elBackToList.addEventListener("click", function () {
         block.className = "mushaf-block";
 
         surahData.ayahs.forEach(function (a) {
-  var textSpan = document.createElement("span");
-  textSpan.className = "verse-text";
-  textSpan.textContent = a.text.trim();
+          var textSpan = document.createElement("span");
+          textSpan.className = "verse-text";
+          textSpan.textContent = a.text.trim();
 
-  var markerSpan = document.createElement("span");
-  markerSpan.className = "verse-marker";
-  markerSpan.textContent = a.number;
+          var markerSpan = document.createElement("span");
+          markerSpan.className = "verse-marker";
+          markerSpan.textContent = a.number;
 
-  // حفظ التقدم عند الضغط على آية + تمييزها
-  markerSpan.addEventListener("click", function () {
-    localStorage.setItem("lastSurah", number);
-    localStorage.setItem("lastSurahName", surahInfo ? surahInfo.name : "");
-    localStorage.setItem("lastAyah", a.number);
+          // حفظ التقدم عند الضغط على آية
+          markerSpan.addEventListener("click", function () {
+            localStorage.setItem("lastSurah", number);
+            localStorage.setItem("lastSurahName", surahInfo ? surahInfo.name : "");
+            localStorage.setItem("lastAyah", a.number);
+          });
 
-    // إزالة التمييز من كل الآيات
-    document.querySelectorAll(".verse-marker").forEach(m => m.classList.remove("highlight"));
-    // تمييز الآية المختارة
-    markerSpan.classList.add("highlight");
-  });
-
-  block.appendChild(textSpan);
-  block.appendChild(markerSpan);
-});
+          block.appendChild(textSpan);
+          block.appendChild(markerSpan);
+        });
 
         elVersesContainer.appendChild(block);
-
-        // لو فيه آية محفوظة مسبقًا، نعمل لها تمييز
-        var savedAyah = localStorage.getItem("lastAyah");
-        if (savedAyah) {
-          highlightAyah(savedAyah);
-        }
       } else {
         elVersesContainer.innerHTML = '<p class="read-error">تعذر تحميل الآيات.</p>';
       }
@@ -306,18 +317,7 @@ elBackToList.addEventListener("click", function () {
     });
 
   // حفظ الحالة في History API
-  history.pushState({ view: "surah", surah: number }, "", "?surah=" + number);
-}
-
-// دالة تمييز آية معينة
-function highlightAyah(ayahId) {
-  var markers = document.querySelectorAll(".verse-marker");
-  markers.forEach(function (m) {
-    if (parseInt(m.textContent, 10) === parseInt(ayahId, 10)) {
-      m.classList.add("highlight");
-      m.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  });
+  history.pushState({ surah: number }, "", "?surah=" + number);
 }
 
 // التعامل مع زر الرجوع
