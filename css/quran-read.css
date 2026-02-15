@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'UthmanicHafs';
+  src: url('../fonts/UthmanicHafs.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 /* ===== Quran Read (Text) Page ===== */
 .read-view {
   padding: 0.5rem 0;
@@ -186,13 +192,13 @@
 
 /* مصحف: كتلة نص متدفقة مع علامات آيات */
 .mushaf-block {
-  font-family: var(--font-arabic);
-  font-size: 1.65rem;
+  font-family: 'UthmanicHafs', serif;
+  font-size: 28px;
   line-height: 2.2;
-  color: var(--color-text);
   text-align: justify;
-  text-justify: inter-word;
   max-width: 100%;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .mushaf-block .verse-text {
