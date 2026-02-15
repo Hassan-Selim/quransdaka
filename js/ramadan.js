@@ -116,15 +116,22 @@ function fetchPrayerTimes(lat, lng, prayerMap) {
       if (data.code === 200) {
         const timings = data.data.timings;
         const prayerRow = document.getElementById("prayerRow");
-
+        function formatTo12HourArabic(time24) {
+  let [hour, minute] = time24.split(":").map(Number);
+  let suffix = hour >= 12 ? "م" : "ص"; // م = مساء، ص = صباح
+  hour = ((hour + 11) % 12 + 1); // تحويل للـ 12 ساعة
+  return hour + ":" + (minute < 10 ? "0" + minute : minute) + " " + suffix;
+}
         prayerRow.querySelectorAll(".prayer-item").forEach(item => {
           const arabicName = item.querySelector(".prayer-name").textContent;
           const engName = prayerMap[arabicName];
-          item.querySelector(".prayer-time").textContent = timings[engName] || "--:--";
+          item.querySelector(".prayer-time").textContent = 
+    timings[engName] ? formatTo12HourArabic(timings[engName]) : "--:--";
         });
-
+        
         highlightNextPrayer();
       }
+      
     })
     .catch(err => console.error(err));
 }
