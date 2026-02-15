@@ -95,11 +95,24 @@ header .address {
   filter: brightness(0) saturate(100%) invert(91%) sepia(16%) saturate(377%)
     hue-rotate(12deg);
 }
+.back-link {
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  border-radius: var(--radius);
+  transition: background 0.2s;
+}
 .menu-icon {
-  width: 40px;
+  width: 50px;
   height: 40px;
+  font-size: 2rem;
   cursor: pointer;
-  
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  color: #f1f5f9 ;
+  background: transparent;
+  transition: background 0.2s;
 }
 header .close-nav {
   display: grid;
@@ -113,7 +126,7 @@ header .close-nav {
   border: none;
   border-radius: var(--radius);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition:
     background 0.2s,
@@ -126,19 +139,18 @@ header .close-nav {
 
 .page-header .back-link {
   color: var(--color-white);
+  font-size: 2rem;
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.5rem;
+  padding: 3px;
   border-radius: var(--radius);
   transition: background 0.2s;
 }
 
-.back-link .home {
-  width: 40px;
-  height: 40px;
-}
-.page-header .back-link:hover {
+
+
+.page-header .back-link:hover, .menu-icon:hover {
   background: #ffffff33;
   color: var(--color-white);
 }

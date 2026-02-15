@@ -74,7 +74,9 @@
         }
         throw new Error("لا توجد بيانات");
       });
+      
   }
+  
 
   function renderSurahList() {
     elListLoading.style.display = "none";
