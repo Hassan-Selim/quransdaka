@@ -16,7 +16,7 @@
     // 🎧 إذاعة القرآن الكريم من القاهرة (حط الرابط الصح هنا)
     {
       name: "إذاعة القرآن الكريم - القاهرة",
-      url: "https://n01.radiojar.com/8s5u5tpdtwzuv?rj-ttl=5&rj-tok=AAABnGf6-xQACr6_yWCmwQ-NjQ "
+      "url": "https://stream.radiojar.com/8s5u5tpdtwzuv"
     }
   ];
   let currentAudio = null;
