@@ -17,6 +17,7 @@
     {
       name: "إذاعة القرآن الكريم - القاهرة",
       "url": "https://stream.radiojar.com/8s5u5tpdtwzuv"
+
     }
   ];
   let currentAudio = null;
