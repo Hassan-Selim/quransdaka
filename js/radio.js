@@ -16,7 +16,7 @@
   let radios = [
     {
       name: "إذاعة القرآن الكريم - القاهرة",
-      url: "https://n01.radiojar.com/8s5u5tpdtwzuv?rj-ttl=5&rj-tok=AAABnGg-Y84AvZ5ZI09pz0LGww"
+      url:"https://n01.radiojar.com/8s5u5tpdtwzuv?rj-ttl=5&rj-tok=AAABnGg-Y84AvZ5ZI09pz0LGww"
     }
   ];
 
