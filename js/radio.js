@@ -12,14 +12,14 @@
   const elBtnPlayPause = document.getElementById('radioBtnPlayPause');
   const elBtnNext = document.getElementById('radioBtnNext');
 
+  // المحطات الافتراضية
   let radios = [
-    // 🎧 إذاعة القرآن الكريم من القاهرة (حط الرابط الصح هنا)
     {
       name: "إذاعة القرآن الكريم - القاهرة",
-      "url": "https://n01.radiojar.com/8s5u5tpdtwzuv?rj-ttl=5&rj-tok=AAABnGg-Y84AvZ5ZI09pz0LGww"
-
+      url: "https://n01.radiojar.com/8s5u5tpdtwzuv?rj-ttl=5&rj-tok=AAABnGg-Y84AvZ5ZI09pz0LGww"
     }
   ];
+
   let currentAudio = null;
   let currentBtn = null;
   let currentRadioIndex = -1;
@@ -51,13 +51,7 @@
 
   function updatePlayPauseLabel() {
     if (!currentAudio) return;
-    if (currentAudio.paused) {
-      elBtnPlayPause.textContent = '▶ تشغيل';
-      elBtnPlayPause.setAttribute('aria-label', 'تشغيل');
-    } else {
-      elBtnPlayPause.textContent = '⏸ إيقاف';
-      elBtnPlayPause.setAttribute('aria-label', 'إيقاف');
-    }
+    elBtnPlayPause.textContent = currentAudio.paused ? '▶ تشغيل' : '⏸ إيقاف';
   }
 
   function updatePrevNextButtons() {
@@ -67,7 +61,7 @@
 
   function playByIndex(index) {
     if (index < 0 || index >= radios.length) return;
-    var r = radios[index];
+    const r = radios[index];
     stopCurrent();
     currentRadioIndex = index;
     currentBtn = radioButtons[index] || null;
@@ -75,25 +69,19 @@
     elPlayerBar.classList.add('active');
     elPlayerTitle.textContent = r.name || 'محطة';
     elBtnPlayPause.textContent = '⏸ إيقاف';
-    elBtnPlayPause.setAttribute('aria-label', 'إيقاف');
-    updatePrevNextButtons();
     currentAudio = new Audio(r.url);
-    currentAudio.play().catch(function (e) {
-      console.error(e);
-      alert('تعذر تشغيل المحطة. قد يكون الرابط غير متاح.');
+    currentAudio.preload = "none";
+    currentAudio.play().catch(err => {
+      console.error(err);
+      alert('تعذر تشغيل المحطة. قد يكون الرابط غير متاح أو محجوب على جهازك.');
       setPlayingState(currentBtn, false);
     });
-    currentAudio.onerror = function () {
-      setPlayingState(currentBtn, false);
-    };
-    currentAudio.onpause = function () {
-      updatePlayPauseLabel();
-    };
+    currentAudio.onpause = updatePlayPauseLabel;
+    updatePrevNextButtons();
   }
 
   function playRadio(url, btn) {
-    var idx = radioButtons.indexOf(btn);
-    if (idx < 0) idx = radios.findIndex(function (r) { return r.url === url; });
+    const idx = radioButtons.indexOf(btn) >= 0 ? radioButtons.indexOf(btn) : radios.findIndex(r => r.url === url);
     if (currentBtn === btn && currentAudio && !currentAudio.paused) {
       currentAudio.pause();
       setPlayingState(btn, false);
@@ -115,13 +103,9 @@
 
   function togglePlayPause() {
     if (!currentAudio) return;
-    if (currentAudio.paused) {
-      currentAudio.play();
-      setPlayingState(currentBtn, true);
-    } else {
-      currentAudio.pause();
-      setPlayingState(currentBtn, false);
-    }
+    if (currentAudio.paused) currentAudio.play();
+    else currentAudio.pause();
+    setPlayingState(currentBtn, !currentAudio.paused);
     updatePlayPauseLabel();
   }
 
@@ -130,38 +114,37 @@
     elError.style.display = 'none';
     elList.innerHTML = '';
     radioButtons = [];
-    radios.forEach(function (r, i) {
-      var item = document.createElement('div');
+    radios.forEach((r, i) => {
+      const item = document.createElement('div');
       item.className = 'radio-item';
-      var btn = document.createElement('button');
+      const btn = document.createElement('button');
       btn.className = 'play-btn';
-      btn.textContent = '▶ تشغيل';
       btn.type = 'button';
-      btn.addEventListener('click', function () { playRadio(r.url, btn); });
+      btn.textContent = '▶ تشغيل';
+      btn.addEventListener('click', () => playRadio(r.url, btn));
       radioButtons[i] = btn;
-      item.innerHTML = '<span class="radio-icon">📻</span><span class="radio-name">' + (r.name || 'محطة') + '</span>';
+      item.innerHTML = `<span class="radio-icon">📻</span><span class="radio-name">${r.name || 'محطة'}</span>`;
       item.appendChild(btn);
       elList.appendChild(item);
     });
+
     elBtnPrev.addEventListener('click', playPrevious);
     elBtnNext.addEventListener('click', playNext);
     elBtnPlayPause.addEventListener('click', togglePlayPause);
   }
 
+  // جلب محطات API ودمجها
   fetch(API_RADIOS)
-    .then(function (res) { return res.json(); })
-    .then(function (data) {
+    .then(res => res.json())
+    .then(data => {
       if (data.radios && data.radios.length) {
-        // ➕ ندمج محطات API بعد محطة القاهرة
         radios = radios.concat(data.radios);
-        render();
-      } else {
-        render(); // حتى لو مفيش API احنا لسه عندنا القاهرة
       }
+      render();
     })
-    .catch(function (err) {
-      // لو فشل الـ API بس لسه نظهر القاهرة
+    .catch(err => {
       console.error(err);
       render();
     });
+
 })();
