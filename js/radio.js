@@ -73,7 +73,7 @@
     currentAudio.preload = "none";
     currentAudio.play().catch(err => {
       console.error(err);
-      alert('تعذر تشغيل المحطة. قد يكون الرابط غير متاح أو محجوب على جهازك.');
+      alert('تعذر تشغيل المحطة. قد يكون الرابط غير متاح .');
       setPlayingState(currentBtn, false);
     });
     currentAudio.onpause = updatePlayPauseLabel;
