@@ -1,8 +1,8 @@
-const CACHE_VERSION = "v1.0.0";
+const CACHE_VERSION = "v1.0.1";
 const STATIC_CACHE = `quran-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `quran-dynamic-${CACHE_VERSION}`;
 
-// الملفات الأساسية (Shell)
+// الملفات الأساسية فقط (App Shell)
 const urlsToCache = [
   "/",
   "/index.html",
@@ -12,27 +12,23 @@ const urlsToCache = [
   "/img/icon.png"
 ];
 
+// ================= INSTALL =================
 self.addEventListener("install", (event) => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(STATIC_CACHE).then((cache) =>
-      Promise.all(
-        urlsToCache.map((url) =>
-          fetch(url)
-            .then(resp => cache.put(url, resp.clone()))
-            .catch(err => console.warn("Failed to cache:", url, err))
-        )
-      )
-    )
+    caches.open(STATIC_CACHE).then((cache) => {
+      return cache.addAll(urlsToCache);
+    })
   );
 });
 
+// ================= ACTIVATE =================
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then(keys =>
+    caches.keys().then((keys) =>
       Promise.all(
-        keys.map(key => {
-          if (![STATIC_CACHE, DYNAMIC_CACHE].includes(key)) {
+        keys.map((key) => {
+          if (key !== STATIC_CACHE && key !== DYNAMIC_CACHE) {
             return caches.delete(key);
           }
         })
@@ -42,62 +38,64 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
+// ================= FETCH =================
 self.addEventListener("fetch", (event) => {
   const request = event.request;
 
-  // ❌ استثناء روابط الراديو من الكاش
-  if (request.url.includes("radiojar.com") || request.url.includes("mp3quran.net/api/v3/radios")) {
-    event.respondWith(fetch(request));
-    return;
-  }
-   // 🚫 تجاهل إذاعة القاهرة تحديدًا
-  if (request.url.includes("http://n07.radiojar.com/8s5u5tpdtwzuv?rj-ttl=5&rj-tok=AAABcmwQbGcA3yvl8H57SY7YSQ")) {
-    return; // سيبه يعدي مباشرة بدون تدخل
-  }
-
-  // 🚫 تجاهل أي طلب خارجي برضه (أكثر أمانًا)
+  // 🚀 1️⃣ تجاهل أي طلب خارج الدومين (زي radiojar)
   if (!request.url.startsWith(self.location.origin)) {
     return;
   }
 
-  // صفحات HTML → Network First
+  // 🚀 2️⃣ تجاهل أي ملفات صوت
+  if (request.destination === "audio") {
+    return;
+  }
+
+  // ================= HTML (Navigation) =================
   if (request.mode === "navigate") {
     event.respondWith(
-      caches.match(request).then(cached => cached || fetch(request)
-        .then(resp => {
-          const clone = resp.clone();
-          caches.open(DYNAMIC_CACHE).then(cache => cache.put(request, clone));
-          return resp;
+      fetch(request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(DYNAMIC_CACHE).then((cache) => {
+            cache.put(request, clone);
+          });
+          return response;
         })
         .catch(() => caches.match("/index.html"))
-      )
     );
     return;
   }
 
-  // JSON → Network First + dynamic cache
+  // ================= JSON / API =================
   if (request.url.endsWith(".json") || request.url.includes("/api/")) {
     event.respondWith(
       fetch(request)
-        .then(resp => {
-          const clone = resp.clone();
-          caches.open(DYNAMIC_CACHE).then(cache => cache.put(request, clone));
-          return resp;
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(DYNAMIC_CACHE).then((cache) => {
+            cache.put(request, clone);
+          });
+          return response;
         })
         .catch(() => caches.match(request))
     );
     return;
   }
 
-  // CSS / JS / Images → Cache First
+  // ================= CSS / JS / Images =================
   event.respondWith(
-    caches.match(request).then(cached => cached || fetch(request)
-      .then(resp => {
-        const clone = resp.clone();
-        caches.open(DYNAMIC_CACHE).then(cache => cache.put(request, clone));
-        return resp;
-      })
-      .catch(() => undefined)
-    )
+    caches.match(request).then((cached) => {
+      if (cached) return cached;
+
+      return fetch(request).then((response) => {
+        const clone = response.clone();
+        caches.open(DYNAMIC_CACHE).then((cache) => {
+          cache.put(request, clone);
+        });
+        return response;
+      });
+    })
   );
 });
