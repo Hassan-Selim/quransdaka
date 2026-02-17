@@ -16,7 +16,7 @@
   let radios = [
     {
       name: "إذاعة القرآن الكريم - القاهرة",
-      url:"https://mytuner-radio.com/static/js/widgets/widget-player-v1.js"
+      url"https://qurango.net/radio/tarateel"
     }
   ];
 
