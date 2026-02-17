@@ -50,6 +50,15 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(fetch(request));
     return;
   }
+   // 🚫 تجاهل إذاعة القاهرة تحديدًا
+  if (request.url.includes("http://n07.radiojar.com/8s5u5tpdtwzuv?rj-ttl=5&rj-tok=AAABcmwQbGcA3yvl8H57SY7YSQ")) {
+    return; // سيبه يعدي مباشرة بدون تدخل
+  }
+
+  // 🚫 تجاهل أي طلب خارجي برضه (أكثر أمانًا)
+  if (!request.url.startsWith(self.location.origin)) {
+    return;
+  }
 
   // صفحات HTML → Network First
   if (request.mode === "navigate") {
