@@ -16,7 +16,7 @@
   let radios = [
     {
       name: "إذاعة القرآن الكريم - القاهرة",
-      "url":"http://n07.radiojar.com/8s5u5tpdtwzuv?rj-ttl=5&rj-tok=AAABcmwQbGcA3yvl8H57SY7YSQ"
+      url: "http://n07.radiojar.com/8s5u5tpdtwzuv?rj-ttl=5&rj-tok=AAABcmwQbGcA3yvl8H57SY7YSQ"
     }
   ];
 
@@ -73,7 +73,7 @@
     currentAudio.preload = "none";
     currentAudio.play().catch(err => {
       console.error(err);
-      alert('تعذر تشغيل المحطة. قد يكون الرابط غير متاح .');
+      alert('تعذر تشغيل المحطة. قد يكون الرابط غير متاح أو محجوب على جهازك.');
       setPlayingState(currentBtn, false);
     });
     currentAudio.onpause = updatePlayPauseLabel;

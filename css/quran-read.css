@@ -124,6 +124,7 @@
 }
 
 .read-audio-selects {
+  justify-content: center;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -185,9 +186,10 @@
 .read-verses {
   background: var(--color-bg-card, var(--color-white));
   border-radius: var(--radius-lg);
-  padding: 2rem;
+  padding: 1rem;
   box-shadow: var(--shadow-card);
   border: 1px solid rgba(13, 148, 136, 0.1);
+  width: 100%;
 }
 
 /* مصحف: كتلة نص متدفقة مع علامات آيات */
@@ -206,29 +208,32 @@
 }
 
 .mushaf-block .verse-marker {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 32px;
-  height: 32px;
-  padding: 0 4px;
+  background: none;       /* نشيل الخلفية */
+  border: none;           /* نشيل البوردر */
+  box-shadow: none;       /* نشيل الظل */
+  min-width: auto;        /* نخلي العرض طبيعي */
+  height: auto;           /* نخلي الطول طبيعي */
+  padding: 0;             /* نشيل البادينج */
   margin: 0 0.15em;
-  background: linear-gradient(135deg, #d4a84b 0%, #b45309 100%);
-  color: #fff;
-  font-size: 0.75em;
+  color: #d75f14;         /* لون الرقم */
+  font-size: 1.7rem;         /* حجم مناسب */
   font-weight: 700;
-  border: 2px solid #92400e;
-  border-radius: 6px;
   vertical-align: middle;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
-/* الوضع الداكن: الحفاظ على لون علامة الآية */
-[data-theme="dark"] .mushaf-block .verse-marker {
-  background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
-  border-color: #78350f;
-  color: #fff;
+.mushaf-block .verse-marker::before {
+  content: "﴿";
+  margin-right: 2px;
+  color: #b45309; /* لون القوس */
 }
+
+.mushaf-block .verse-marker::after {
+  content: "﴾";
+  margin-left: 2px;
+  color: #b45309; /* لون القوس */
+}
+
+
 
 @media (max-width: 600px) {
   .mushaf-block {
