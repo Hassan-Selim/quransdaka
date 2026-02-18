@@ -75,6 +75,7 @@ img {
   padding: 1rem 1.5rem;
   font-size: 1.3rem;
   font-weight: 700;
+  height: 6rem;
   display: flex;
   align-items: center;
   text-align: center;
@@ -95,7 +96,16 @@ header .address {
   filter: brightness(0) saturate(100%) invert(91%) sepia(16%) saturate(377%)
     hue-rotate(12deg);
 }
+.page-header img{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
 .back-link {
+   position: absolute;
+  right: 4.5rem;
+  top: 1.5rem;
   display: flex;
   align-items: center;
   font-size: 2rem;
@@ -103,6 +113,9 @@ header .address {
   transition: background 0.2s;
 }
 .menu-icon {
+  position: absolute;
+  right: 2rem;
+  top: 2rem;
   width: 50px;
   height: 40px;
   font-size: 2rem;
@@ -115,6 +128,9 @@ header .address {
   transition: background 0.2s;
 }
 header .close-nav {
+  position: absolute;
+  right: 4rem;
+  top: 2rem;
   display: grid;
   align-items: center;
   text-align: right;
@@ -216,7 +232,7 @@ main {
 /* Theme toggle button */
 .theme-toggle {
   position: fixed;
-  top: 1rem;
+  top: 2rem;
   left: 1rem;
   z-index: 100;
   width: 40px;
@@ -238,6 +254,35 @@ main {
 .theme-toggle:hover {
   transform: scale(1.08);
 }
+.shareBtn {
+  position: fixed;
+  top: 2rem;
+  left: 4rem;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  z-index: 100;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    var(--color-teal) 0%,
+    var(--color-teal-dark) 100%
+  );
+  color: var(--color-text);
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s ease-in-out;
+}
+.shareBtn:hover {
+  transform: scale(1.08);
+} 
 
 /* Dark theme */
 [data-theme="dark"] {
@@ -276,35 +321,7 @@ main {
   --color-text: #1e293b;
   --color-text-muted: #64748b;
 }
-.shareBtn {
-  position: fixed;
-  top: 6.5rem;
-  left: 1rem;
-  width: 40px;
-  height: 40px;
-  font-size: 1.2rem;
-  z-index: 100;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    var(--color-teal) 0%,
-    var(--color-teal-dark) 100%
-  );
-  color: var(--color-text);
-  font-size: 1.4rem;
-  cursor: pointer;
-  box-shadow: var(--shadow-card);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.3s ease-in-out;
-}
-.shareBtn:hover {
-  transform: scale(1.08);
-} 
+
 
 /* Responsive */
 @media (max-width: 600px) {
