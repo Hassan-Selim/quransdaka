@@ -277,49 +277,58 @@ elBackToList.addEventListener("click", function () {
     
   }
 
-  fetch("../json/quran.json")
-    .then(res => res.json())
-    .then(allSurahs => {
-      elVersesLoading.style.display = "none";
-      var surahData = allSurahs.find(s => s.number === number);
+fetch("../json/quran.json")
+  .then(res => res.json())
+  .then(allSurahs => {
+    elVersesLoading.style.display = "none";
+    var surahData = allSurahs.find(s => s.number === number);
 
-      if (surahData && surahData.ayahs) {
-        var block = document.createElement("div");
-        block.className = "mushaf-block";
+    if (surahData && surahData.ayahs) {
+      var block = document.createElement("div");
+      block.className = "mushaf-block";
 
-        surahData.ayahs.forEach(function (a) {
-          var textSpan = document.createElement("span");
-          textSpan.className = "verse-text";
-          textSpan.textContent = a.text.trim();
+      // إضافة البسملة مستقلة (إلا سورة التوبة)
+      if (number !== 9) {
+        var basmalaSpan = document.createElement("span");
+        basmalaSpan.className = "basmala";
+        basmalaSpan.textContent = "﴿ بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ ﴾";
+        block.appendChild(basmalaSpan);
+      }
 
-          var markerSpan = document.createElement("span");
-          markerSpan.className = "verse-marker";
-          markerSpan.textContent = a.number;
 
-          // حفظ التقدم عند الضغط على آية
-          markerSpan.addEventListener("click", function () {
-            localStorage.setItem("lastSurah", number);
-            localStorage.setItem("lastSurahName", surahInfo ? surahInfo.name : "");
-            localStorage.setItem("lastAyah", a.number);
-          });
+      // عرض الآيات (من غير البسملة لأنها مش موجودة في JSON)
+      surahData.ayahs.forEach(function (a) {
+        var textSpan = document.createElement("span");
+        textSpan.className = "verse-text";
+        textSpan.textContent = a.text.trim();
 
-          block.appendChild(textSpan);
-          block.appendChild(markerSpan);
+        var markerSpan = document.createElement("span");
+        markerSpan.className = "verse-marker";
+        markerSpan.textContent = a.number;
+
+        markerSpan.addEventListener("click", function () {
+          localStorage.setItem("lastSurah", number);
+          localStorage.setItem("lastSurahName", surahInfo ? surahInfo.name : "");
+          localStorage.setItem("lastAyah", a.number);
         });
 
-        elVersesContainer.appendChild(block);
-      } else {
-        elVersesContainer.innerHTML = '<p class="read-error">تعذر تحميل الآيات.</p>';
-      }
-    })
-    .catch(err => {
-      elVersesLoading.style.display = "none";
-      elVersesContainer.innerHTML = '<p class="read-error">حدث خطأ في تحميل الملف المحلي.</p>';
-      console.error(err);
-    });
+        block.appendChild(textSpan);
+        block.appendChild(markerSpan);
+      });
 
+      elVersesContainer.appendChild(block);
+    } else {
+      elVersesContainer.innerHTML = '<p class="read-error">تعذر تحميل الآيات.</p>';
+    }
+  })
+  .catch(err => {
+    elVersesLoading.style.display = "none";
+    elVersesContainer.innerHTML = '<p class="read-error">حدث خطأ في تحميل الملف المحلي.</p>';
+    console.error(err);
+  });
   // حفظ الحالة في History API
   history.pushState({ surah: number }, "", "?surah=" + number);
+  
 }
 
 // التعامل مع زر الرجوع
