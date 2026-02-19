@@ -295,7 +295,7 @@
   display: flex;
   justify-content: space-between;
   position: fixed;
-  bottom: 1rem;
+  bottom: 0;
   width: 100%;
   z-index: 1000;
 }
@@ -314,23 +314,11 @@
   border-radius: 0.5rem;
   transition: 0.3s ease-in-out;
 }
-.surah-navigation .prev-btn {
-  bottom: 0;
-  right: 0;
-  position: absolute;
-}
-.surah-navigation .next-btn{
-  bottom: 0;
-  position: absolute;
-  left: 3rem;
-}
-
 .surah-navigation button:hover {
   background-color: #000000a8;
   transform: scale(1.1);
   opacity: 1;
 }
-
 
 .ayah-highlight {
   background-color: rgba(254, 198, 57, 0.814);
