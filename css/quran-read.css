@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'UthmanicHafs';
-  src: url('../fonts/UthmanicHafs.ttf') format('truetype');
+  font-family: "UthmanicHafs";
+  src: url("../fonts/UthmanicHafs.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -85,7 +85,6 @@
   margin-bottom: 1.5rem;
 }
 
-
 .btn-back {
   display: inline-flex;
   align-items: center;
@@ -98,7 +97,9 @@
   border-radius: var(--radius);
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
+  transition:
+    background 0.2s,
+    transform 0.2s;
 }
 
 .btn-back:hover {
@@ -115,7 +116,11 @@
 
 /* شريط الصوت أعلى السورة */
 .read-audio-bar {
-  background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-teal-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-teal) 0%,
+    var(--color-teal-dark) 100%
+  );
   color: var(--color-white);
   padding: 1rem 1.25rem;
   border-radius: var(--radius-lg);
@@ -150,6 +155,9 @@
   background: #fff;
   color: #1e293b;
 }
+.read-audio-controls select {
+  width: 10%;
+}
 
 .read-audio-controls {
   display: flex;
@@ -167,7 +175,9 @@
   color: var(--color-white);
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
+  transition:
+    background 0.2s,
+    transform 0.2s;
 }
 
 .read-ctrl-btn:hover {
@@ -189,13 +199,13 @@
   padding: 1rem;
   box-shadow: var(--shadow-card);
   border: 1px solid rgba(13, 148, 136, 0.1);
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
 }
 
 /* مصحف: كتلة نص متدفقة مع علامات آيات */
 .mushaf-block {
-  font-family: 'UthmanicHafs', serif;
+  font-family: "UthmanicHafs", serif;
   font-size: 28px;
   line-height: 2.2;
   text-align: justify;
@@ -208,15 +218,15 @@
 }
 
 .mushaf-block .verse-marker {
-  background: none;       /* نشيل الخلفية */
-  border: none;           /* نشيل البوردر */
-  box-shadow: none;       /* نشيل الظل */
-  min-width: auto;        /* نخلي العرض طبيعي */
-  height: auto;           /* نخلي الطول طبيعي */
-  padding: 0;             /* نشيل البادينج */
+  background: none; /* نشيل الخلفية */
+  border: none; /* نشيل البوردر */
+  box-shadow: none; /* نشيل الظل */
+  min-width: auto; /* نخلي العرض طبيعي */
+  height: auto; /* نخلي الطول طبيعي */
+  padding: 0; /* نشيل البادينج */
   margin: 0 0.15em;
-  color: #d75f14;         /* لون الرقم */
-  font-size: 1.7rem;         /* حجم مناسب */
+  color: #d75f14; /* لون الرقم */
+  font-size: 1.7rem; /* حجم مناسب */
   font-weight: 700;
   vertical-align: middle;
 }
@@ -232,8 +242,6 @@
   margin-left: 2px;
   color: #b45309; /* لون القوس */
 }
-
-
 
 @media (max-width: 600px) {
   .mushaf-block {
@@ -256,7 +264,7 @@
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
-#resumeBtn{ 
+#resumeBtn {
   display: flex;
   padding: 0.75rem 1.5rem;
   background-color: var(--color-teal);
@@ -265,14 +273,16 @@
   border-radius: var(--radius);
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.2s;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
   margin-bottom: 1rem;
   place-self: center;
   transition: 0.5s ease-in-out;
 }
 #resumeBtn:hover {
   background-color: var(--color-teal-dark);
-  transform: scale(1.1)
+  transform: scale(1.1);
 }
 .basmala {
   display: block;
@@ -280,5 +290,49 @@
   font-weight: 450;
   font-size: 1.2em;
   color: #b45309;
-  
+}
+.surah-navigation {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 3rem;
+  width: 100%;
+  z-index: 1000;
+}
+
+.surah-navigation button {
+  opacity: 0.6;
+  font-size: 1.5rem;
+  height: 2rem;
+  width: 3rem;
+  text-align: center;
+
+  cursor: pointer;
+  background-color: #00000065;
+  color: antiquewhite;
+  border: none;
+  outline: none;
+  border-radius: 0.5rem;
+  transition: 0.3s ease-in-out;
+}
+.surah-navigation button:hover {
+  background-color: #000000a8;
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+.surah-navigation .prev-btn {
+  position: absolute;
+  right: 0;
+}
+.surah-navigation .next-btn {
+  left: 2rem;
+
+  position: absolute;
+}
+
+.ayah-highlight {
+  background-color: rgba(254, 198, 57, 0.814);
+  padding: 2px 4px;
+  border-radius: 4px;
 }
