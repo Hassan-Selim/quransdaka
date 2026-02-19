@@ -295,7 +295,7 @@
   display: flex;
   justify-content: space-between;
   position: fixed;
-  bottom: 3rem;
+  bottom: 1rem;
   width: 100%;
   z-index: 1000;
 }
@@ -303,10 +303,9 @@
 .surah-navigation button {
   opacity: 0.6;
   font-size: 1.5rem;
-  height: 2rem;
+  height: 2.5rem;
   width: 3rem;
   text-align: center;
-
   cursor: pointer;
   background-color: #00000065;
   color: antiquewhite;
@@ -315,21 +314,23 @@
   border-radius: 0.5rem;
   transition: 0.3s ease-in-out;
 }
+.surah-navigation .prev-btn {
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}
+.surah-navigation .next-btn{
+  bottom: 0;
+  position: absolute;
+  left: 3rem;
+}
+
 .surah-navigation button:hover {
   background-color: #000000a8;
   transform: scale(1.1);
   opacity: 1;
 }
 
-.surah-navigation .prev-btn {
-  position: absolute;
-  right: 0;
-}
-.surah-navigation .next-btn {
-  left: 2rem;
-
-  position: absolute;
-}
 
 .ayah-highlight {
   background-color: rgba(254, 198, 57, 0.814);
