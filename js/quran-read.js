@@ -220,15 +220,7 @@ elBackToList.addEventListener("click", function () {
     }
   }
 
-  function highlightAyah(ayahId) {
-    var markers = document.querySelectorAll(".verse-marker");
-    markers.forEach(function (m) {
-      if (parseInt(m.textContent, 10) === parseInt(ayahId, 10)) {
-        m.classList.add("highlight");
-        m.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    });
-  }
+ 
 
   function openSurah(number) {
   showSurah();
@@ -298,25 +290,42 @@ fetch("../json/quran.json")
 
       // عرض الآيات (من غير البسملة لأنها مش موجودة في JSON)
       surahData.ayahs.forEach(function (a) {
-        var textSpan = document.createElement("span");
-        textSpan.className = "verse-text";
-        textSpan.textContent = a.text.trim();
 
-        var markerSpan = document.createElement("span");
-        markerSpan.className = "verse-marker";
-        markerSpan.textContent = a.number;
+  var verseWrapper = document.createElement("span");
+  verseWrapper.className = "verse-wrapper";
+  verseWrapper.dataset.ayah = a.number;
 
-        markerSpan.addEventListener("click", function () {
-          localStorage.setItem("lastSurah", number);
-          localStorage.setItem("lastSurahName", surahInfo ? surahInfo.name : "");
-          localStorage.setItem("lastAyah", a.number);
-        });
+  var textSpan = document.createElement("span");
+  textSpan.className = "verse-text";
+  textSpan.textContent = a.text.trim();
 
-        block.appendChild(textSpan);
-        block.appendChild(markerSpan);
-      });
+  var markerSpan = document.createElement("span");
+  markerSpan.className = "verse-marker";
+  markerSpan.textContent = a.number;
+
+  verseWrapper.appendChild(textSpan);
+  verseWrapper.appendChild(markerSpan);
+
+  verseWrapper.addEventListener("click", function () {
+    localStorage.setItem("lastSurah", number);
+    localStorage.setItem("lastAyah", a.number);
+    highlightAyah(a.number);
+  });
+
+  block.appendChild(verseWrapper);
+});
+
 
       elVersesContainer.appendChild(block);
+      var savedAyah = localStorage.getItem("lastAyah");
+var savedSurah = localStorage.getItem("lastSurah");
+
+if (savedAyah && parseInt(savedSurah,10) === number) {
+  setTimeout(function(){
+    highlightAyah(savedAyah);
+  },100);
+}
+
     } else {
       elVersesContainer.innerHTML = '<p class="read-error">تعذر تحميل الآيات.</p>';
     }
@@ -343,26 +352,22 @@ if (resumeBtn) {
   resumeBtn.addEventListener("click", function () {
     var surah = localStorage.getItem("lastSurah");
     var ayah = localStorage.getItem("lastAyah");
-    if (surah) {
-      openSurah(parseInt(surah, 10));
-      setTimeout(function () {
-        highlightAyah(ayah);
-      }, 500);
-    } else {
+
+    if (!surah) {
       alert("لا يوجد تقدم محفوظ");
+      return;
     }
+
+    openSurah(parseInt(surah, 10));
+
+    setTimeout(function () {
+      if (ayah) highlightAyah(ayah);
+    }, 200);
   });
 }
 
-function highlightAyah(ayahId) {
-  var markers = document.querySelectorAll(".verse-marker");
-  markers.forEach(function (m) {
-    if (parseInt(m.textContent, 10) === parseInt(ayahId, 10)) {
-      m.classList.add("highlight");
-      m.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  });
-}
+
+
 
 // تحميل البيانات الأولية
 Promise.all([loadSuwar(), loadReciters()])
@@ -383,5 +388,40 @@ elReadMoshaf.addEventListener("change", onReadMoshafChange);
 elReadPlayPause.addEventListener("click", toggleReadPlayPause);
 elReadBack5.addEventListener("click", readBack5);
 elReadFwd5.addEventListener("click", readFwd5);
+
+
+// أزرار التنقل بين السور
+var prevBtn = document.querySelector(".prev-btn");
+var nextBtn = document.querySelector(".next-btn");
+
+if (prevBtn) {
+  prevBtn.addEventListener("click", function () {
+    if (currentSurahNumber > 1) {
+      openSurah(currentSurahNumber - 1);
+    }
+  });
+}
+
+if (nextBtn) {
+  nextBtn.addEventListener("click", function () {
+    if (currentSurahNumber < suwar.length) {
+      openSurah(currentSurahNumber + 1);
+    }
+  });
+}
+function highlightAyah(ayahId) {
+
+  if (!ayahId) return;
+
+  document.querySelectorAll(".verse-wrapper").forEach(function (v) {
+    if (parseInt(v.dataset.ayah, 10) === parseInt(ayahId, 10)) {
+      v.classList.add("ayah-highlight");
+      v.scrollIntoView({ behavior: "smooth", block: "center" });
+    } else {
+      v.classList.remove("ayah-highlight");
+    }
+  });
+}
+
 
 })();     
