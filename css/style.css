@@ -258,27 +258,21 @@ main {
   position: fixed;
   top: 2rem;
   left: 4rem;
-  width: 40px;
-  height: 40px;
-  font-size: 1.2rem;
   z-index: 100;
   width: 40px;
   height: 40px;
   border: none;
   border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    var(--color-teal) 0%,
-    var(--color-teal-dark) 100%
-  );
-  color: var(--color-text);
+  background:#00535c;
   font-size: 1.4rem;
   cursor: pointer;
   box-shadow: var(--shadow-card);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: 0.3s ease-in-out;
+  transition:
+    transform 0.2s,
+    background 0.2s;
 }
 .shareBtn:hover {
   transform: scale(1.08);
@@ -340,5 +334,109 @@ main {
   }
   header .address {
     max-width: 120px;
+  }
+}
+.quran-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.banner{
+  text-align:center;
+  margin-bottom: 1rem;
+}
+
+.banner img{
+  
+  height: auto;
+  border-radius: 10px;
+}
+
+
+/* نخفيه على الديسكتوب */
+.mobile-nav {
+  display: none;
+}
+
+/* يظهر بس على الموبايل */
+@media (max-width: 768px) {
+
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    max-width: 420px;
+    height: 70px;
+    background: #ffffff;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    z-index: 9999;
+  }
+
+  .mobile-nav ul {
+    display: flex;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    position: relative;
+  }
+
+  .mobile-nav ul li {
+    list-style: none;
+    flex: 1;
+    text-align: center;
+    z-index: 1;
+  }
+
+  .mobile-nav ul li a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+
+  .mobile-nav .icon {
+    font-size: 1.4rem;
+    transition: 0.4s;
+    color: #444;
+  }
+
+  .mobile-nav .text {
+    font-size: 0.75rem;
+    opacity: 0;
+    transition: 0.4s;
+  }
+
+  .mobile-nav .active .icon {
+    transform: translateY(-22px);
+    color: #fff;
+  }
+
+  .mobile-nav .active .text {
+    opacity: 1;
+    transform: translateY(-8px);
+    color: #0f9d58;
+  }
+
+  .indicator {
+    position: absolute;
+    top: -25px;
+    left: 0;
+    width: 70px;
+    height: 70px;
+    background: #0f9d58;
+    border-radius: 50%;
+    transition: 0.4s;
+  }
+
+  body {
+    padding-bottom: 110px;
   }
 }

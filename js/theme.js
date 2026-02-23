@@ -99,3 +99,34 @@ function toggleMenu() {
     moreLinks.style.display = 'flex';
   }
 }
+
+
+const navItems = document.querySelectorAll(".mobile-nav .nav-item");
+const indicator = document.querySelector(".mobile-nav .indicator");
+
+function moveIndicator(element) {
+  const itemWidth = element.offsetWidth;
+  const itemLeft = element.offsetLeft;
+  indicator.style.left = itemLeft + (itemWidth / 2) - 35 + "px";
+}
+
+navItems.forEach(item => {
+  item.addEventListener("click", function () {
+    navItems.forEach(i => i.classList.remove("active"));
+    this.classList.add("active");
+    moveIndicator(this);
+  });
+});
+
+window.addEventListener("load", () => {
+  const activeItem = document.querySelector(".mobile-nav .nav-item.active");
+  if (activeItem) moveIndicator(activeItem);
+  const currentPage = window.location.pathname;
+
+navItems.forEach(item => {
+  if (item.querySelector("a").getAttribute("href") === currentPage) {
+    item.classList.add("active");
+    moveIndicator(item);
+  }
+});
+});

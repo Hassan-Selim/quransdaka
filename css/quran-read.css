@@ -4,6 +4,13 @@
   font-weight: normal;
   font-style: normal;
 }
+/* main{
+  width: 100%;
+  display: flex;
+  padding: 1rem;
+  max-width: 900px;
+  margin: auto;
+} */
 /* ===== Quran Read (Text) Page ===== */
 .read-view {
   padding: 0.5rem 0;
@@ -33,6 +40,7 @@
 }
 
 .read-surah-item {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -50,8 +58,8 @@
 }
 
 .read-surah-item .surah-num {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--color-beige) 0%, #fde68a 100%);
   color: var(--color-gold);
@@ -68,7 +76,8 @@
 }
 
 .read-surah-item .surah-name-ar {
-  font-family: var(--font-arabic);
+  font-family: "UthmanicHafs";
+  src: url("../fonts/UthmanicHafs.ttf") format("truetype");
   font-size: 1.5rem;
   font-weight: 800;
   color: var(--color-text);
@@ -107,12 +116,19 @@
   transform: translateX(2px);
 }
 
-.read-surah-title {
-  font-family: var(--font-arabic);
-  font-size: 1.75rem;
-  color: var(--color-teal-dark);
+.surah-title, .surah-name {
+  background: url(../img/surahTitle.png);
+  color: #b45309;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 1.5rem;
+  display: block;
   text-align: center;
+  font-size: 1.6rem;
+  font-weight: 500;
 }
+
 
 /* شريط الصوت أعلى السورة */
 .read-audio-bar {
@@ -226,7 +242,7 @@
   padding: 0; /* نشيل البادينج */
   margin: 0 0.15em;
   color: #d75f14; /* لون الرقم */
-  font-size: 1.7rem; /* حجم مناسب */
+  font-size: 1.9rem; /* حجم مناسب */
   font-weight: 700;
   vertical-align: middle;
 }
@@ -245,7 +261,7 @@
 
 @media (max-width: 600px) {
   .mushaf-block {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     line-height: 2.1;
   }
   .mushaf-block .verse-marker {
@@ -264,26 +280,7 @@
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
-#resumeBtn {
-  display: flex;
-  padding: 0.75rem 1.5rem;
-  background-color: var(--color-teal);
-  color: var(--color-white);
-  border: none;
-  border-radius: var(--radius);
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background-color 0.2s,
-    transform 0.2s;
-  margin-bottom: 1rem;
-  place-self: center;
-  transition: 0.5s ease-in-out;
-}
-#resumeBtn:hover {
-  background-color: var(--color-teal-dark);
-  transform: scale(1.1);
-}
+
 .basmala {
   display: block;
   text-align: center;
@@ -291,7 +288,7 @@
   font-size: 1.2em;
   color: #b45309;
 }
-.surah-navigation {
+.surah-navigation, .juz-navigation {
   display: flex;
   justify-content: space-between;
   position: fixed;
@@ -300,7 +297,7 @@
   z-index: 1000;
 }
 
-.surah-navigation button {
+.surah-navigation button, .juz-navigation button {
   opacity: 0.6;
   font-size: 1.5rem;
   height: 2.5rem;
@@ -314,14 +311,117 @@
   border-radius: 0.5rem;
   transition: 0.3s ease-in-out;
 }
-.surah-navigation button:hover {
+.surah-navigation button:hover, .juz-navigation button:hover {
   background-color: #000000a8;
   transform: scale(1.1);
   opacity: 1;
 }
 
 .ayah-highlight {
-  background-color: rgba(254, 198, 57, 0.814);
-  padding: 2px 4px;
-  border-radius: 4px;
+  background-color: #dadab0a3;
+  border-radius: 5px;
+}
+
+/* juz-items-style */
+.surah-name {
+  font-family: "UthmanicHafs", serif;
+  font-size: 1.8rem;
+  color: var(--color-teal-dark);
+  text-align: center;
+}
+#juz-title {
+  font-family: "UthmanicHafs", serif;
+  background: var(--color-teal);
+  width: 10rem;
+  margin: auto;
+  padding: 0.25rem 0;
+  border-radius: var(--radius);
+  font-size: 1.8rem;
+  color: #f1f1f1;
+  text-align: center;
+}
+.quran-container h2,
+.read-intro {
+  font-family: Arial, Helvetica, sans-serif;
+  border: 2px solid var(--color-teal);
+  margin: auto;
+  margin-bottom: 1rem;
+  padding: 0.25rem 0;
+  border-radius: var(--radius);
+  font-size: 1.5rem;
+  color: var(--color-text);
+  text-align: center;
+  cursor: default;
+  transition: 0.5s ease-in-out;
+}
+.quran-container h2:hover,
+.read-intro:hover {
+  border: #e27c09 2px solid;
+  box-shadow: #b91c1c 0 0 10px;
+}
+#continueBtn,
+#resumeBtn {
+  display: block;
+  width: 100%;
+  margin: auto;
+  margin: auto;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  background: #e27c09;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  font-size: 1.5rem;
+  color: #f1f1f1;
+  text-align: center;
+  transition: 0.5s ease-in-out;
+}
+#continueBtn:hover,
+#resumeBtn:hover {
+  background: #b45309;
+  transform: scale(0.95);
+}
+.qpage{
+  width: 100%;
+  height: 100dvh;
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  margin-top: 2rem;
+}
+.page-btns {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  place-content: center;
+}
+.btn {
+  background: var(--color-bg-card, var(--color-white));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 2rem;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  border: 1px solid rgba(13, 148, 137, 0.973);
+  transition: 0.3s ease-in-out;
+  transition:
+    background 0.3s ease-in-out,
+    transform 0.2s;
+  color: var(--color-text);
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+.qpage p{
+  font-family: "UthmanicHafs", serif;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  opacity: 0.6;
+  text-align: center; 
+  margin: 2rem auto;
+  cursor: default;
 }
