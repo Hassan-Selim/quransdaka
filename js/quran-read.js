@@ -424,27 +424,36 @@ function highlightAyah(ayahId) {
     }
   });
 }
-const swarBtn = document.querySelector(".swar-page-btn");
-const juzBtn = document.querySelector(".juz-page-btn");
-const listView = document.getElementById("listView");
-const juzView = document.getElementById("juzView");
-const juzSection = document.querySelector(".juz-section");
-const swarSection = document.querySelector(".swar-section");
-const pageBtns = document.querySelector(".page-btns");
-const qpage = document.querySelector(".qpage");
+document.addEventListener("DOMContentLoaded", () => {
+  const swarBtn = document.querySelector(".swar-page-btn");
+  const juzBtn = document.querySelector(".juz-page-btn");
+  const listView = document.getElementById("listView");
+  const juzView = document.getElementById("juzView");
+  const juzSection = document.querySelector(".juz-section");
+  const swarSection = document.querySelector(".swar-section");
+  const pageBtns = document.querySelector(".page-btns");
+  const qpage = document.querySelector(".qpage");
 
+  // تأكد العناصر موجودة قبل إضافة الـ event
+  if (juzBtn) {
+    juzBtn.addEventListener("click", function () {
+      juzSection.style.display = "block";
+      swarSection.style.display = "none";
+      window.scrollTo({ top: 0, behavior: "instant" });
+    });
+  }
 
-juzBtn.addEventListener("click", function () {
-  juzSection.style.display = "block";
-  swarSection.style.display = "none";
-  window.scrollTo({ top: 0, behavior: "instant" });
-});
+  if (swarBtn) {
+    swarBtn.addEventListener("click", function () {
+      juzSection.style.display = "none";
+      swarSection.style.display = "block";
+    });
+  }
 
-swarBtn.addEventListener("click", function () {
-  juzSection.style.display = "none";
-  swarSection.style.display = "block";
-});
-pageBtns.addEventListener("click", () => {
-  qpage.style.display = "none";
+  if (pageBtns) {
+    pageBtns.addEventListener("click", () => {
+      if (qpage) qpage.style.display = "none";
+    });
+  }
 });
 })();     
