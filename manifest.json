@@ -11,12 +11,13 @@
     {
       "src": "../img/icon.WEBP",
       "sizes": "192x192",
-      "type": "image/WEBP"
+      "type": "image/png"
     },
     {
       "src": "../img/icon.WEBP",
       "sizes": "512x512",
-      "type": "image/WEBP"
+      "type": "image/png"
     }
   ]
 }
+
