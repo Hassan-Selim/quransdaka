@@ -167,7 +167,7 @@ h2, .label-accordion{
     place-self: right;
     margin-bottom: 1rem;
     margin-top: 1rem;
-    background-color: #c19b77;
+    background-color: #00b6c7;
     padding: 10px;
     padding-right: 1rem;
     width: 100%;
@@ -217,15 +217,15 @@ h2:hover, .label-accordion:hover{
 }
 
 .prayer-item {
-  background: #0f766e;
+  background: #00779b;
   color: #e0d7c6;
   font-size: 1rem;
   padding: 0.5rem 1rem;
-  border-radius: 8px;
+  border-radius: 16px;
   text-align: center;
   margin: 0.3rem;
   flex: 1;
-  border: #2db4a9 1px solid;
+  border: #00c8ff 2px solid;
   box-shadow: #0f766db4 1px 3px 10px;
   min-width: 80px;
 }
@@ -240,7 +240,7 @@ h2:hover, .label-accordion:hover{
   font-size: 1rem;
 }
 .next-prayer {
-  background-color: #ffd700; 
+  background-color: #ffc400; 
   color: #07524b;
   font-size: 1.1rem;
   font-weight: 600;
@@ -253,4 +253,8 @@ h2:hover, .label-accordion:hover{
     font-size: 0.9rem;
     color: #620101;
 
+}
+#nextPrayerCountdown{
+  text-align: center;
+  color: var(--color-text);
 }

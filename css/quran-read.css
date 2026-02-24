@@ -4,13 +4,12 @@
   font-weight: normal;
   font-style: normal;
 }
-/* main{
-  width: 100%;
-  display: flex;
-  padding: 1rem;
-  max-width: 900px;
-  margin: auto;
-} */
+@font-face {
+  font-family: "Aviny";
+  src: url("../fonts/Aviny.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;}
+
 /* ===== Quran Read (Text) Page ===== */
 .read-view {
   padding: 0.5rem 0;
@@ -117,7 +116,7 @@
 }
 
 .surah-title, .surah-name {
-  background: url(../img/surahTitle.png);
+  background: url(../img/surahTitle.WEBP);
   color: #b45309;
   background-size: contain;
   background-repeat: no-repeat;
@@ -318,7 +317,7 @@
 }
 
 .ayah-highlight {
-  background-color: #dadab0a3;
+  background-color: #059ab751;
   border-radius: 5px;
 }
 
@@ -326,7 +325,7 @@
 .surah-name {
   font-family: "UthmanicHafs", serif;
   font-size: 1.8rem;
-  color: var(--color-teal-dark);
+  color: #b45309;
   text-align: center;
 }
 #juz-title {
@@ -403,6 +402,7 @@
   box-shadow: var(--shadow-card);
   padding: 2rem;
   margin-bottom: 1rem;
+  width: 20rem;
   font-size: 2rem;
   border: 1px solid rgba(13, 148, 137, 0.973);
   transition: 0.3s ease-in-out;

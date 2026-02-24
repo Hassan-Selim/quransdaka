@@ -63,75 +63,74 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
-  function displayJuz(juzNumber, highlightAyah = null) {
-    const juz = juzData[juzNumber];
-    if (!juz) return;
+ function displayJuz(juzNumber, highlightSurah = null, highlightAyah = null) {
+  const juz = juzData[juzNumber];
+  if (!juz) return;
 
-    currentJuzNumber = juzNumber;
+  currentJuzNumber = juzNumber;
 
-    // إخفاء زر تابع وعبارة اختيار الجزء عند عرض الجزء
-    if (continueBtn) continueBtn.style.display = "none";
-    if (readIntro) readIntro.style.display = "none";
+  // اخفاء قائمة الأجزاء
+  juzList.style.display = "none";
+  juzView.style.display = "block";
+  window.scrollTo({ top: 0, behavior: "instant" });
 
-    juzList.style.display = "none";
-    juzView.style.display = "block";
-    window.scrollTo({ top: 0, behavior: "instant" }); // scroll top دائماً
+  juzTitle.textContent = `الجزء ${juzNumber}`;
+  juzVerses.innerHTML = "";
 
-    juzTitle.textContent = `الجزء ${juzNumber}`;
-    juzVerses.innerHTML = "";
+  for (let surahNumber in juz.verse_mapping) {
+    const range = juz.verse_mapping[surahNumber];
+    const [start, end] = range.split("-").map(Number);
+    const surahObj = surahNames.find(s => s.number == surahNumber);
+    const surahData = quranData.find(s => s.number == surahNumber);
+    if (!surahData) continue;
 
-    const savedHighlight = highlightAyah;
+    const surahHeader = document.createElement("div");
+    surahHeader.className = "surah-name";
+    surahHeader.textContent = surahObj ? surahObj.name : "";
+    juzVerses.appendChild(surahHeader);
 
-    for (let surahNumber in juz.verse_mapping) {
-      const range = juz.verse_mapping[surahNumber];
-      const [start, end] = range.split("-").map(Number);
-      const surahObj = surahNames.find(s => s.number == surahNumber);
-      const surahData = quranData.find(s => s.number == surahNumber);
-      if (!surahData) continue;
-
-      const surahHeader = document.createElement("div");
-      surahHeader.className = "surah-name";
-      surahHeader.textContent = surahObj ? surahObj.name : "";
-      juzVerses.appendChild(surahHeader);
-
-      if (start === 1 && parseInt(surahNumber) !== 9) {
-        const basmalaSpan = document.createElement("span");
-        basmalaSpan.className = "basmala";
-        basmalaSpan.textContent = "﴿ بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ ﴾";
-        juzVerses.appendChild(basmalaSpan);
-      }
-
-      const ayat = surahData.ayahs.filter(a => a.number >= start && a.number <= end);
-      ayat.forEach(ayah => {
-        const verseWrapper = document.createElement("span");
-        verseWrapper.className = "verse-wrapper";
-
-        const textSpan = document.createElement("span");
-        textSpan.className = "verse-text";
-        textSpan.textContent = ayah.text.trim() + " ";
-
-        const marker = document.createElement("span");
-        marker.className = "verse-marker";
-        marker.textContent = ayah.number;
-
-        verseWrapper.appendChild(textSpan);
-        verseWrapper.appendChild(marker);
-        juzVerses.appendChild(verseWrapper);
-
-        verseWrapper.addEventListener("click", () => {
-          document.querySelectorAll(".verse-text").forEach(el => el.classList.remove("ayah-highlight"));
-          textSpan.classList.add("ayah-highlight");
-          localStorage.setItem("highlightAyah", ayah.number);
-          localStorage.setItem("lastJuz", juzNumber);
-        });
-
-        if (savedHighlight && savedHighlight === ayah.number) {
-          textSpan.classList.add("ayah-highlight");
-          setTimeout(() => textSpan.scrollIntoView({ behavior: "smooth", block: "center" }), 100);
-        }
-      });
+    if (start === 1 && parseInt(surahNumber) !== 9) {
+      const basmalaSpan = document.createElement("span");
+      basmalaSpan.className = "basmala";
+      basmalaSpan.textContent = "﴿ بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ ﴾";
+      juzVerses.appendChild(basmalaSpan);
     }
+
+    const ayat = surahData.ayahs.filter(a => a.number >= start && a.number <= end);
+    ayat.forEach(ayah => {
+      const verseWrapper = document.createElement("span");
+      verseWrapper.className = "verse-wrapper";
+
+      const textSpan = document.createElement("span");
+      textSpan.className = "verse-text";
+      textSpan.textContent = ayah.text.trim() + " ";
+
+      const marker = document.createElement("span");
+      marker.className = "verse-marker";
+      marker.textContent = ayah.number;
+
+      verseWrapper.appendChild(textSpan);
+      verseWrapper.appendChild(marker);
+      juzVerses.appendChild(verseWrapper);
+
+      verseWrapper.addEventListener("click", () => {
+        document.querySelectorAll(".verse-text").forEach(el => el.classList.remove("ayah-highlight"));
+        textSpan.classList.add("ayah-highlight");
+
+        // حفظ السورة والآية
+        localStorage.setItem("lastJuz", juzNumber);
+        localStorage.setItem("lastSurah", surahNumber);
+        localStorage.setItem("lastAyah", ayah.number);
+      });
+
+      // إذا الآية والسورة المحفوظة موجودة
+      if (highlightSurah && highlightAyah && parseInt(surahNumber) === highlightSurah && ayah.number === highlightAyah) {
+        textSpan.classList.add("ayah-highlight");
+        setTimeout(() => textSpan.scrollIntoView({ behavior: "smooth", block: "center" }), 100);
+      }
+    });
   }
+}
 
   // زر الرجوع
   backBtn.addEventListener("click", () => {
@@ -154,15 +153,19 @@ document.addEventListener("DOMContentLoaded", async function () {
       displayJuz(currentJuzNumber + 1);
     }
   });
+  
 
-  // تابع من حيث توقفت
   if (continueBtn) {
-    continueBtn.addEventListener("click", () => {
-      const lastJuz = parseInt(localStorage.getItem("lastJuz"));
-      const highlightAyah = parseInt(localStorage.getItem("highlightAyah"));
-      if (lastJuz) displayJuz(lastJuz, highlightAyah);
-    });
-  }
+  continueBtn.addEventListener("click", () => {
+    const lastJuz = parseInt(localStorage.getItem("lastJuz"));
+    const lastSurah = parseInt(localStorage.getItem("lastSurah"));
+    const lastAyah = parseInt(localStorage.getItem("lastAyah"));
+
+    if (lastJuz && lastSurah && lastAyah) {
+      displayJuz(lastJuz, lastSurah, lastAyah);
+    }
+  });
+}
 
   loadData();
 });

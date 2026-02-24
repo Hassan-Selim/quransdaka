@@ -1,4 +1,9 @@
-/* ===== Home Page ===== */
+@font-face {
+  font-family: "Aviny";
+  src: url("../fonts/Aviny.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}/* ===== Home Page ===== */
 .home {
   min-height: 100vh;
   display: flex;
@@ -108,12 +113,14 @@
   color: var(--color-white);
 }
 .ramadan{
+  font-family: Aviny, serif;
+  font-weight: 400;
   display: inline-flex;
   align-items: center;
   width: 100%;
   height: 4rem;
   gap: 0.5rem;
-  font-size: 2rem;
+  font-size: 3rem;
   background-color: rgb(255, 204, 0);
   animation: floatMoon 0.9s ease-in-out infinite;
 }

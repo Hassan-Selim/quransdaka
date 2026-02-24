@@ -63,8 +63,8 @@
 │   ├── reciters.json
 │   ├── surah-name.json
 ├── img/
-│   ├── icon.png
-│   ├── banner.png
+│   ├── icon.WEBP
+│   ├── banner.WEBP
 ├── manifset,json
 ├── service-worker.js
 └── README.md
