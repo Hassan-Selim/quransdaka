@@ -9,7 +9,7 @@ const urlsToCache = [
   "/css/style.css",
   "/js/theme.js",
   "/js/home.js",
-  "/img/icon.WEBP"
+  "/img/icon.webp"
 ];
 
 // ================= INSTALL =================

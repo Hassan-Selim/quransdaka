@@ -116,7 +116,7 @@
 }
 
 .surah-title, .surah-name {
-  background: url(../img/surahTitle.WEBP);
+  background: url(../img/surahTitle.webp);
   color: #b45309;
   background-size: contain;
   background-repeat: no-repeat;
@@ -404,7 +404,7 @@
   margin-bottom: 1rem;
   width: 20rem;
   font-size: 2rem;
-  border: 1px solid rgba(13, 148, 137, 0.973);
+  border: 1px solid #0d9489f8;
   transition: 0.3s ease-in-out;
   transition:
     background 0.3s ease-in-out,
