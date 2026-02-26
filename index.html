@@ -101,7 +101,7 @@
   <div id="welcomePopup" class="popup-message">نسألكم الدعاء بالرحمة والمغفرة لوالدي ولموتى المسلمين  🤍
 </div>
 <div id="splash">
-  <img src="../img/icon.webp" alt="المصحف" />
+  <img src="../img/icon.webp" alt="موقع القرآن الكريم" />
   
 </div>
   <!-- // إضافة زر المشاركة// -->
@@ -111,29 +111,6 @@
   <script src="js/theme.js"></script>
   <script src="js/home.js"></script>
   <script src="service-worker.js"></script>
-  <script>
-    (function () {
-    const year = new Date().getFullYear();
-    const ownerName = "Hassan Selim";
-    const website = "https://www.hassanselim.art/";
-
-    const copyright = document.createElement("div");
-
-    copyright.style.textAlign = "center";
-    copyright.style.padding = "15px";
-    copyright.style.fontSize = "14px";
-    copyright.style.color = "#999";
-
-    copyright.innerHTML = `
-        جميع الحقوق محفوظة © ${year} —
-        <a href="${website}" target="_blank" style="color:#999;text-decoration:none;">
-            ${ownerName}
-        </a>
-    `;
-
-    document.body.appendChild(copyright);
-    })();
-  </script>
   <script>
 function shareSite() {
   if (navigator.share) {
