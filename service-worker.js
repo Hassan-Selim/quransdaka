@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v1.0.7";
+const CACHE_VERSION = "v1.0.8";
 const STATIC_CACHE = `quran-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `quran-dynamic-${CACHE_VERSION}`;
 
@@ -97,4 +97,5 @@ self.addEventListener("notificationclick", function (event) {
   if (event.notification.data?.url) {
     event.waitUntil(clients.openWindow(event.notification.data.url));
   }
+
 });
