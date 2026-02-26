@@ -95,41 +95,54 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
+function setupPrayerNotifications(prayerTimes) {
+  Object.entries(prayerTimes).forEach(([prayer, time]) => {
+    const now = new Date();
+    const [hour, minute] = time.split(":").map(Number);
+    const prayerDate = new Date();
+    prayerDate.setHours(hour, minute, 0, 0);
 
-  function fetchPrayerTimes(lat, lng, prayerMap) {
-
-    fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=5`)
-      .then(res => res.json())
-      .then(data => {
-        // بعد جلب أوقات الصلاة
-const prayerTimes = data.data.timings; // Fajr, Dhuhr, Asr, Maghrib, Isha
-if (typeof window.setupPrayerNotifications === "function") {
-  window.setupPrayerNotifications(prayerTimes);
+    const diff = prayerDate - now;
+    if (diff > 0) {
+      setTimeout(() => {
+        sendNotification(`وقت صلاة ${prayer} 🌙`, `الصلاة الآن ${time}`);
+      }, diff);
+    }
+  });
 }
+  function fetchPrayerTimes(lat, lng, prayerMap) {
+  fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=5`)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.code !== 200) return;
 
-        if (data.code !== 200) return;
+      const timings = data.data.timings;
+      const prayerItems = document.querySelectorAll(".prayer-item");
 
-        const timings = data.data.timings;
-        const prayerItems = document.querySelectorAll(".prayer-item");
+      const prayerTimes = {}; // 🌟 object للإشعارات
 
-        prayerItems.forEach(item => {
+      prayerItems.forEach((item) => {
+        const arabicName = item.querySelector(".prayer-name").textContent;
+        const engName = prayerMap[arabicName];
 
-          const arabicName = item.querySelector(".prayer-name").textContent;
-          const engName = prayerMap[arabicName];
+        if (!timings[engName]) return;
 
-          if (!timings[engName]) return;
+        const time24 = timings[engName].split(" ")[0];
+        item.querySelector(".prayer-time").dataset.time24 = time24;
+        item.querySelector(".prayer-time").textContent = convertTo12Hour(time24);
 
-          const time24 = timings[engName].split(" ")[0];
+        // 🌟 خزّن الوقت للإشعارات
+        prayerTimes[arabicName] = time24;
+      });
 
-          item.querySelector(".prayer-time").dataset.time24 = time24;
-          item.querySelector(".prayer-time").textContent = convertTo12Hour(time24);
-        });
+      highlightNextPrayer();
+      startNextPrayerCountdown();
 
-        highlightNextPrayer();
-        startNextPrayerCountdown();
-      })
-      .catch(err => console.log(err));
-  }
+      // 🌟 شغل الإشعارات بعد ما المواقيت جاهزة
+      if (window.initNotifications) window.initNotifications(prayerTimes);
+    })
+    .catch((err) => console.log(err));
+}
 
 
 
@@ -224,7 +237,55 @@ if (typeof window.setupPrayerNotifications === "function") {
     }, 1000);
   }
 
+document.addEventListener("DOMContentLoaded", () => {
+  const locationBtn = document.getElementById("locationBtn");
 
+  function initAppWithCoords(lat, lng) {
+    const prayerMap = {
+      "الفجر": "Fajr",
+      "الشروق": "Sunrise",
+      "الظهر": "Dhuhr",
+      "العصر": "Asr",
+      "المغرب": "Maghrib",
+      "العشاء": "Isha"
+    };
+
+    fetchPrayerTimes(lat, lng, prayerMap);
+  }
+
+  // جلب الموقع الجغرافي
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        initAppWithCoords(lat, lng);
+      },
+      (err) => {
+        console.warn("رفض المستخدم الوصول للموقع، استخدم زر تحديد الموقع");
+        if (locationBtn) locationBtn.style.display = "inline-block";
+      }
+    );
+  } else {
+    console.warn("Geolocation غير مدعوم في هذا المتصفح");
+    if (locationBtn) locationBtn.style.display = "inline-block";
+  }
+
+  // زر تحديد الموقع في حال رفض المستخدم
+  if (locationBtn) {
+    locationBtn.addEventListener("click", () => {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          initAppWithCoords(lat, lng);
+          locationBtn.style.display = "none";
+        },
+        () => alert("لا يمكن الوصول للموقع.")
+      );
+    });
+  }
+});
 
   getPrayerTimes();
 });

@@ -71,24 +71,7 @@
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="shortcut icon" href="../img/icon.webp" type="image/x-icon" />
     <link rel="stylesheet" href="../css/ramadan.css" />
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js"></script>
-
-<script>
-  // إعداد Firebase
-  const firebaseConfig = {
-    apiKey: "AIzaSyCb_96TzCvRetQWHIqn-lExzGcCHKT7E0E",
-    authDomain: "quran-sadaka.firebaseapp.com",
-    projectId: "quran-sadaka",
-    storageBucket: "quran-sadaka.appspot.com",
-    messagingSenderId: "375258784873",
-    appId: "1:375258784873:web:d92b2fc154187b0e1f2ef8",
-    measurementId: "G-XJ4G6WV316"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const messaging = firebase.messaging();
-</script>
+  
   </head>
   <body>
     <button
@@ -494,9 +477,11 @@ function shareSite() {
 }
 </script>
     <!-- فقط هذا السطر -->
-    <script src="../js/loader.js"></script>
     <script src="../js/ramadan.js"></script>
     <script src="../js/theme.js"></script>
     
-  </body>
+   <script src="../js/notifications.js"></script>
+   
+   
+</body>
 </html>

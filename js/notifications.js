@@ -1,73 +1,26 @@
 console.log("Notifications script loaded ✅");
 
-// ================= Service Worker =================
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/firebase-messaging-sw.js')
-    .then(registration => {
-      console.log("Service Worker مسجل بنجاح:", registration);
-
-      // ================= Firebase Config =================
-      const firebaseConfig = {
-        apiKey: "AIzaSyCb_96TzCvRetQWHIqn-lExzGcCHKT7E0E",
-        authDomain: "quran-sadaka.firebaseapp.com",
-        projectId: "quran-sadaka",
-        storageBucket: "quran-sadaka.appspot.com",
-        messagingSenderId: "375258784873",
-        appId: "1:375258784873:web:d92b2fc154187b0e1f2ef8",
-        measurementId: "G-XJ4G6WV316"
-      };
-
-      // منع Duplicate App
-      let app;
-      try {
-        app = firebase.app();
-      } catch (e) {
-        app = firebase.initializeApp(firebaseConfig);
-      }
-
-      const messaging = firebase.messaging();
-
-      // ================= طلب إذن الإشعارات =================
-      Notification.requestPermission().then(permission => {
-        if (permission === 'granted') {
-          console.log("Notification permission granted.");
-
-          messaging.getToken({
-            vapidKey: "BBBtubURw4DTgm4XWhgNj-x0_kzHjnLt9pWA0_9In9wqpO3DmIecYxMdqcPlD3L6Mt7vPOmg8Q6Zc1KXc9oEGug"
-          }).then(token => {
-            console.log("User Token:", token);
-          }).catch(err => {
-            console.log("Error retrieving token:", err);
-          });
-        }
-      });
-
-      // ================= استقبال الإشعارات أثناء فتح الصفحة =================
-      messaging.onMessage((payload) => {
-        const { title, body } = payload.notification || {};
-        if (title && body) {
-          new Notification(title, { body });
-        }
-      });
-    })
+  navigator.serviceWorker.register('../service-worker.js')
+    .then(registration => console.log("Service Worker مسجل بنجاح:", registration))
     .catch(err => console.error("فشل تسجيل Service Worker:", err));
 } else {
   console.warn("Service Worker غير مدعوم في هذا المتصفح.");
 }
 
-// ================= دالة إرسال إشعارات عامة =================
+
+
+// ================= دالة إرسال إشعارات =================
 function sendNotification(title, body) {
   if (Notification.permission === "granted") {
     navigator.serviceWorker.getRegistration().then(reg => {
-      if (reg) {
-        reg.showNotification(title, { body });
-      }
+      if (reg) reg.showNotification(title, { body });
     });
   }
 }
 
 // ================= إشعارات الأذكار كل ساعة =================
-setInterval(() => {
+function hourlyAzkar() {
   const azkar = [
     "سبحان الله وبحمده",
     "اللهم ارحم موتانا وموتى المسلمين",
@@ -77,11 +30,37 @@ setInterval(() => {
   ];
   const msg = azkar[Math.floor(Math.random() * azkar.length)];
   sendNotification("ذكر اليوم 🌙", msg);
-}, 1000 * 60 * 60); // كل ساعة
+}
 
-// ================= إشعارات الصلاة من API =================
+// شغل كل ساعة
+setInterval(hourlyAzkar, 1000 * 60 * 60);
+
+// ================= إشعارات الصباح والمساء =================
+function scheduleNotification(title, body, hour, minute) {
+  const now = new Date();
+  const target = new Date();
+  target.setHours(hour, minute, 0, 0);
+  let diff = target - now;
+  if (diff < 0) diff += 24 * 60 * 60 * 1000; // لو الوقت فات، اضف يوم
+
+  setTimeout(() => {
+    sendNotification(title, body);
+    setInterval(() => sendNotification(title, body), 24 * 60 * 60 * 1000); // كرر كل يوم
+  }, diff);
+}
+
+function scheduleMorningEvening() {
+  scheduleNotification("أذكار الصباح 🌅", "اذكار الصباح: سبحان الله، الحمد لله ...", 6, 0);
+  scheduleNotification("أذكار المساء 🌙", "اذكار المساء: أستغفر الله، اللهم صل على النبي ...", 18, 0);
+}
+
+// شغل بعد تحميل الصفحة
+document.addEventListener("DOMContentLoaded", scheduleMorningEvening);
+
+// ================= إشعارات الصلاة =================
+// ⚠️ هذه الدالة مرتبطة بـ ramadan.js بعد جلب مواقيت الصلاة
 function setupPrayerNotifications(prayerTimes) {
-  if (!Notification.permission === "granted") return;
+  if (Notification.permission !== "granted") return;
 
   Object.entries(prayerTimes).forEach(([name, timeStr]) => {
     const [h, m] = timeStr.split(":").map(Number);
@@ -89,7 +68,7 @@ function setupPrayerNotifications(prayerTimes) {
     const prayerDate = new Date();
     prayerDate.setHours(h, m, 0, 0);
 
-    const diff = prayerDate - now;
+    let diff = prayerDate - now;
     if (diff > 0) {
       setTimeout(() => {
         sendNotification(`وقت صلاة ${name}`, `الصلاة الآن (${timeStr}) 🌙`);
@@ -98,5 +77,11 @@ function setupPrayerNotifications(prayerTimes) {
   });
 }
 
-// ⚠️ رابط هذه الدالة مع ramadan.js
+// ربطها مع ramadan.js
 window.setupPrayerNotifications = setupPrayerNotifications;
+
+// ================= طلب إذن الإشعارات =================
+Notification.requestPermission().then(permission => {
+  if (permission === "granted") console.log("تم السماح بالإشعارات ✅");
+  else console.warn("الإشعارات مرفوضة ❌");
+});

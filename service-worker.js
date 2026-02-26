@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v1.0.6";
+const CACHE_VERSION = "v1.0.7";
 const STATIC_CACHE = `quran-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `quran-dynamic-${CACHE_VERSION}`;
 
@@ -15,9 +15,7 @@ const urlsToCache = [
 // ================= INSTALL =================
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(STATIC_CACHE).then((cache) => {
-      return cache.addAll(urlsToCache);
-    })
+    caches.open(STATIC_CACHE).then((cache) => cache.addAll(urlsToCache))
   );
 });
 
@@ -51,13 +49,10 @@ function limitCacheSize(name, size) {
 self.addEventListener("fetch", (event) => {
   const request = event.request;
 
-  // تجاهل أي حاجة خارج الدومين
   if (!request.url.startsWith(self.location.origin)) return;
-
-  // تجاهل الصوت
   if (request.destination === "audio") return;
 
-  // ================= HTML =================
+  // HTML
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)
@@ -74,18 +69,16 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // ================= JSON =================
-  // 🔴 Network Only عشان مانكركبش الكاش
+  // JSON / API
   if (request.url.endsWith(".json") || request.url.includes("/api/")) {
     event.respondWith(fetch(request));
     return;
   }
 
-  // ================= CSS / JS / Images =================
+  // CSS / JS / Images
   event.respondWith(
     caches.match(request).then((cached) => {
       if (cached) return cached;
-
       return fetch(request).then((response) => {
         const clone = response.clone();
         caches.open(DYNAMIC_CACHE).then((cache) => {
@@ -96,4 +89,12 @@ self.addEventListener("fetch", (event) => {
       });
     })
   );
+});
+
+// ================= NOTIFICATION CLICK =================
+self.addEventListener("notificationclick", function (event) {
+  event.notification.close();
+  if (event.notification.data?.url) {
+    event.waitUntil(clients.openWindow(event.notification.data.url));
+  }
 });

@@ -116,7 +116,7 @@
 }
 
 .surah-title, .surah-name {
-  background: url(../img/surahTitle.webp);
+  background: url(../img/surah-title.webp);
   color: #b45309;
   background-size: contain;
   background-repeat: no-repeat;
@@ -169,11 +169,34 @@
 .read-audio-selects select option {
   background: #fff;
   color: #1e293b;
+  
 }
 .read-audio-controls select {
+   padding: 0.6rem 1rem;
+  border-radius: var(--radius);
+  border: 2px solid #0d948840;
+  font-size: 1rem;
+  min-width: 180px;
+  background: #fff;
+  color: #1e293b;
   width: 10%;
+  ::-webkit-scrollbar {
+  width: 5px;
+  background: transparent;
 }
-
+::-webkit-scrollbar-thumb {
+  background: #ffdd00; 
+  border-radius: 20px;
+  
+}
+}
+.read-audio-selects #readReciter, #readMoshaf{
+  background: #02b6a7;
+  padding: 10px;
+  min-width: 180px;
+   outline: none;
+  border: none;
+}
 .read-audio-controls {
   display: flex;
   align-items: center;

@@ -1,3 +1,12 @@
+::-webkit-scrollbar {
+  width: 5px;
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #0d9488; 
+  border-radius: 20px;
+  
+}
 /* ===== Quran Sadaka - Global Islamic Design ===== */
 :root {
   --color-teal: #0d9488;
