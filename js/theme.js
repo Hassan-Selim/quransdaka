@@ -1,3 +1,6 @@
+(function () {
+  'use strict';
+
 // theme.js
 var STORAGE_KEY = 'quran-sadaka-theme';
 var THEME_DARK = 'dark';
@@ -53,4 +56,53 @@ function initTheme() {
 }
 
 // استدعاء تلقائي عند DOMContentLoaded
-document.addEventListener('DOMContentLoaded', initTheme);
+const menu = document.getElementById('close-nav');
+const menuicon = document.getElementById('menu-icon');
+const closeIcon = document.querySelector('.close-icon'); // عنصر الـ ❌
+
+if (menu && menuicon && closeIcon) {
+  // فتح / غلق الـ menu
+  menuicon.addEventListener('click', function () {
+    if (menu.style.display === "grid") {
+      menu.style.display = "none";
+    } else {
+      menu.style.display = "grid";
+    }
+  });
+
+  // غلق الـ menu عند الضغط على الـ close icon
+  closeIcon.addEventListener('click', function () {
+    menu.style.display = "none";
+  });
+
+  // غلق الـ menu عند الضغط في أي مكان خارج الـ menu
+  document.addEventListener('click', function (e) {
+    if (!menu.contains(e.target) && e.target !== menuicon) {
+      menu.style.display = "none";
+    }
+  });
+}
+
+
+  (function () {
+    const year = new Date().getFullYear();
+    const ownerName = "Hassan Selim";
+    const website = "https://www.hassanselim.art/";
+
+    const copyright = document.createElement("div");
+
+    copyright.style.textAlign = "center";
+    copyright.style.padding = "15px";
+    copyright.style.fontSize = "14px";
+    copyright.style.color = "#999";
+
+    copyright.innerHTML = `
+        جميع الحقوق محفوظة © ${year} —
+        <a href="${website}" target="_blank" style="color:#999;text-decoration:none;">
+            ${ownerName}
+        </a>
+    `;
+
+    document.body.appendChild(copyright);
+  })();
+})();
