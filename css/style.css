@@ -155,11 +155,23 @@ header .close-nav {
   cursor: pointer;
   transition:
     background 0.2s,
-    transform 0.2s;
+    transform 0.5s;
   display: none;
   a{
     color: var(--color-white);
   }
+}
+header .close-nav .close-icon {
+  position: absolute;
+  left: -5px;
+  top: -5px;
+  height: 1.5rem;
+  width: 1.5rem;
+  background: #f0f0f0;
+  border: #5eead4 solid 2px;
+  text-align: center;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .page-header .back-link {
@@ -299,6 +311,7 @@ main {
   --shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.3);
   --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
+
 
 [data-theme="dark"] body {
   background: linear-gradient(180deg, var(--color-bg) 0%, #1e293b 50%);
