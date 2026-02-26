@@ -6,10 +6,10 @@ const DYNAMIC_CACHE = `quran-dynamic-${CACHE_VERSION}`;
 const urlsToCache = [
   "/",
   "/index.html",
-  "/css/style.css",
-  "/js/theme.js",
-  "/js/home.js",
-  "/img/icon.webp"
+  "../css/style.css",
+  "../js/theme.js",
+  "../js/home.js",
+  "../img/icon.webp"
 ];
 
 // ================= INSTALL =================

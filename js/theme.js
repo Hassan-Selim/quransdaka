@@ -50,6 +50,7 @@
       updateToggleButton();
     }
   }
+  
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
@@ -59,13 +60,15 @@
   
     const menu=document.getElementById('close-nav');
    const menuicon=document.getElementById('menu-icon');
-   menuicon.addEventListener('click',function(){
-    if(menu.style.display==="grid"){ 
-      menu.style.display="none";
-   } else{
-      menu.style.display="grid";
-   }});
-  
+   if (menu && menuicon) {
+  menuicon.addEventListener('click', function () {
+    if (menu.style.display === "grid") {
+      menu.style.display = "none";
+    } else {
+      menu.style.display = "grid";
+    }
+  });
+}
 
   (function () {
     const year = new Date().getFullYear();
@@ -89,44 +92,6 @@
     document.body.appendChild(copyright);
   })();
 })();
-const menuIcon = document.getElementById('menu-icon');
-const moreLinks = document.getElementById('more-links');
-
-function toggleMenu() {
-  if(moreLinks.style.display === 'flex') {
-    moreLinks.style.display = 'none';
-  } else {
-    moreLinks.style.display = 'flex';
-  }
-}
 
 
-const navItems = document.querySelectorAll(".mobile-nav .nav-item");
-const indicator = document.querySelector(".mobile-nav .indicator");
 
-function moveIndicator(element) {
-  const itemWidth = element.offsetWidth;
-  const itemLeft = element.offsetLeft;
-  indicator.style.left = itemLeft + (itemWidth / 2) - 35 + "px";
-}
-
-navItems.forEach(item => {
-  item.addEventListener("click", function () {
-    navItems.forEach(i => i.classList.remove("active"));
-    this.classList.add("active");
-    moveIndicator(this);
-  });
-});
-
-window.addEventListener("load", () => {
-  const activeItem = document.querySelector(".mobile-nav .nav-item.active");
-  if (activeItem) moveIndicator(activeItem);
-  const currentPage = window.location.pathname;
-
-navItems.forEach(item => {
-  if (item.querySelector("a").getAttribute("href") === currentPage) {
-    item.classList.add("active");
-    moveIndicator(item);
-  }
-});
-});

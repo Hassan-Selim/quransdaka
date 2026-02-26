@@ -4,6 +4,12 @@
   margin-bottom: 2rem;
   padding: 1rem;
 }
+.ruqyah-intro{
+  background: linear-gradient(135deg, var(--color-cream) 0%, var(--color-white) 100%);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(13, 148, 136, 0.1);
+}
 
 .ruqyah-intro h2 {
   font-family: var(--font-arabic);

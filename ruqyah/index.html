@@ -53,7 +53,7 @@
     <a href="../" class="back-link home">🏠</a>
 <img class="address" src="../img/q.svg" alt="شعار موقع القرآن الكريم" />
    <div>
-    <button class="menu-icon" id="menu-icon" onclick="toggleMenu()">☰</button>
+    <button class="menu-icon" id="menu-icon">☰</button>
       <nav class="close-nav" id="close-nav">
         <a href="../quran">🔊 استمع للقرآن</a>
         <a href="../quran-read">📜 إقرأ القرآن</a>
@@ -68,9 +68,16 @@
   </header>
   
   <main>
+    
     <div class="ruqyah-intro">
+      <div class="banner">
+        <img src="../img/qruqya.webp" alt="بانر الرقية الشرعية" class="banner-img>
+      </div>
+      <div class="">
       <h2>الرقية الشرعية من القرآن والسنة</h2>
       <p>استمع إلى الرقية الشرعية بأصوات قراء معتمدين</p>
+      </div>
+      
     </div>
     <div class="ruqyah-player-bar" id="ruqyahPlayerBar">
       <div class="ruqyah-player-title" id="ruqyahPlayerTitle"></div>
@@ -99,7 +106,7 @@ function shareSite() {
   }
 }
 </script>
-
+  <script type="module" src="../js/loader.js"></script>
   <script src="../js/theme.js"></script>
   <script src="../js/ruqyah.js"></script>
 </body>

@@ -222,37 +222,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   getPrayerTimes();
-// 1️⃣ طلب إذن الإشعارات
-function requestNotificationPermission() {
-  if ("Notification" in window) {
-    Notification.requestPermission();
-  }
-}
-
-// 2️⃣ إشعارات الأذكار
-function startHourlyAzkar() {
-  const azkarList = [
-    "سبحان الله وبحمده 🌿",
-    "استغفر الله العظيم ✨",
-    "لا إله إلا الله 🤍",
-    "اللهم صل وسلم على نبينا محمد ﷺ"
-  ];
-
-  setInterval(() => {
-    if (Notification.permission === "granted") {
-      const randomZikr =
-        azkarList[Math.floor(Math.random() * azkarList.length)];
-
-      new Notification("ذكر 🕊️", {
-        body: randomZikr,
-        icon: "../img/icon.webp"
-      });
-    }
-  }, 60 * 60 * 1000);
-}
-document.addEventListener("click", () => {
-  requestNotificationPermission();
-}, { once: true });
-startHourlyAzkar();
-
 });

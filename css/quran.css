@@ -5,16 +5,21 @@
 }
 
 .quran-controls {
+   background: linear-gradient(135deg, var(--color-cream) 0%, var(--color-white) 100%);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(13, 148, 136, 0.1);
+  padding: 1rem 1.25rem;
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
   align-items: center;
-  margin-bottom: 0.5rem;
+  justify-content: center;
+  gap: 1.5rem;
 }
 
 .quran-controls label {
   font-weight: 600;
   color: var(--color-teal-dark);
+ 
 }
 
 
@@ -27,10 +32,16 @@
   background: #fff;
   color: #1e293b;
 }
-
+.quran-controls #reciter, #moshaf{
+  background: var(--color-teal);
+  padding: 10px;
+  min-width: 180px;
+   outline: none;
+  border: none;
+}
 .quran-controls select option {
-  background: #fff;
-  color: #1e293b;
+  background: #d6e0dd;
+  color: #005b60;
 }
 
 .quran-controls select:focus {
