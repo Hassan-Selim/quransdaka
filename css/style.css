@@ -104,9 +104,8 @@ header .address {
 }
 .back-link {
    position: absolute;
-  right: 4.5rem;
+  right: 5rem;
   top: 1.5rem;
-  margin-right: 1rem;
   display: flex;
   align-items: center;
   font-size: 2rem;

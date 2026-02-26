@@ -101,6 +101,11 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=5`)
       .then(res => res.json())
       .then(data => {
+        // بعد جلب أوقات الصلاة
+const prayerTimes = data.data.timings; // Fajr, Dhuhr, Asr, Maghrib, Isha
+if (typeof window.setupPrayerNotifications === "function") {
+  window.setupPrayerNotifications(prayerTimes);
+}
 
         if (data.code !== 200) return;
 

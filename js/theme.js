@@ -91,9 +91,6 @@
 
     document.body.appendChild(copyright);
   })();
-  setTimeout(() => {
-    new Notification("صدقة جارية", { body: "لا تنسوا مشاركتنا في هذا المشروع كصدقة جارية!" });
-}, 5000);
 })();
 
 
