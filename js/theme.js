@@ -1,88 +1,88 @@
 (function () {
   'use strict';
 
-// theme.js
-var STORAGE_KEY = 'quran-sadaka-theme';
-var THEME_DARK = 'dark';
-var THEME_LIGHT = 'light';
+  var STORAGE_KEY = 'quran-sadaka-theme';
+  var THEME_DARK = 'dark';
+  var THEME_LIGHT = 'light';
 
-// جلب القيمة المخزنة أو اعتماد إعداد الجهاز
-function getStored() {
-  try {
-    var stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) return stored;
-    // لو مفيش stored، استخدم إعداد الجهاز
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? THEME_DARK : THEME_LIGHT;
-  } catch (e) {
-    return THEME_LIGHT;
+  function getStored() {
+    try {
+      var stored = localStorage.getItem(STORAGE_KEY);
+      return stored === THEME_DARK ? THEME_DARK : THEME_LIGHT;
+    } catch (e) {
+      return THEME_LIGHT;
+    }
   }
-}
 
-// تطبيق الوضع
-function setTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  try {
-    localStorage.setItem(STORAGE_KEY, theme);
-  } catch (e) {}
-}
-
-// تبديل بين الوضعين
-function toggleTheme() {
-  var current = getStored();
-  var next = current === THEME_DARK ? THEME_LIGHT : THEME_DARK;
-  setTheme(next);
-  updateToggleButton();
-}
-
-// تحديث زرار التبديل
-function updateToggleButton() {
-  var btn = document.getElementById('themeToggle');
-  if (!btn) return;
-  var isDark = getStored() === THEME_DARK;
-  btn.setAttribute('aria-label', isDark ? 'الوضع النهاري' : 'الوضع الداكن');
-  btn.title = isDark ? 'الوضع النهاري' : 'الوضع الداكن';
-  btn.textContent = isDark ? '☀️' : '🌙';
-}
-
-// تهيئة الوضع عند تحميل الصفحة
-function initTheme() {
-  setTheme(getStored());
-  updateToggleButton();
-  
-  var btn = document.getElementById('themeToggle');
-  if (btn) {
-    btn.addEventListener('click', toggleTheme);
-  }
-}
-
-// استدعاء تلقائي عند DOMContentLoaded
-const menu = document.getElementById('close-nav');
-const menuicon = document.getElementById('menu-icon');
-const closeIcon = document.querySelector('.close-icon'); // عنصر الـ ❌
-
-if (menu && menuicon && closeIcon) {
-  // فتح / غلق الـ menu
-  menuicon.addEventListener('click', function () {
-    if (menu.style.display === "grid") {
-      menu.style.display = "none";
+  function setTheme(theme) {
+    var root = document.documentElement;
+    if (theme === THEME_DARK) {
+      root.setAttribute('data-theme', 'dark');
     } else {
-      menu.style.display = "grid";
+      root.setAttribute('data-theme', 'light');
     }
-  });
+    try {
+      localStorage.setItem(STORAGE_KEY, theme);
+    } catch (e) {}
+  }
 
-  // غلق الـ menu عند الضغط على الـ close icon
-  closeIcon.addEventListener('click', function () {
-    menu.style.display = "none";
-  });
+  function toggleTheme() {
+    var current = getStored();
+    var next = current === THEME_DARK ? THEME_LIGHT : THEME_DARK;
+    setTheme(next);
+    updateToggleButton();
+  }
 
-  // غلق الـ menu عند الضغط في أي مكان خارج الـ menu
-  document.addEventListener('click', function (e) {
-    if (!menu.contains(e.target) && e.target !== menuicon) {
+  function updateToggleButton() {
+    var btn = document.getElementById('themeToggle');
+    if (!btn) return;
+    var isDark = getStored() === THEME_DARK;
+    btn.setAttribute('aria-label', isDark ? 'الوضع النهاري' : 'الوضع الداكن');
+    btn.title = isDark ? 'الوضع النهاري' : 'الوضع الداكن';
+    btn.textContent = isDark ? '☀️' : '🌙';
+  }
+
+  function init() {
+    setTheme(getStored());
+    var btn = document.getElementById('themeToggle');
+    if (btn) {
+      btn.addEventListener('click', toggleTheme);
+      updateToggleButton();
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  
+     const menu = document.getElementById("close-nav");
+  const menuicon = document.getElementById("menu-icon");
+  const closeIcon = document.querySelector(".close-icon"); // عنصر الـ ❌
+
+  if (menu && menuicon && closeIcon) {
+    // فتح / غلق الـ menu
+    menuicon.addEventListener("click", function () {
+      if (menu.style.display === "grid") {
+        menu.style.display = "none";
+      } else {
+        menu.style.display = "grid";
+      }
+    });
+
+    // غلق الـ menu عند الضغط على الـ close icon
+    closeIcon.addEventListener("click", function () {
       menu.style.display = "none";
-    }
-  });
-}
+    });
 
+    // غلق الـ menu عند الضغط في أي مكان خارج الـ menu
+    document.addEventListener("click", function (e) {
+      if (!menu.contains(e.target) && e.target !== menuicon) {
+        menu.style.display = "none";
+      }
+    });
+  }
 
   (function () {
     const year = new Date().getFullYear();
