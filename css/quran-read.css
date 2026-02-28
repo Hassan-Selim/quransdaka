@@ -138,6 +138,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  margin-bottom: 2rem;
 }
 /* شريط الصوت أعلى السورة */
 .read-audio-bar {
