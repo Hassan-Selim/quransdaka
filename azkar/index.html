@@ -74,39 +74,7 @@
     
     
   </head>
-  <!--  <nav class="mobile-nav">
-  <ul>
-    <li class="nav-item active">
-      <a href="../">
-        <span class="icon">🏠</span>
-        <span class="text">الرئيسية</span>
-      </a>
-    </li>
-
-    <li class="nav-item">
-      <a href="../quran-read">
-        <span class="icon">📖</span>
-        <span class="text">القراءة</span>
-      </a>
-    </li>
-
-    <li class="nav-item">
-      <a href="../azkar">
-        <span class="icon">🤲</span>
-        <span class="text">الأذكار</span>
-      </a>
-    </li>
-
-    <li class="nav-item">
-      <a href="../radio">
-        <span class="icon">📻</span>
-        <span class="text">الراديو</span>
-      </a>
-    </li>
-
-    <div class="indicator"></div>
-  </ul>
-</nav> -->
+ 
   <body>
     <button
       type="button"
@@ -118,7 +86,8 @@
     </button>
    <header class="page-header">
     <a href="../" class="back-link home">🏠</a>
-<img class="address" src="../img/q.svg" alt="شعار موقع القرآن الكريم" />
+<img loading="lazy" class="address" src="../img/q.svg"  class="lazyload"
+  alt="شعار موقع القرآن الكريم" />
    <div>
     <button class="menu-icon" id="menu-icon">☰</button>
       <nav class="close-nav" id="close-nav"><span class="close-icon">❌</span>
@@ -136,7 +105,8 @@
   
     <main class="azkar-content">
       <div class="banner">
-    <img loading="lazy" src="../img/azkar-banner.webp" alt="بانر الموقع القرآن الكريم – صدقة جارية">
+    <img loading="lazy" data-src="../img/azkar-banner.webp"  class="lazyload"
+  alt="بانر الموقع القرآن الكريم – صدقة جارية">
   </div>
       
       <!-- أدعية رمضان -->
@@ -144,7 +114,7 @@
         <details>
           <summary class="label-accordion">أذكار الصباح والمساء</summary>
           <p>
-            في الصباح والمساء، يُستحب أن نُردد الأذكار والأدعية التي وردت عن النبي محمد ﷺ، والتي تحمي الإنسان من الشرور وتبارك يومه. من بين هذه الأذكار: "أعوذ بكلمات الله التامات من شر ما خلق"، "اللهم بك أصبحنا وبك أمسينا وبك نحيا وبك نموت وإليك النشور"، و"رضيت بالله ربا وبالإسلام دينا وبمحمد ﷺ نبيا". تكرار هذه الأذكار في الصباح والمساء يجلب البركة والسكينة إلى حياتنا اليومية.
+            في الصباح والمساء، يُستحب أن نُردد الأذكار والأدعية التي وردت عن النبي محمد ﷺ، والتي تحمي الإنسان من الشرور وتبارك يومه. تكرار هذه الأذكار في الصباح والمساء يجلب البركة والسكينة إلى حياتنا اليومية.
           </p>
             <button id="showHiddenBtn" style="display:none;">إظهار الأذكار المنجزة</button>
 
@@ -624,7 +594,8 @@
      <button class="shareBtn" onclick="shareSite()">🤝</button>
   
      <script src="../js/azkar.js"></script>
-    <script src="../js/theme.js"></script>
+    <script src="../js/lazysizes.js"></script>
+<script src="../js/theme.js"></script>
     <script>
 function shareSite() {
   if (navigator.share) {

@@ -51,7 +51,8 @@
   <button type="button" id="themeToggle" class="theme-toggle" aria-label="الوضع الداكن">🌙</button>
   <header class="page-header">
     <a href="../" class="back-link home">🏠</a>
-<img class="address" src="../img/q.svg" alt="شعار موقع القرآن الكريم" />
+<img loading="lazy" class="address" src="../img/q.svg"  class="lazyload"
+  alt="شعار موقع القرآن الكريم" />
    <div>
     <button class="menu-icon" id="menu-icon">☰</button>
       <nav class="close-nav" id="close-nav"><span class="close-icon">❌</span>
@@ -71,7 +72,8 @@
     
     <div class="ruqyah-intro">
       <div class="banner">
-        <img src="../img/qruqya.webp" alt="بانر الرقية الشرعية" class="banner-img>
+        <img loading="lazy" data-src="../img/qruqya.webp"  class="lazyload"
+  alt="بانر الرقية الشرعية" class="banner-img>
       </div>
       <div class="">
       <h2>الرقية الشرعية من القرآن والسنة</h2>
@@ -106,7 +108,8 @@ function shareSite() {
   }
 }
 </script>
-  <script src="../js/theme.js"></script>
+  <script src="../js/lazysizes.js"></script>
+<script src="../js/theme.js"></script>
   <script src="../js/ruqyah.js"></script>
  <script src="../js/notifications.js"></script>
 </body>

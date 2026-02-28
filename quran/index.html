@@ -96,7 +96,8 @@
     </button>
   <header class="page-header">
     <a href="../" class="back-link home">🏠</a>
-<img class="address" src="../img/q.svg" alt="شعار موقع القرآن الكريم" />
+<img loading="lazy" class="address" src="../img/q.svg"  class="lazyload"
+  alt="شعار موقع القرآن الكريم" />
    <div>
     <button class="menu-icon" id="menu-icon">☰</button>
       <nav class="close-nav" id="close-nav"><span class="close-icon">❌</span><span class="close-icon">❌</span>
@@ -119,7 +120,8 @@
         
         <div class="quran-controls">
           <div class="banner">
-          <img src="../img/banner.webp" alt=" شعار موقع القرآن الكريم" />
+          <img loading="lazy" data-src="../img/banner.webp"  class="lazyload"
+  alt=" شعار موقع القرآن الكريم" />
           </div>
           <label for="reciter">اختر القارئ:</label>
           <select id="reciter">
@@ -189,7 +191,8 @@
       }
     </script>
 
-    <script src="../js/theme.js"></script>
+    <script src="../js/lazysizes.js"></script>
+<script src="../js/theme.js"></script>
     <script src="../js/quran.js"></script>
    <script src="../js/notifications.js"></script>
 </body>

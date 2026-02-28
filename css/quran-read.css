@@ -128,7 +128,17 @@
   font-weight: 500;
 }
 
-
+.banner{
+  background: linear-gradient(135deg, var(--color-cream) 0%, var(--color-white) 100%);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(13, 148, 136, 0.1);
+  padding: 1rem;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
 /* شريط الصوت أعلى السورة */
 .read-audio-bar {
   background: linear-gradient(

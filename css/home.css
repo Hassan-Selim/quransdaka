@@ -120,12 +120,12 @@
   width: 100%;
   height: 4rem;
   gap: 0.5rem;
-  font-size: 3rem;
   background-color: rgb(255, 204, 0);
   animation: floatMoon 0.9s ease-in-out infinite;
 }
 .ramadan span{
   color: #023d3b;
+  font-size: clamp(3rem, 3vw, 1rem);
   font-weight: 600;
 }
 .ramadan .btn-icon{

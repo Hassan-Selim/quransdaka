@@ -1,14 +1,15 @@
 {
+  "id": "/index.html",
   "name": "القرآن الكريم || صدقة جارية",
   "short_name": "صدقة جارية",
-  "start_url": "./index.html",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#2e86de",
+  "theme_color": "#0f766e",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/img/icon.webp",
+      "src": "/img/icon-192.webp",
       "sizes": "192x192",
       "type": "image/webp"
     },
@@ -17,5 +18,25 @@
       "sizes": "512x512",
       "type": "image/webp"
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "/img/screenshot-wide.webp",
+      "sizes": "1280x720",
+      "type": "image/webp",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/img/screenshot-mobile.webp",
+      "sizes": "1080x1920",
+      "type": "image/webp"
+    }
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "mailto",
+      "url": "/mail?to=%s"
+    }
+  ],
+  "display_override": ["window-controls-overlay", "standalone"]
 }

@@ -55,7 +55,8 @@
     </button>
    <header class="page-header">
     <a href="../" class="back-link home">🏠</a>
-<img class="address" src="../img/q.svg" alt="شعار موقع القرآن الكريم" />
+<img loading="lazy" class="address" src="../img/q.svg"  class="lazyload"
+  alt="شعار موقع القرآن الكريم" />
    <div>
     <button class="menu-icon" id="menu-icon">☰</button>
       <nav class="close-nav" id="close-nav"><span class="close-icon">❌</span>
@@ -74,7 +75,8 @@
 <section class="about-page">
 
   <div class="banner">
-    <img loading="lazy" src="../img/banner.webp" alt="بانر الموقع القرآن الكريم – صدقة جارية">
+    <img loading="lazy" data-src="../img/banner.webp"  class="lazyload"
+  alt="بانر الموقع القرآن الكريم – صدقة جارية">
   </div>
 <h1>عن الموقع</h1>
 
@@ -141,7 +143,8 @@ function shareSite() {
 }
 </script>
 
-    <script src="../js/theme.js"></script>
+    <script src="../js/lazysizes.js"></script>
+<script src="../js/theme.js"></script>
 
  <script src="../js/notifications.js"></script>
 </body>

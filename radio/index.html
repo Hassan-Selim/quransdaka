@@ -51,7 +51,8 @@
   <button type="button" id="themeToggle" class="theme-toggle" aria-label="الوضع الداكن">🌙</button>
  <header class="page-header">
     <a href="../" class="back-link home">🏠</a>
-<img class="address" src="../img/q.svg" alt="شعار موقع القرآن الكريم" />
+<img loading="lazy" class="address" src="../img/q.svg"  class="lazyload"
+  alt="شعار موقع القرآن الكريم" />
    <div>
     <button class="menu-icon" id="menu-icon">☰</button>
       <nav class="close-nav" id="close-nav"><span class="close-icon">❌</span>
@@ -69,7 +70,8 @@
   
   <main>
     <div class="radio-intro">
-      <div class="banner"><img src="../img/radiobanner.webp" alt="بانر صفحة الراديو"></div>
+      <div class="banner"><img loading="lazy" data-src="../img/radiobanner.webp"  class="lazyload"
+  alt="بانر صفحة الراديو"></div>
       <div class="tag"><h2>محطات راديو القرآن الكريم</h2>
       <p>استمع مباشرة إلى إذاعات القرآن الكريم</p>
       </div>
@@ -104,7 +106,8 @@ function shareSite() {
 }
 </script>
 
-  <script src="../js/theme.js"></script>
+  <script src="../js/lazysizes.js"></script>
+<script src="../js/theme.js"></script>
   <script src="../js/radio.js"></script>
  <script src="../js/notifications.js"></script>
 </body>

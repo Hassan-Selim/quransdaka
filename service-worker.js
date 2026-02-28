@@ -1,15 +1,20 @@
-const CACHE_VERSION = "v1.0.8";
+const CACHE_VERSION = "v1.0.9";
 const STATIC_CACHE = `quran-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `quran-dynamic-${CACHE_VERSION}`;
 
-// App Shell فقط
+// الملفات الأساسية (App Shell)
 const urlsToCache = [
   "/",
   "/index.html",
-  "../css/style.css",
-  "../js/theme.js",
-  "../js/home.js",
-  "../img/icon.webp"
+  "/ramadan/index.html",
+  "/quran-read/index.html",
+  "/css/style.css",
+  "/css/ramadan.css",
+  "/css/quran-read.css",
+  "/js/theme.js",
+  "/js/quran-read.js",
+  "/js/ramadan.js",
+  "/img/icon.webp"
 ];
 
 // ================= INSTALL =================
@@ -50,9 +55,11 @@ self.addEventListener("fetch", (event) => {
   const request = event.request;
 
   if (!request.url.startsWith(self.location.origin)) return;
+
+  // تخطي الأوديو من التخزين
   if (request.destination === "audio") return;
 
-  // HTML
+  // HTML navigation
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)
@@ -69,7 +76,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // JSON / API
+  // JSON / API requests
   if (request.url.endsWith(".json") || request.url.includes("/api/")) {
     event.respondWith(fetch(request));
     return;
@@ -92,10 +99,9 @@ self.addEventListener("fetch", (event) => {
 });
 
 // ================= NOTIFICATION CLICK =================
-self.addEventListener("notificationclick", function (event) {
+self.addEventListener("notificationclick", (event) => {
   event.notification.close();
   if (event.notification.data?.url) {
     event.waitUntil(clients.openWindow(event.notification.data.url));
   }
-
 });
