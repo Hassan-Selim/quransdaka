@@ -3,9 +3,8 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #0d9488; 
+  background: #0d9488;
   border-radius: 20px;
-  
 }
 /* ===== Quran Sadaka - Global Islamic Design ===== */
 :root {
@@ -52,7 +51,6 @@ body {
   transition:
     background 0.3s,
     color 0.3s;
-    
 }
 
 body.english {
@@ -87,12 +85,30 @@ img {
   height: 6rem;
   display: flex;
   align-items: center;
-  text-align: center;
   justify-content: space-around;
   box-shadow: var(--shadow-soft);
+
   position: sticky;
   top: 0;
-  z-index: 10;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+
+  transform: translateY(0);
+  opacity: 1;
+  backdrop-filter: blur(0px);
+
+  transition:
+    transform 0.5s ease,
+    opacity 0.5s ease,
+    backdrop-filter 0.5s ease;
+}
+
+.page-header.hide {
+  transform: translateY(-110%);
+  opacity: 0;
+  backdrop-filter: blur(6px);
+  pointer-events: none;
 }
 
 .page-header h1 {
@@ -105,14 +121,14 @@ header .address {
   filter: brightness(0) saturate(100%) invert(91%) sepia(16%) saturate(377%)
     hue-rotate(12deg);
 }
-.page-header img{
+.page-header img {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   align-items: center;
 }
 .back-link {
-   position: absolute;
+  position: absolute;
   right: 5rem;
   top: 1.5rem;
   display: flex;
@@ -132,7 +148,7 @@ header .address {
   outline: none;
   border: none;
   border-radius: 10px;
-  color: #f1f5f9 ;
+  color: #f1f5f9;
   background: transparent;
   transition: background 0.2s;
 }
@@ -157,7 +173,7 @@ header .close-nav {
     background 0.2s,
     transform 0.5s;
   display: none;
-  a{
+  a {
     color: var(--color-white);
   }
 }
@@ -185,9 +201,8 @@ header .close-nav .close-icon {
   transition: background 0.2s;
 }
 
-
-
-.page-header .back-link:hover, .menu-icon:hover {
+.page-header .back-link:hover,
+.menu-icon:hover {
   background: #ffffff33;
   color: var(--color-white);
 }
@@ -284,7 +299,7 @@ main {
   height: 40px;
   border: none;
   border-radius: 50%;
-  background:#00535c;
+  background: #00535c;
   font-size: 1.4rem;
   cursor: pointer;
   box-shadow: var(--shadow-card);
@@ -297,7 +312,7 @@ main {
 }
 .shareBtn:hover {
   transform: scale(1.08);
-} 
+}
 
 /* Dark theme */
 [data-theme="dark"] {
@@ -311,7 +326,6 @@ main {
   --shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.3);
   --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
-
 
 [data-theme="dark"] body {
   background: linear-gradient(180deg, var(--color-bg) 0%, #1e293b 50%);
@@ -338,7 +352,6 @@ main {
   --color-text-muted: #64748b;
 }
 
-
 /* Responsive */
 @media (max-width: 600px) {
   .page-header h1 {
@@ -364,17 +377,15 @@ main {
   padding: 0 1rem;
 }
 
-.banner{
-  text-align:center;
+.banner {
+  text-align: center;
   margin-bottom: 1rem;
 }
 
-.banner img{
-  
+.banner img {
   height: auto;
   border-radius: 10px;
 }
-
 
 /* نخفيه على الديسكتوب */
 .mobile-nav {
@@ -383,7 +394,6 @@ main {
 
 /* يظهر بس على الموبايل */
 @media (max-width: 768px) {
-
   .mobile-nav {
     display: flex;
     position: fixed;
@@ -397,7 +407,7 @@ main {
     border-radius: 20px;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     z-index: 9999;
   }
 

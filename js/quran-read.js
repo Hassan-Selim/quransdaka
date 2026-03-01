@@ -220,7 +220,45 @@ elBackToList.addEventListener("click", function () {
       elReadAudio.currentTime += 5;
     }
   }
+// عناصر البار
+const elReadCurrentTime = document.getElementById("readCurrentTime");
+const elReadDuration = document.getElementById("readDuration");
+const elReadProgressBar = document.getElementById("readProgressBar");
+const elReadProgressFill = document.getElementById("readProgressFill");
+const progressKnob = document.getElementById("readProgressKnob");
+// دالة لتحويل الثواني لصيغة دقيقة:ثانية
+function formatTime(seconds) {
+  if (isNaN(seconds)) return "0:00";
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return m + ":" + (s < 10 ? "0" + s : s);
+}
 
+// تحديث مدة الملف عند التحميل
+elReadAudio.addEventListener("loadedmetadata", () => {
+  elReadDuration.textContent = formatTime(elReadAudio.duration);
+});
+
+// تحديث الوقت والبار أثناء التشغيل
+elReadAudio.addEventListener("timeupdate", () => {
+  elReadCurrentTime.textContent = formatTime(elReadAudio.currentTime);
+  const percent = (elReadAudio.currentTime / elReadAudio.duration) * 100;
+  elReadProgressFill.style.width = percent + "%";
+});
+
+// التحكم بالبار (لما المستخدم يضغط عليه)
+elReadProgressBar.addEventListener("click", (e) => {
+  const rect = elReadProgressBar.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  const percent = clickX / rect.width;
+  elReadAudio.currentTime = percent * elReadAudio.duration;
+});
+elReadAudio.addEventListener("timeupdate", () => {
+  elReadCurrentTime.textContent = formatTime(elReadAudio.currentTime);
+  const percent = (elReadAudio.currentTime / elReadAudio.duration) * 100;
+  elReadProgressFill.style.width = percent + "%";
+  progressKnob.style.left = percent + "%"; // يتحرك من الشمال لليمين
+});
  
 
  function openSurah(number) {

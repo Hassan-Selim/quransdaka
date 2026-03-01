@@ -416,6 +416,44 @@
   background: #b45309;
   transform: scale(0.95);
 }
+.read-progress-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px; 
+  direction: ltr;
+  margin-top: 0.5rem;
+}
+
+.read-progress-bar {
+  position: relative;
+  flex: 1; /* ياخد أكبر مساحة بين الوقتين */
+  height: 8px;
+  background: #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.read-progress-fill {
+  height: 100%;
+  background: #4caf50;
+  width: 0%;
+  border-radius: 4px;
+}
+
+.read-progress-knob {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  transform: translate(-50%, -50%);
+  width: 20px;   /* كبرنا حجم الدايرة */
+  height: 20px;
+  background: #fff; /* خليها أبيض علشان تبان فوق البار */
+  border: 2px solid #4caf50; /* إطار بلون البار */
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0,0,0,0.3); /* ظل خفيف */
+  pointer-events: none;
+}
 .qpage{
   width: 100%;
   height: 100dvh;

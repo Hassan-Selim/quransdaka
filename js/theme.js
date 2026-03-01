@@ -83,6 +83,40 @@
       }
     });
   }
+  const header = document.querySelector(".page-header");
+
+let lastScroll = 0;
+let ticking = false;
+const threshold = 20;
+const offset = 80;
+
+function updateHeader() {
+  const currentScroll = window.scrollY;
+  const diff = currentScroll - lastScroll;
+
+  if (Math.abs(diff) < threshold) {
+    ticking = false;
+    return;
+  }
+
+  if (diff > 0 && currentScroll > offset) {
+    // نازل
+    header.classList.add("hide");
+  } else {
+    // طالع
+    header.classList.remove("hide");
+  }
+
+  lastScroll = currentScroll;
+  ticking = false;
+}
+
+window.addEventListener("scroll", () => {
+  if (!ticking) {
+    requestAnimationFrame(updateHeader);
+    ticking = true;
+  }
+});
 
   (function () {
     const year = new Date().getFullYear();

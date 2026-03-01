@@ -110,7 +110,9 @@
   </ul>
 </nav> -->
   <body>
-    <button
+    
+    <header class="page-header">
+      <button
       type="button"
       id="themeToggle"
       class="theme-toggle"
@@ -118,7 +120,7 @@
     >
       🌙
     </button>
-    <header class="page-header">
+    <button class="shareBtn" onclick="shareSite()">🤝</button>
       <a href="../" class="back-link home">🏠</a>
       <img loading="lazy" class="address" src="../img/q.svg"  class="lazyload"
   alt="شعار موقع القرآن الكريم" />
@@ -155,7 +157,7 @@
       <div class="read-view">
         <div class="quran-container">
           
-          <button id="continueBtn">تابع من حيث توقفت</button>
+          <button id="continueBtn">تابع من حيث توقفت <span class="arrow> ↪ </span></button>
           <p class="read-intro">اختر جزء للقراءة</p>
           <div id="juz-list" class="read-surah-list"></div>
 
@@ -190,7 +192,7 @@
     <main class="swar-section" style="display: none">
       <div class="read-view read-list-view" id="listView">
         
-        <button id="resumeBtn">تابع من حيث توقفت</button>
+        <button id="continueBtn">تابع من حيث توقفت <span class="arrow"> ↪ </span></button>
         <p class="read-intro">اختر سورة للقراءة</p>
         <div class="read-loading" id="listLoading">جاري تحميل السور...</div>
         <!-- <button id="resumeBtn">▶ تابع من حيث توقفت</button> -->
@@ -255,7 +257,19 @@
             >
               ⏪ 5
             </button>
+            
           </div>
+          <div class="read-progress-wrapper">
+  <span id="readCurrentTime">0:00</span>
+
+  <div class="read-progress-bar" id="readProgressBar">
+    <div class="read-progress-fill" id="readProgressFill"></div>
+     <div class="read-progress-knob" id="readProgressKnob"></div>
+
+  </div>
+
+  <span id="readDuration">0:00</span>
+</div>
 
           <audio id="readAudio" preload="metadata"></audio>
         </div>
@@ -267,7 +281,7 @@
       </div>
     </main>
 
-    <button class="shareBtn" onclick="shareSite()">🤝</button>
+    
 
     <script>
       function shareSite() {

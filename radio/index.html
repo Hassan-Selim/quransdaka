@@ -48,25 +48,36 @@
   <link rel="shortcut icon" href="../img/icon.webp" type="image/x-icon">
 </head>
 <body>
-  <button type="button" id="themeToggle" class="theme-toggle" aria-label="الوضع الداكن">🌙</button>
- <header class="page-header">
-    <a href="../" class="back-link home">🏠</a>
-<img loading="lazy" class="address" src="../img/q.svg"  class="lazyload"
+ 
+  <header class="page-header">
+      <button
+      type="button"
+      id="themeToggle"
+      class="theme-toggle"
+      aria-label="الوضع الداكن"
+    >
+      🌙
+    </button>
+    <button class="shareBtn" onclick="shareSite()">🤝</button>
+      <a href="../" class="back-link home">🏠</a>
+      <img loading="lazy" class="address" src="../img/q.svg"  class="lazyload"
   alt="شعار موقع القرآن الكريم" />
-   <div>
-    <button class="menu-icon" id="menu-icon">☰</button>
-      <nav class="close-nav" id="close-nav"><span class="close-icon">❌</span>
-        <a href="../quran">🔊 استمع للقرآن</a>
-        <a href="../quran-read">📜 إقرأ القرآن</a>
-        <a href="../ruqyah">✨ الرقية الشرعية</a>
-        <a href="../radio">📻 الراديو</a>
-        <a href="../azkar">🤲 أذكار ودعاء</a>
-        <a href="../tasbeeh">📿 التسبيح</a>
-        <a href="../ramadan">🌙 رمضان</a>
-        <a href="../about">ℹ️ عن الموقع</a>
-      </nav>
-    </div>
-  </header>
+      <div>
+        <button class="menu-icon" id="menu-icon">
+          ☰
+        </button>
+        <nav class="close-nav" id="close-nav"><span class="close-icon">❌</span>
+          <a href="../quran">🔊 استمع للقرآن</a>
+          <a href="../quran-read">📜 إقرأ القرآن</a>
+          <a href="../ruqyah">✨ الرقية الشرعية</a>
+          <a href="../radio">📻 الراديو</a>
+          <a href="../azkar">🤲 أذكار ودعاء</a>
+          <a href="../tasbeeh">📿 التسبيح</a>
+          <a href="../ramadan">🌙 رمضان</a>
+          <a href="../about">ℹ️ عن الموقع</a>
+        </nav>
+      </div>
+    </header>
   
   <main>
     <div class="radio-intro">
@@ -88,7 +99,7 @@
     </div>
     <div class="radio-list" id="radioList"></div>
   </main>
- <button class="shareBtn" onclick="shareSite()">🤝</button>
+ 
 
 <script>
 function shareSite() {
