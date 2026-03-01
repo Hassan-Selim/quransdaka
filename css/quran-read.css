@@ -292,6 +292,7 @@
   color: #b45309; /* لون القوس */
 }
 
+
 @media (max-width: 600px) {
   .mushaf-block {
     font-size: 1.2rem;
@@ -301,6 +302,13 @@
     min-width: 28px;
     height: 28px;
     font-size: 0.7em;
+  }
+  .mushaf-block{
+    max-width: 100%;
+   
+  }
+  .read-verses{
+    padding: 0.5rem;
   }
 }
 .verse-text.active {
