@@ -289,3 +289,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   getPrayerTimes();
 });
+document.querySelectorAll(".copy-btn").forEach(btn => {
+  btn.addEventListener("click", function() {
+    // نجيب النص المرتبط بالزرار (الـ span اللي جنبه)
+    const textToCopy = this.previousElementSibling.textContent;
+
+   btn.textContent = "تم النسخ ✅";
+    // نرجع النص الأصلي بعد 2 ثانية
+    setTimeout(() => {
+      btn.textContent = "نسخ";
+    }, 2000);
+    if (!textToCopy) return;
+
+    // نسخ النص إلى الحافظة
+    navigator.clipboard.writeText(textToCopy)
+      .catch((err) => {
+        console.error("خطأ في النسخ:", err);
+        alert("حدث خطأ في النسخ، حاول مرة أخرى.");
+      });       
+  });
+});
