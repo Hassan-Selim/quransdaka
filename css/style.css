@@ -87,7 +87,6 @@ img {
   align-items: center;
   justify-content: space-around;
   box-shadow: var(--shadow-soft);
-
   position: sticky;
   top: 0;
   left: 0;

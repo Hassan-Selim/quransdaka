@@ -1,7 +1,7 @@
 console.log("Notifications script loaded ✅");
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('../service-worker.js')
+  navigator.serviceWorker.register('/service-worker.js')
     .then(registration => console.log("Service Worker مسجل بنجاح:", registration))
     .catch(err => console.error("فشل تسجيل Service Worker:", err));
 } else {

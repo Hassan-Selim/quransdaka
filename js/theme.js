@@ -83,6 +83,8 @@
       }
     });
   }
+  
+
   const header = document.querySelector(".page-header");
 
 let lastScroll = 0;
@@ -91,6 +93,8 @@ const threshold = 20;
 const offset = 80;
 
 function updateHeader() {
+  if (!header) return; // لو العنصر مش موجود، اخرج من الدالة
+
   const currentScroll = window.scrollY;
   const diff = currentScroll - lastScroll;
 
@@ -140,3 +144,6 @@ window.addEventListener("scroll", () => {
     document.body.appendChild(copyright);
   })();
 })();
+
+
+/* تثبيت التطبيق */

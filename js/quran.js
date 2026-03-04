@@ -143,6 +143,13 @@
         '<span class="play-icon">▶</span>';
       item.addEventListener('click', function () {
         playSurah(s.id, s.name);
+        
+        btnStop.style.display = "inline-block"; // يظهر Stop لما Play
+        if (elPlayerBar.style.display === "none") {
+        elPlayerBar.style.display = "grid";
+    }
+    audio.play();
+    btnStop.style.display = "inline-block";
       });
       elSurahList.appendChild(item);
     });
@@ -158,6 +165,7 @@
       alert('هذه السورة غير متوفرة لهذا القارئ.');
       return;
     }
+    
     currentSurahId = surahId;
     currentSurahName = surahName || surahId;
     elPlayerSurahName.textContent = 'سورة ' + currentSurahName;
@@ -260,3 +268,133 @@
       console.error(err);
     });
 })();
+
+
+/* progressBar */
+// عناصر DOM
+const audio = document.getElementById("mainAudio");
+const btnPlayPause = document.getElementById("btnPlayPause");
+const btnStop = document.getElementById("btnStop");
+const volumeSlider = document.getElementById("volumeSlider");
+const volumeIcon = document.getElementById("volumeIcon");
+const readProgressBar = document.getElementById("readProgressBar");
+const readProgressFill = document.getElementById("readProgressFill");
+const readProgressKnob = document.getElementById("readProgressKnob");
+const readCurrentTime = document.getElementById("readCurrentTime");
+const readDuration = document.getElementById("readDuration");
+const btnAutoReplay = document.getElementById("btnAutoReplay");
+
+// حالة التشغيل
+let isPlaying = false;
+let isAutoReplay = false;
+
+// السورة الافتراضية
+
+
+// ======================
+// Play / Pause
+// ======================
+btnPlayPause.addEventListener("click", () => {
+    if (!isPlaying) {
+        audio.play();
+        btnStop.style.display = "inline-block"; // يظهر Stop لما Play
+    } else {
+        audio.pause();
+    }
+});
+
+audio.addEventListener("play", () => {
+    isPlaying = true;
+    btnPlayPause.textContent = "⏸";
+});
+
+audio.addEventListener("pause", () => {
+    isPlaying = false;
+    btnPlayPause.textContent = "▶";
+});
+
+// ======================
+// Stop
+// ======================
+btnStop.style.display = "none"; // مخفي في البداية
+
+btnStop.addEventListener("click", () => {
+    audio.pause();
+    audio.currentTime = 0;
+    isPlaying = false;
+    btnPlayPause.textContent = "▶";
+});
+
+// ======================
+// Auto Replay 🔁
+// ======================
+btnAutoReplay.addEventListener("click", () => {
+    isAutoReplay = !isAutoReplay;
+    btnAutoReplay.style.color = isAutoReplay ? "green" : "black";
+    btnAutoReplay.classList.add("activeBtn")
+});
+
+audio.addEventListener("ended", () => {
+    if (isAutoReplay) {
+      
+        audio.currentTime = 0;
+        audio.play();
+    } else {
+      btnAutoReplay.classList.remove("activeBtn")
+        isPlaying = false;
+        btnPlayPause.textContent = "▶";
+    }
+});
+
+// ======================
+// Volume Control
+// ======================
+
+// Volume Control
+// ======================
+
+volumeSlider.addEventListener("input", () => {
+    audio.volume = volumeSlider.value;
+
+    if (audio.volume == 0) volumeIcon.textContent = "🔇";
+    else if (audio.volume < 0.5) volumeIcon.textContent = "🔉";
+    else volumeIcon.textContent = "🔊";
+});
+
+audio.volume = volumeSlider.value;
+
+
+
+volumeIcon.addEventListener("click", () => {
+    volumeSlider.classList.toggle("show");
+});
+
+
+
+// ======================
+// Progress Bar
+// ======================
+audio.addEventListener("timeupdate", () => {
+    const percent = (audio.currentTime / audio.duration) * 100 || 0;
+    readProgressFill.style.width = percent + "%";
+    readProgressKnob.style.left = percent + "%";
+    readCurrentTime.textContent = formatTime(audio.currentTime);
+    readDuration.textContent = formatTime(audio.duration);
+});
+
+readProgressBar.addEventListener("click", (e) => {
+    const rect = readProgressBar.getBoundingClientRect();
+    const offsetX = e.clientX - rect.left;
+    const percent = offsetX / rect.width;
+    audio.currentTime = percent * audio.duration;
+});
+
+// ======================
+// دالة الوقت
+// ======================
+function formatTime(time) {
+    if (isNaN(time)) return "0:00";
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2,"0")}`;
+}

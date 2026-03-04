@@ -373,6 +373,7 @@ elReadAudio.addEventListener("timeupdate", () => {
       if (savedAyah && parseInt(savedSurah, 10) === number) {
         setTimeout(() => highlightAyah(savedAyah), 100);
       }
+      
 
     })
     .catch(err => {

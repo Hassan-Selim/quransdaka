@@ -137,43 +137,45 @@
           </select>
           
         </div>
-        <div class="player-bar" id="playerBar">
-          <div class="surah-name" id="playerSurahName"></div>
-          <div class="player-controls">
-            <button
-              type="button"
-              id="btnNext"
-              class="ctrl-btn"
-              aria-label="التالي"
-            >
-              التالي ⏭
-            </button>
-            <button
-              type="button"
-              id="btnPlayPause"
-              class="ctrl-btn ctrl-play"
-              aria-label="إيقاف"
-            >
-              ⏸ إيقاف
-            </button>
-            <button
-              type="button"
-              id="btnPrev"
-              class="ctrl-btn"
-              aria-label="السابق"
-            >
-              ⏮ السابق
-            </button>
-          </div>
-          <audio id="mainAudio" controls></audio>
-        </div>
+       <div class="player-bar" id="playerBar" style = "display: none;">
+  <div class="player-header">
+    <img src="../img/icon.webp" alt="App Icon" class="player-icon">
+    <div class="surah-name" id="playerSurahName"></div>
+  </div>
+
+ <div class="player-controls">
+ 
+  <button id="btnPrev" class="ctrl-btn">⏭</button>
+  <button id="btnPlayPause" class="ctrl-btn ctrl-play">▶</button>
+  <button id="btnStop" class="ctrl-btn">⏹</button>
+  <button id="btnNext" class="ctrl-btn">⏮</button>
+  <button id="btnAutoReplay" class="ctrl-btn">🔁</button>
+ 
+</div>
+
+
+  <div class="progress-wrapper">
+      <div class="volume-control">
+    <span id="volumeIcon">🔊</span>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" orient="vertical">
+  </div>
+    <span id="readCurrentTime">0:00</span>
+    <div class="progress-bar" id="readProgressBar">
+      <div class="progress-fill" id="readProgressFill"></div>
+      <div class="progress-knob" id="readProgressKnob"></div>
+    </div>
+    <span id="readDuration">0:00</span>
+  </div>
+
+  <audio id="mainAudio" preload="metadata"></audio>
+</div>
         <div class="loading" id="loading">جاري تحميل السور...</div>
         <div class="error-msg" id="errorMsg" style="display: none"></div>
         <div class="surah-list" id="surahList"></div>
       </div>
     </main>
     
-     🤝
+     
     </button>
 
     <script>

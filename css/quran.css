@@ -5,7 +5,11 @@
 }
 
 .quran-controls {
-   background: linear-gradient(135deg, var(--color-cream) 0%, var(--color-white) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-cream) 0%,
+    var(--color-white) 100%
+  );
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
   border: 1px solid rgba(13, 148, 136, 0.1);
@@ -19,9 +23,7 @@
 .quran-controls label {
   font-weight: 600;
   color: var(--color-teal-dark);
- 
 }
-
 
 .quran-controls select {
   padding: 0.6rem 1rem;
@@ -32,23 +34,22 @@
   background: #fff;
   color: #1e293b;
 }
-.quran-controls select{
+.quran-controls select {
   ::-webkit-scrollbar {
-  width: 5px;
-  background: transparent;
+    width: 5px;
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #0d9488;
+    border-radius: 20px;
+  }
 }
-::-webkit-scrollbar-thumb {
-  background: #0d9488; 
-  border-radius: 20px;
-  
-}
-
-}
-.quran-controls #reciter, #moshaf{
+.quran-controls #reciter,
+#moshaf {
   background: var(--color-teal);
   padding: 10px;
   min-width: 180px;
-   outline: none;
+  outline: none;
   border: none;
 }
 .quran-controls select option {
@@ -71,7 +72,7 @@
   background: var(--color-bg-card);
   color: var(--color-text);
 }
-
+/* 
 .player-bar {
   background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-teal-dark) 100%);
   color: var(--color-white);
@@ -142,6 +143,182 @@
 
 .player-bar audio::-webkit-media-controls-panel {
   background: rgba(255, 255, 255, 0.2);
+} */
+
+/* new css */
+
+.player-bar {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%; /* للتمركز */
+  transform: translateX(-50%); /* وسط الصفحة */
+
+  width: 800px; /* نفس عرض قائمة السور تقريبًا */
+  max-width: 90%; /* مرن على الشاشات الصغيرة */
+
+  background: #000f19c2;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #d6e0dd;
+
+  display: grid;
+  gap: 0.2rem;
+  padding: 20px;
+  border-radius: 1.5rem; /* مدور أعلى فقط */
+
+  font-family: "Segoe UI", sans-serif;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+  transition: 0.5s ease-in-out;
+  z-index: 999;
+}
+.player-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.player-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.surah-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center; /* هذا يوسّط الأزرار عموديًا داخل العنصر */
+  justify-content: center; /* لو عايزهم في المنتصف أفقيًا */
+  gap: 10px; /* المسافة بين الأزرار */
+  position: relative;
+  height: 60px; /* ارتفاع البار */
+}
+
+.ctrl-btn {
+  display: flex; /* flex عشان المحتوى يكون قابل للتموضع */
+  align-items: center; /* يوسّط الأيقونة عموديًا */
+  justify-content: center; /* يوسّط الأيقونة أفقيًا */
+  width: clamp(30px, 2vw, 60px);
+  height: clamp(30px, 2vw, 60px);
+  font-size: clamp(16px, 2vw, 22px);
+  cursor: pointer;
+  border: none;
+  border-radius: 10px; /* ممكن تقلل أو تزود حسب الحاجة */
+  background-color: #f0f0f0;
+  padding: 0; /* مهم جدًا عشان الأيقونة تفضل في النص */
+  transition: background-color 0.2s;
+}
+
+.ctrl-btn:hover {
+  background: #2dd1c4;
+  transform: scale(1.1);
+}
+
+.activeBtn{
+  background: #2dd1c4;
+}
+.ctrl-play {
+  background: #0084ff;
+  color: #fff;
+ width: clamp(40px, 2vw, 60px);
+  height: clamp(40px, 2vw, 60px);
+  font-size: clamp(16px, 2vw, 22px);
+}
+
+.progress-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress-bar {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  background-color: #ddd;
+  border-radius: 4px;
+  direction: rtl; /* من اليمين للشمال */
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.progress-fill {
+  position: absolute;
+  height: 100%;
+  background-color: #0596b4;
+  border-radius: 4px;
+  left: 0; /* نبدأ من اليمين */
+  width: 0%;
+}
+
+.progress-knob {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 3px solid #00bca3;
+  background-color: #f1fffb;
+  border-radius: 50%;
+  left: 0;
+}
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.volume-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 10px; /* ثابت على اليمين */
+  top: 50%;
+  transform: translateY(-50%);
+  
+}
+.volume-control #volumeIcon {
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-top: 2.5rem;
+}
+
+#volumeSlider {
+ position: absolute;
+  bottom: 5rem;
+  left: 50%;
+
+  width: 90px;  /* الطول */
+  height: 5px;
+
+  transform: translateX(-50%) rotate(90deg);
+  transform-origin: center;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+#volumeSlider.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#volumeSlider::-moz-range-thumb {
+  width: 160px;
+  height: 160px;
+  background: #2196f3;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .surah-list {
@@ -209,7 +386,8 @@
   flex-shrink: 0;
 }
 
-.loading, .error-msg {
+.loading,
+.error-msg {
   text-align: center;
   padding: 2rem;
   color: var(--color-text-muted);

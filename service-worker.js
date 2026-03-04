@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v1.0.9";
+const CACHE_VERSION = "v1.1.0";
 const STATIC_CACHE = `quran-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `quran-dynamic-${CACHE_VERSION}`;
 
