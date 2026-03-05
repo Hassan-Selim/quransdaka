@@ -296,7 +296,9 @@
  position: absolute;
   bottom: 5rem;
   left: 50%;
-
+     touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
   width: 90px;  /* الطول */
   height: 5px;
 
