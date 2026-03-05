@@ -1,0 +1,9 @@
+# robots.txt لموقع Quran Sadaka
+# يسمح للفهرسة لكل الصفحات
+
+User-agent: *
+Disallow:
+
+# ملفات الـ Sitemap
+Sitemap: https://www.quransadaka.online/sitemap.xml
+Sitemap: https://www.quransadaka.online/sitemap-suwar.xml
