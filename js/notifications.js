@@ -1,3 +1,7 @@
+// ============================
+// ملف notifications.js كامل
+// ============================
+
 console.log("Notifications script loaded ✅");
 
 if ('serviceWorker' in navigator) {
@@ -8,18 +12,43 @@ if ('serviceWorker' in navigator) {
   console.warn("Service Worker غير مدعوم في هذا المتصفح.");
 }
 
-
-
-// ================= دالة إرسال إشعارات =================
-function sendNotification(title, body) {
+// دالة إرسال إشعار
+function sendNotification(title, body, url = null) {
   if (Notification.permission === "granted") {
     navigator.serviceWorker.getRegistration().then(reg => {
-      if (reg) reg.showNotification(title, { body });
+      if (reg) {
+        reg.showNotification(title, {
+          body,
+          data: { url },
+          icon: "../img/icon.webp"
+        });
+      }
     });
   }
 }
 
-// ================= إشعارات الأذكار كل ساعة =================
+// ============================
+// أول ذكر عشوائي لكل جلسة
+// ============================
+function firstRandomAzkar() {
+  if (!sessionStorage.getItem("firstVisitThisSession")) {
+    const azkar = [
+      "سبحان الله وبحمده",
+      "اللهم ارحم موتانا وموتى المسلمين",
+      "اللهم إنك عفو تحب العفو فاعف عنا",
+      "أستغفر الله العظيم",
+      "لا إله إلا الله وحده لا شريك له"
+    ];
+    const randomZikr = azkar[Math.floor(Math.random() * azkar.length)];
+    sendNotification("ذكر اليوم 🌙", randomZikr, "../azkar");
+
+    sessionStorage.setItem("firstVisitThisSession", "true");
+  }
+}
+
+// ============================
+// أذكار كل ساعة
+// ============================
 function hourlyAzkar() {
   const azkar = [
     "سبحان الله وبحمده",
@@ -29,14 +58,21 @@ function hourlyAzkar() {
     "لا إله إلا الله وحده لا شريك له"
   ];
   const msg = azkar[Math.floor(Math.random() * azkar.length)];
-  sendNotification("ذكر اليوم 🌙", msg);
+  sendNotification("ذكر الساعة 🌙", msg, "../azkar");
 }
 
-// شغل كل ساعة
+// تشغيل كل ساعة
 setInterval(hourlyAzkar, 1000 * 60 * 60);
 
-// ================= إشعارات الصباح والمساء =================
-function scheduleNotification(title, body, hour, minute) {
+// ============================
+// أذكار الصباح والمساء
+// ============================
+function scheduleDailyAzkar() {
+  scheduleNotification("أذكار الصباح 🌅", "اذكار الصباح: سبحان الله، الحمد لله ...", 6, 0, "../azkar");
+  scheduleNotification("أذكار المساء 🌙", "اذكار المساء: أستغفر الله، اللهم صل على النبي ...", 18, 0, "../azkar");
+}
+
+function scheduleNotification(title, body, hour, minute, url) {
   const now = new Date();
   const target = new Date();
   target.setHours(hour, minute, 0, 0);
@@ -44,21 +80,15 @@ function scheduleNotification(title, body, hour, minute) {
   if (diff < 0) diff += 24 * 60 * 60 * 1000; // لو الوقت فات، اضف يوم
 
   setTimeout(() => {
-    sendNotification(title, body);
-    setInterval(() => sendNotification(title, body), 24 * 60 * 60 * 1000); // كرر كل يوم
+    sendNotification(title, body, url);
+    setInterval(() => sendNotification(title, body, url), 24 * 60 * 60 * 1000); // كرر كل يوم
   }, diff);
 }
 
-function scheduleMorningEvening() {
-  scheduleNotification("أذكار الصباح 🌅", "اذكار الصباح: سبحان الله، الحمد لله ...", 6, 0);
-  scheduleNotification("أذكار المساء 🌙", "اذكار المساء: أستغفر الله، اللهم صل على النبي ...", 18, 0);
-}
-
-// شغل بعد تحميل الصفحة
-document.addEventListener("DOMContentLoaded", scheduleMorningEvening);
-
-// ================= إشعارات الصلاة =================
-// ⚠️ هذه الدالة مرتبطة بـ ramadan.js بعد جلب مواقيت الصلاة
+// ============================
+// إشعارات مواقيت الصلاة
+// ============================
+// هذه الدالة مربوطة بملف ramadan.js
 function setupPrayerNotifications(prayerTimes) {
   if (Notification.permission !== "granted") return;
 
@@ -71,17 +101,25 @@ function setupPrayerNotifications(prayerTimes) {
     let diff = prayerDate - now;
     if (diff > 0) {
       setTimeout(() => {
-        sendNotification(`وقت صلاة ${name}`, `الصلاة الآن (${timeStr}) 🌙`);
+        sendNotification(`وقت صلاة ${name}`, `الصلاة الآن (${timeStr}) 🌙`, "../ramadan");
       }, diff);
     }
   });
 }
 
-// ربطها مع ramadan.js
 window.setupPrayerNotifications = setupPrayerNotifications;
 
-// ================= طلب إذن الإشعارات =================
-Notification.requestPermission().then(permission => {
-  if (permission === "granted") console.log("تم السماح بالإشعارات ✅");
-  else console.warn("الإشعارات مرفوضة ❌");
+// ============================
+// طلب إذن الإشعارات وتشغيل الأذكار
+// ============================
+document.addEventListener("DOMContentLoaded", () => {
+  Notification.requestPermission().then(permission => {
+    if (permission === "granted") {
+      console.log("تم السماح بالإشعارات ✅");
+      setTimeout(firstRandomAzkar, 3000); // أول ذكر بعد 3 ثواني
+      scheduleDailyAzkar(); // أذكار الصباح والمساء
+    } else {
+      console.warn("الإشعارات مرفوضة ❌");
+    }
+  });
 });

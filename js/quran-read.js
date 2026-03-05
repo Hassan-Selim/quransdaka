@@ -303,13 +303,37 @@ elReadAudio.addEventListener("timeupdate", () => {
   }
 
   // --- حفظ اسم السورة وآيتك الأولى في localStorage ---
-  let surahInfo = suwar.find(s => s.number === number);
-  if (surahInfo) {
-    localStorage.setItem("lastSurah", number);
-    localStorage.setItem("lastSurahName", surahInfo.name || "");
-    localStorage.setItem("lastAyah", 1);
-  }
+  // تعريف الدالة مرة واحدة في بداية الكود
+function updateSEOMeta(surah) {
+  // تغيير الرابط باستخدام هاش بدل path
+  location.hash = "/surah/" + surah.number;
 
+  // الباقي زي ما هو
+  document.title = `سورة ${surah.name} (${surah.englishName}) مكتوبة كاملة | Quran Sadaka`;
+  let metaDesc = document.querySelector("meta[name='description']");
+  if (!metaDesc) {
+    metaDesc = document.createElement("meta");
+    metaDesc.setAttribute("name", "description");
+    document.head.appendChild(metaDesc);
+  }
+  metaDesc.setAttribute(
+    "content",
+    `قراءة سورة ${surah.name} (${surah.englishName}) مكتوبة بالكامل مع إمكانية الاستماع وتحديد القارئ.`
+  );
+}
+
+// داخل دالة openSurah
+let surahInfo = suwar.find(s => s.number === number);
+if (surahInfo) {
+  // تحديث SEO ورابط الصفحة
+  
+  updateSEOMeta(surahInfo);
+
+  // حفظ السورة وآية البداية
+  localStorage.setItem("lastSurah", number);
+  localStorage.setItem("lastSurahName", surahInfo.name || "");
+  localStorage.setItem("lastAyah", 1);
+}
   // --- تحميل الآيات ---
   fetch("../json/quran.json")
     .then(res => res.json())

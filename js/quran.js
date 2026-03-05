@@ -61,10 +61,10 @@
   function updatePlayPauseButton() {
     if (!elMainAudio.src) return;
     if (elMainAudio.paused) {
-      elBtnPlayPause.textContent = '▶ تشغيل';
+      elBtnPlayPause.textContent = '▶ ';
       elBtnPlayPause.setAttribute('aria-label', 'تشغيل');
     } else {
-      elBtnPlayPause.textContent = '⏸ إيقاف';
+      elBtnPlayPause.textContent = '⏸ ';
       elBtnPlayPause.setAttribute('aria-label', 'إيقاف');
     }
   }
@@ -346,29 +346,29 @@ audio.addEventListener("ended", () => {
     }
 });
 
-// ======================
-// Volume Control
-// ======================
 
 // Volume Control
 // ======================
+function setAudioVolume(value) {
+  audio.volume = value; // value من 0 إلى 1
 
+  if (value == 0) volumeIcon.textContent = "🔇";
+  else if (value < 0.5) volumeIcon.textContent = "🔉";
+  else volumeIcon.textContent = "🔊";
+}
+
+// عند تغيير السلايدر
 volumeSlider.addEventListener("input", () => {
-    audio.volume = volumeSlider.value;
-
-    if (audio.volume == 0) volumeIcon.textContent = "🔇";
-    else if (audio.volume < 0.5) volumeIcon.textContent = "🔉";
-    else volumeIcon.textContent = "🔊";
+  setAudioVolume(parseFloat(volumeSlider.value));
 });
 
-audio.volume = volumeSlider.value;
+// ضبط القيمة الأولية
+setAudioVolume(parseFloat(volumeSlider.value));
 
-
-
+// فتح/غلق السلايدر عند الضغط على الأيقونة
 volumeIcon.addEventListener("click", () => {
-    volumeSlider.classList.toggle("show");
+  volumeSlider.classList.toggle("show");
 });
-
 
 
 // ======================
