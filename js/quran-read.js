@@ -305,17 +305,19 @@ elReadAudio.addEventListener("timeupdate", () => {
   // --- حفظ اسم السورة وآيتك الأولى في localStorage ---
   // تعريف الدالة مرة واحدة في بداية الكود
 function updateSEOMeta(surah) {
-  // تغيير الرابط باستخدام هاش بدل path
-  location.hash = "/surah/" + surah.number;
 
-  // الباقي زي ما هو
+  // تغيير الرابط بدون إضافة خطوة في history
+  history.replaceState(null, "", "#/surah/" + surah.number);
+
   document.title = `سورة ${surah.name} (${surah.englishName}) مكتوبة كاملة | Quran Sadaka`;
+
   let metaDesc = document.querySelector("meta[name='description']");
   if (!metaDesc) {
     metaDesc = document.createElement("meta");
     metaDesc.setAttribute("name", "description");
     document.head.appendChild(metaDesc);
   }
+
   metaDesc.setAttribute(
     "content",
     `قراءة سورة ${surah.name} (${surah.englishName}) مكتوبة بالكامل مع إمكانية الاستماع وتحديد القارئ.`
