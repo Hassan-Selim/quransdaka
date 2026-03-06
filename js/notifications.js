@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
   Notification.requestPermission().then(permission => {
     if (permission === "granted") {
       console.log("تم السماح بالإشعارات ✅");
-      setTimeout(firstRandomAzkar, 3000); // أول ذكر بعد 3 ثواني
+      setTimeout(firstRandomAzkar, 6000); // أول ذكر بعد 3 ثواني
       scheduleDailyAzkar(); // أذكار الصباح والمساء
     } else {
       console.warn("الإشعارات مرفوضة ❌");
