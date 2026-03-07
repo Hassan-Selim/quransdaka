@@ -88,7 +88,7 @@
   margin: auto;
   display: flex;
   padding: 10px 20px;
-  background: var(--color-teal-dark);
+  background: var(--color-bg-card);
   outline: none;
   border: none;
   border-radius: 20px;
@@ -138,4 +138,5 @@
   .list{
     grid-template-columns: repeat(4,1fr);
   }
+
 }
