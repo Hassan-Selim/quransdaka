@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>رمضان كريم | قرآن صدقة</title>
+    <!-- معلومات أساسية -->
+    <meta
+      name="description"
+      content="كل ما تحتاجه في رمضان: فتاوى الصيام، أدعية، مواقيت الصلاة اليومية، وأجواء رمضانية مميزة لتجربة روحية متكاملة."
+    />
+
+    <!-- الكلمات المفتاحية -->
+    <meta
+      name="keywords"
+      content="رمضان, فتاوى رمضان, مواقيت الصلاة, أدعية رمضان, شهر رمضان, صيام, أجواء رمضانية"
+    />
+
+    <!-- المؤلف -->
+    <meta name="author" content="Hassan Selim" />
+
+    <!-- Open Graph لـ Facebook و WhatsApp -->
+    <meta property="og:title" content="القرآن الكريم | صدقة جارية" />
+    <meta
+      property="og:description"
+      content="استمع للقرآن الكريم، اقرأ الرقية الشرعية، وشارك في صدقة جارية."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.quransadaka.online" />
+    <meta
+      property="og:image"
+      content="https://www.quransadaka.online/img/banner.webp"
+    />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="القرآن الكريم | صدقة جارية" />
+    <meta
+      name="twitter:description"
+      content="استمع للقرآن الكريم، اقرأ الرقية الشرعية، وشارك في صدقة جارية."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.quransadaka.online/img/banner.webp"
+    />
+    <meta name="twitter:url" content="https://www.quransadaka.online" />
+
+    <!-- canonical URL -->
+    <link rel="canonical" href="https://www.quransadaka.online" />
+
+    <!-- رابط موقعك -->
+    <link rel="home" href="https://www.quransadaka.online" />
+
+    <script>
+      (function () {
+        var t = localStorage.getItem("quran-sadaka-theme");
+        document.documentElement.setAttribute(
+          "data-theme",
+          t === "dark" ? "dark" : "light",
+        );
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=home"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="shortcut icon" href="../img/icon.webp" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/prayer.css" />
+  </head>
+  <body>
+    <header class="page-header">
+      <button
+        type="button"
+        id="themeToggle"
+        class="theme-toggle"
+        aria-label="الوضع الداكن"
+      >
+        🌙
+      </button>
+      <button class="shareBtn" onclick="shareSite()">🤝</button>
+      <a href="../" class="back-link home">🏠</a>
+      <img
+        loading="lazy"
+        class="address"
+        src="../img/q.svg"
+        class="lazyload"
+        alt="شعار موقع القرآن الكريم"
+      />
+      <div>
+        <button class="menu-icon" id="menu-icon">☰</button>
+        <nav class="close-nav" id="close-nav">
+          <span class="close-icon">❌</span>
+          <a href="../quran">🔊 استمع للقرآن</a>
+          <a href="../quran-read">📜 إقرأ القرآن</a>
+          <a href="../ruqyah">✨ الرقية الشرعية</a>
+          <a href="../radio">📻 الراديو</a>
+          <a href="../azkar">🤲 أذكار ودعاء</a>
+          <a href="../tasbeeh">📿 التسبيح</a>
+          <a href="../prayer">🌙 رمضان</a>
+          <a href="../about">ℹ️ عن الموقع</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="prayer-content">
+      
+      <section class="prayer-grid">
+        <!-- زر تحديد الموقع لو المستخدم رفض أو لم يتم تحديده -->
+        <button id="locationBtn" style="display: none">حدد موقعك</button>
+
+        <!-- جدول مواقيت الصلاة -->
+        <ul class="prayer-list">
+          <li class="prayer-item">
+            <span class="prayer-name">الفجر</span>
+            <span class="prayer-time" id="fajr"></span>
+          </li>
+          <li class="prayer-item">
+            <span class="prayer-name">الشروق</span>
+            <span class="prayer-time" id="sunrise"></span>
+          </li>
+          <li class="prayer-item">
+            <span class="prayer-name">الظهر</span>
+            <span class="prayer-time" id="dhuhr"></span>
+          </li>
+          <li class="prayer-item">
+            <span class="prayer-name">العصر</span>
+            <span class="prayer-time" id="asr"></span>
+          </li>
+          <li class="prayer-item">
+            <span class="prayer-name">المغرب</span>
+            <span class="prayer-time" id="maghrib"></span>
+          </li>
+          <li class="prayer-item">
+            <span class="prayer-name">العشاء</span>
+            <span class="prayer-time" id="isha"></span>
+          </li>
+        </ul>
+
+        <!-- الصلاة القادمة -->
+        <div id="nextPrayerCountdown"></div>
+
+        <!-- اتجاه القبلة -->
+        <!-- اتجاه القبلة -->
+<div id="qiblaContainer">
+  <canvas id="qiblaCompass" width="250" height="250"></canvas>
+  <p id="qiblaHint" style="text-align:center; margin-top:5px; color:#555;">قم بتحريك الهاتف لتحريك البوصلة</p>
+</div>
+      </section>
+    </main>
+
+    <!-- زر المشاركة -->
+
+    <!-- فقط هذا السطر -->
+    <script src="../js/praytime.js" defer></script>
+    <script src="../js/notifications.js" defer></script>
+    <script src="../js/prayer.js" defer></script>
+    <script src="../js/lazysizes.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+    
+    <script>
+      function shareSite() {
+        if (navigator.share) {
+          navigator
+            .share({
+              title: "موقع القرآن الكريم | صدقة جارية",
+              text: "شارك في صدقة جارية من خلال الاستماع للقرآن الكريم وقراءة الرقية الشرعية.",
+              url: window.location.href,
+            })
+            .then(() => console.log("تمت المشاركة بنجاح"))
+            .catch((error) => console.log("خطأ في المشاركة:", error));
+        } else {
+          alert(
+            "هذا التصفح لا يدعم ميزة المشاركة. الرجاء نسخ الرابط ومشاركته يدوياً.",
+          );
+        }
+      }
+    </script>
+  </body>
+</html>
