@@ -93,7 +93,7 @@
         class="lazyload"
         alt="شعار موقع القرآن الكريم"
       />
-      <div>
+     <!--  <div>
         <button class="menu-icon" id="menu-icon">☰</button>
         <nav class="close-nav" id="close-nav">
           <span class="close-icon">❌</span>
@@ -106,64 +106,117 @@
           <a href="../prayer">🌙 رمضان</a>
           <a href="../about">ℹ️ عن الموقع</a>
         </nav>
-      </div>
+      </div> -->
     </header>
+   <div class="mobile-nav">
+  <ul>
+
+    <!-- زرار المزيد -->
+   
+
+    <li class="prayer-btn active" title="التوقيت">🕑</li>
+    <li class="qibla-btn" title="القبلة">🧭</li>
+    <li class="zikr-btn" title="الأذكار">📿</li>
+
+    <li class="home-btn" title="الرئيسية">
+      <a href="/">🏠</a>
+    </li>
+     <li class="more-btn" title="المزيد">☰</li>
+  </ul>
+</div>
+
+
+<!-- القائمة الجانبية -->
+<nav class="side-nav" id="side-nav">
+
+  <span class="close-icon">✖</span>
+
+  <a href="../quran">🔊 استمع للقرآن</a>
+  <a href="../quran-read">📜 إقرأ القرآن</a>
+  <a href="../ruqyah">✨ الرقية الشرعية</a>
+  <a href="../radio">📻 الراديو</a>
+  <a href="../azkar">🤲 أذكار ودعاء</a>
+  <a href="../tasbeeh">📿 التسبيح</a>
+  <a href="../prayer">🌙 رمضان</a>
+  <a href="../about">ℹ️ عن الموقع</a>
+
+</nav>
+<div class="menu-overlay" id="menu-overlay"></div>
 
     <main class="prayer-content">
-      
-      <section class="prayer-grid">
-        <!-- زر تحديد الموقع لو المستخدم رفض أو لم يتم تحديده -->
-        <button id="locationBtn" style="display: none">حدد موقعك</button>
+      <div class="prayer-container">
+      <!-- 1. زر الموقع -->
+      <div class="location-bar">
+  <span class="gps-icon" id="gpsIcon">📍</span>
 
-        <!-- جدول مواقيت الصلاة -->
-        <ul class="prayer-list">
-          <li class="prayer-item">
-            <span class="prayer-name">الفجر</span>
-            <span class="prayer-time" id="fajr"></span>
-          </li>
-          <li class="prayer-item">
-            <span class="prayer-name">الشروق</span>
-            <span class="prayer-time" id="sunrise"></span>
-          </li>
-          <li class="prayer-item">
-            <span class="prayer-name">الظهر</span>
-            <span class="prayer-time" id="dhuhr"></span>
-          </li>
-          <li class="prayer-item">
-            <span class="prayer-name">العصر</span>
-            <span class="prayer-time" id="asr"></span>
-          </li>
-          <li class="prayer-item">
-            <span class="prayer-name">المغرب</span>
-            <span class="prayer-time" id="maghrib"></span>
-          </li>
-          <li class="prayer-item">
-            <span class="prayer-name">العشاء</span>
-            <span class="prayer-time" id="isha"></span>
-          </li>
-        </ul>
+  <span id="locationName" class="loading">
+    جاري تحديد الموقع...
+  </span>
 
-        <!-- الصلاة القادمة -->
-        <div id="nextPrayerCountdown"></div>
-
-        <!-- اتجاه القبلة -->
-        <!-- اتجاه القبلة -->
-<div id="qiblaContainer">
-  <canvas id="qiblaCompass" width="250" height="250"></canvas>
-  <p id="qiblaHint" style="text-align:center; margin-top:5px; color:#555;">قم بتحريك الهاتف لتحريك البوصلة</p>
+  <button id="refreshLocationBtn">⟳</button>
 </div>
+      <!-- 2. الصلاة القادمة + Countdown -->
+      <section class="next-prayer-section">
+        <div class="progress-circle">
+          <canvas id="prayerProgress" width="100" height="100"></canvas>
+          <span class="next-prayer-name" id="nextPrayerName"></span>
+        </div>
+        <div class="next-prayer-countdown" id="nextPrayerCountdown"></div>
+        <div class="prayer-date" id="todayDate"></div>
       </section>
+      <ul class="prayer-list">
+        <li class="prayer-item">
+          <span class="prayer-name">الفجر</span
+          ><span class="prayer-time" id="fajr"></span>
+        </li>
+        <li class="prayer-item">
+          <span class="prayer-name">الشروق</span
+          ><span class="prayer-time" id="sunrise"></span>
+        </li>
+        <li class="prayer-item">
+          <span class="prayer-name">الظهر</span
+          ><span class="prayer-time" id="dhuhr"></span>
+        </li>
+        <li class="prayer-item">
+          <span class="prayer-name">العصر</span
+          ><span class="prayer-time" id="asr"></span>
+        </li>
+        <li class="prayer-item">
+          <span class="prayer-name">المغرب</span
+          ><span class="prayer-time" id="maghrib"></span>
+        </li>
+        <li class="prayer-item">
+          <span class="prayer-name">العشاء</span
+          ><span class="prayer-time" id="isha"></span>
+        </li>
+      </ul>
+      </div>
+      
     </main>
+    <section id="qiblaSection" style="display: none;">
+        
+        <h2>اتجاه القبلة</h2>
+        <canvas id="qiblaCompass" width="250" height="250">🕋</canvas>
+        <p id="qiblaHint"></p>
+
+        <p>حرّك الهاتف <span>♾️</span> لتحسين دقة القبلة</p>
+      </section>
+    <div class="zikr" style="display: none;">
+      <div class="card">🌞 أذكار الصباح</div>
+      <div class="card">🌛 أذكار المساء</div>
+      <div class="card">📿 الذكر بعد الصلاة</div>
+      <div class="card">🤲 أدعية</div>
+    </div>
 
     <!-- زر المشاركة -->
 
     <!-- فقط هذا السطر -->
-    <script src="../js/praytime.js" defer></script>
+    <script type="module" src="../js/adhan.js" defer></script>
     <script src="../js/notifications.js" defer></script>
-    <script src="../js/prayer.js" defer></script>
+    <script type="module" src="../js/prayer.js" defer></script>
     <script src="../js/lazysizes.js" defer></script>
     <script src="../js/theme.js" defer></script>
-    
+
     <script>
       function shareSite() {
         if (navigator.share) {
