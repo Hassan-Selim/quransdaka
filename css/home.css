@@ -1,3 +1,7 @@
+:root{
+  --font-btn:"Tajawal";
+  src: url("../fonts/Tajawal.ttf") format("truetype"); ;
+}
 @font-face {
   font-family: "Aviny";
   src: url("../fonts/Aviny.ttf") format("truetype");
@@ -48,6 +52,7 @@
 }
 
 .home-btn {
+  font-family: var(--font-btn);
   display: grid;
   align-items: center;
   justify-content: center;

@@ -88,17 +88,32 @@
       });
   }
 
-  function loadReciters() {
-    return fetch(API_RECITERS)
-      .then(function (res) { return res.json(); })
-      .then(function (data) {
-        if (data.reciters) {
-          reciters = data.reciters;
-          return reciters;
-        }
-        throw new Error('لا توجد بيانات قراء');
-      });
-  }
+ function prioritizeHafs(reciters) {
+  return reciters.map(r => {
+    if (r.moshaf && r.moshaf.length) {
+      const hafsIndex = r.moshaf.findIndex(m => m.name && m.name.includes("حفص عن عاصم"));
+      if (hafsIndex > 0) {
+        // نطلع رواية حفص ونحطها في الأول
+        const hafs = r.moshaf.splice(hafsIndex, 1)[0];
+        r.moshaf.unshift(hafs);
+      }
+    }
+    return r;
+  });
+}
+
+function loadReciters() {
+  return fetch(API_RECITERS)
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      if (data.reciters) {
+        // هنا بنعيد ترتيب الروايات بحيث حفص تبقى الأولى
+        reciters = prioritizeHafs(data.reciters);
+        return reciters;
+      }
+      throw new Error('لا توجد بيانات قراء');
+    });
+}
 
   function fillReciterSelect() {
     elReciter.innerHTML = '<option value="">-- اختر القارئ --</option>';
