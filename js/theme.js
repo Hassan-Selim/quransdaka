@@ -147,3 +147,35 @@ window.addEventListener("scroll", () => {
 
 
 /* تثبيت التطبيق */
+let deferredPrompt;
+
+function isStandalone(){
+ return window.matchMedia('(display-mode: standalone)').matches
+     || window.navigator.standalone === true;
+}
+
+if(isStandalone()){
+ installBar.style.display="none";
+}
+
+window.addEventListener("beforeinstallprompt",(e)=>{
+
+ e.preventDefault();
+
+ deferredPrompt = e;
+
+});
+
+installBtn.onclick = async ()=>{
+
+ if(!deferredPrompt) return;
+
+ deferredPrompt.prompt();
+
+};
+
+window.addEventListener("appinstalled",()=>{
+
+ installBar.style.display="none";
+
+});
