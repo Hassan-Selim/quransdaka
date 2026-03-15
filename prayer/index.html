@@ -193,14 +193,21 @@
       </div>
       
     </main>
-    <section id="qiblaSection" style="display: none;">
-        
-        <h2>اتجاه القبلة</h2>
-        <canvas id="qiblaCompass" width="250" height="250">🕋</canvas>
-        <p id="qiblaHint"></p>
-
-        <p>حرّك الهاتف <span>♾️</span> لتحسين دقة القبلة</p>
-      </section>
+   <section id="qiblaSection" style="display: none;">
+    <h2>اتجاه القبلة</h2>
+    <div style="position: relative; display: inline-block;">
+        <canvas id="qiblaCompass" width="300" height="300"></canvas>
+    </div>
+    <p id="qiblaHint"">
+        يشير السهم إلى اتجاه القبلة دائماً<br>
+        <p  class="rot-hint">حرّك الهاتف <span>♾️</span> لتحسين الدقة</p>
+        <span class="dis-hint">يشير السهم إلى اتجاه القبلة. وللحصول على نتيجة دقيقة حرّك
+جهازك يمينا أو يسارًا بشكل دائري.
+واحرص على أن يكون جهازك بعيدًا عن أي أجهزة إلكترونية أو
+مجال مغناطيسي حول الجهاز؛ حى لا يؤثر ذلك في دقة البوصلة.</span>
+    </p>
+    
+</section>
     <div class="zikr" style="display: none;">
       <div class="card">🌞 أذكار الصباح</div>
       <div class="card">🌛 أذكار المساء</div>
