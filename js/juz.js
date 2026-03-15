@@ -47,8 +47,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         const lastSurah = surahs[surahs.length - 1];
         const firstAyah = mapping[firstSurah].split("-")[0];
         const lastAyah = mapping[lastSurah].split("-")[1];
-        const firstName = surahNames.find(s => s.number == firstSurah)?.name || "";
-        const lastName = surahNames.find(s => s.number == lastSurah)?.name || "";
+        const firstName =
+          surahNames.find((s) => s.number == firstSurah)?.name || "";
+        const lastName =
+          surahNames.find((s) => s.number == lastSurah)?.name || "";
         metaText = `${firstName} ${firstAyah} - ${lastName} ${lastAyah}`;
       }
 
@@ -70,19 +72,19 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // ================= عرض جزء =================
   function displayJuz(juzNumber, highlightSurah = null, highlightAyah = null) {
-  const juz = juzData[juzNumber];
-  if (!juz) return;
+    const juz = juzData[juzNumber];
+    if (!juz) return;
 
-  currentJuzNumber = juzNumber;
+    currentJuzNumber = juzNumber;
 
-  // اخفاء قائمة الأجزاء + عناصر التحكم
-  if (juzList) juzList.style.display = "none";
-  if (continueBtn) continueBtn.style.display = "none";
-  if (selectJuzText) selectJuzText.style.display = "none";
-  if (readIntro) readIntro.style.display = "none"; // <<<<<< هنا
+    // اخفاء قائمة الأجزاء + عناصر التحكم
+    if (juzList) juzList.style.display = "none";
+    if (continueBtn) continueBtn.style.display = "none";
+    if (selectJuzText) selectJuzText.style.display = "none";
+    if (readIntro) readIntro.style.display = "none"; // <<<<<< هنا
 
-  if (juzView) juzView.style.display = "block";
-  window.scrollTo({ top: 0, behavior: "instant" });
+    if (juzView) juzView.style.display = "block";
+    window.scrollTo({ top: 0, behavior: "instant" });
 
     if (juzTitle) juzTitle.textContent = `الجزء ${juzNumber}`;
     if (!juzVerses) return;
@@ -91,8 +93,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     for (let surahNumber in juz.verse_mapping) {
       const range = juz.verse_mapping[surahNumber];
       const [start, end] = range.split("-").map(Number);
-      const surahObj = surahNames.find(s => s.number == surahNumber);
-      const surahData = quranData.find(s => s.number == surahNumber);
+      const surahObj = surahNames.find((s) => s.number == surahNumber);
+      const surahData = quranData.find((s) => s.number == surahNumber);
       if (!surahData) continue;
 
       const surahHeader = document.createElement("div");
@@ -107,8 +109,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         juzVerses.appendChild(basmalaSpan);
       }
 
-      const ayat = surahData.ayahs.filter(a => a.number >= start && a.number <= end);
-      ayat.forEach(ayah => {
+      const ayat = surahData.ayahs.filter(
+        (a) => a.number >= start && a.number <= end,
+      );
+      ayat.forEach((ayah) => {
         const verseWrapper = document.createElement("span");
         verseWrapper.className = "verse-wrapper";
 
@@ -125,17 +129,28 @@ document.addEventListener("DOMContentLoaded", async function () {
         juzVerses.appendChild(verseWrapper);
 
         verseWrapper.addEventListener("click", () => {
-          document.querySelectorAll(".verse-text").forEach(el => el.classList.remove("ayah-highlight"));
+          document
+            .querySelectorAll(".verse-text")
+            .forEach((el) => el.classList.remove("ayah-highlight"));
           textSpan.classList.add("ayah-highlight");
 
-          localStorage.setItem("lastJuz", juzNumber);
-          localStorage.setItem("lastSurah", surahNumber);
-          localStorage.setItem("lastAyah", ayah.number);
+          localStorage.setItem("juz-lastJuz", juzNumber);
+          localStorage.setItem("juz-lastSurah", surahNumber);
+          localStorage.setItem("juz-lastAyah", ayah.number);
         });
 
-        if (highlightSurah && highlightAyah && parseInt(surahNumber) === highlightSurah && ayah.number === highlightAyah) {
+        if (
+          highlightSurah &&
+          highlightAyah &&
+          parseInt(surahNumber) === highlightSurah &&
+          ayah.number === highlightAyah
+        ) {
           textSpan.classList.add("ayah-highlight");
-          setTimeout(() => textSpan.scrollIntoView({ behavior: "smooth", block: "center" }), 100);
+          setTimeout(
+            () =>
+              textSpan.scrollIntoView({ behavior: "smooth", block: "center" }),
+            100,
+          );
         }
       });
     }
@@ -144,8 +159,12 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ================= عرض/إخفاء continueBtn و selectJuzText =================
   function showPageControls() {
     if (!juzList) return;
-    if (continueBtn) continueBtn.style.display = juzList.style.display !== "none" ? "inline-block" : "none";
-    if (selectJuzText) selectJuzText.style.display = juzList.style.display !== "none" ? "block" : "none";
+    if (continueBtn)
+      continueBtn.style.display =
+        juzList.style.display !== "none" ? "inline-block" : "none";
+    if (selectJuzText)
+      selectJuzText.style.display =
+        juzList.style.display !== "none" ? "block" : "none";
   }
 
   // ================= زر الرجوع =================
@@ -170,17 +189,16 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ================= continueBtn: تابع واختر السورة =================
   if (continueBtn) {
   continueBtn.addEventListener("click", () => {
-    const lastJuz = parseInt(localStorage.getItem("lastJuz"));
-    const lastSurah = parseInt(localStorage.getItem("lastSurah"));
-    const lastAyah = parseInt(localStorage.getItem("lastAyah"));
+    const lastJuz = parseInt(localStorage.getItem("juz-lastJuz"));
+    const lastSurah = parseInt(localStorage.getItem("juz-lastSurah"));
+    const lastAyah = parseInt(localStorage.getItem("juz-lastAyah"));
 
     if (lastJuz && lastSurah && lastAyah) {
       displayJuz(lastJuz, lastSurah, lastAyah);
     } else {
-      displayJuz(1); // لو مفيش سجل، يبدأ من أول جزء
+      displayJuz(1); 
     }
   });
 }
-
   loadData();
 });
