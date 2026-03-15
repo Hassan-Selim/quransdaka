@@ -107,30 +107,48 @@
   alt="موقع القرآن الكريم" />
   
 </div>
+<!-- Install Banner -->
+<!-- Android/Windows Install Bar -->
+ <div class="install-pwa">
 <div id="installBar" class="install-bar">
-
   <div class="install-info">
-    <div class="install-icon">🔻</div>
-    
     <div class="install-text">
       <span id="installTitle">تثبيت التطبيق</span>
-      <small id="installDesc">للاستفادة بشكل أفضل من الموقع قم بتثبيت التطبيق</small>
+      <small>لتجربة أفضل ننصحك بتثبيت التطبيق</small>
     </div>
   </div>
-
-  <button id="installBtn">تثبيت</button>
-
+  <div class="install-actions">
+    <button id="installBtn">تثبيت</button>
+    <button id="installLater">لاحقاً</button>
+  </div>
 </div>
 
+<!-- iOS Install Bar (مخفي افتراضيًا) -->
+<div id="iosBar" class="install-bar" >
+  <div class="install-info">
+    <span class="install-icon">📱</span>
+    <div class="install-text">
+      <span id="iosTitle">إضافة للشاشة الرئيسية</span>
+      <small>استمتع بالقرآن والأذان بدون إنترنت</small>
+    </div>
+  </div>
+  <div class="install-actions">
+    <button id="iosBtn">إضافة</button>
+  </div>
+</div>
 
-<div id="iosGuide" class="ios-guide">
-  <p>لإضافة الموقع كتطبيق:</p>
-
-  <ol>
-    <li>اضغط زر المشاركة ⬆️</li>
-    <li>اختر Add to Home Screen</li>
-    <li>اضغط Add</li>
-  </ol>
+<!-- iOS Popup -->
+<div id="iosPopup" class="ios-popup">
+  <div class="popup-content">
+    <h3>خطوات الإضافة</h3>
+    <ol>
+      <li>اضغط زر المشاركة ⬆️</li>
+      <li>اختر Add to Home Screen</li>
+      <li>اضغط Add</li>
+    </ol>
+    <button id="closePopup">إغلاق</button>
+  </div>
+</div>
 </div>
 
   <!-- // إضافة زر المشاركة// -->
