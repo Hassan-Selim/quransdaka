@@ -2,21 +2,21 @@
 body,
 html {
   font-family: "cairo";
-  src: url("../fonts/cairo.ttf") format("truetype"); ;
+  src: url("../fonts/cairo.ttf") format("truetype");
   background: #1f2d45;
   color: #fff;
   margin: 0;
   padding: 0;
   font-variant: lining-nums;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   user-select: none;
-  
+  height: 100dvh;
+  width: 100%;
 }
-.prayer-content{
+.prayer-content {
   transition: 0.1s ease-in-out;
 }
-
 
 /* الصلاة القادمة */
 .next-prayer-section {
@@ -57,11 +57,6 @@ html {
   text-align: center;
 }
 
-.progress-circle canvas {
-  width: 10rem;
-  height: 10rem;
-}
-
 .next-prayer-name {
   position: absolute;
   top: 45%;
@@ -95,7 +90,6 @@ html {
   padding: 0;
   display: grid;
   flex-direction: column;
-
 }
 
 .prayer-item {
@@ -114,12 +108,11 @@ html {
   color: #ff4d5a;
 }
 
-p span{
+p span {
   font-size: 2rem;
   text-align: center;
-
 }
-h2{
+h2 {
   margin-bottom: 1rem;
 }
 
@@ -127,73 +120,92 @@ h2{
 #qiblaSection {
   text-align: center;
   margin: auto;
-  margin-top: 5rem;
-}
-
-#qiblaSection canvas {
-  border-radius: 50%;
-  background: #2b3c56;
-  border: 1px dashed #008cff;
+  width: 100%;
+  height: 100%;
+  
+  color: white;
+  padding: 20px;
 }
 
 #qiblaSection p {
   margin-top: 8px;
-  font-size: 14px;
-  color: #9aa6b2;
+  font-size: 1.5rem;
+  color:#0280ab;
+  font-weight: 600;
 }
-
-
-.location-bar{
-display:flex;
-align-items:center;
-gap:12px;
-background:#2b3a55;
-padding:10px 18px;
-border-radius:30px;
-color:#fff;
-font-size:15px;
-width:max-content;
-margin:auto;
-margin-top: 1rem;
-
+#qiblaSection p span{
+  font-size: 1rem;
+  color: #50575f;
+}
+#qiblaSection .rot-hint {
+  color: aliceblue;
+}
+#qiblaSection .rot-hint span{
+  font-size: 3rem;
+}
+#qiblaSection .dis-hint {
+  color: rgb(123, 136, 148);
+  font-size: 1rem;
+}
+#qiblaSection h2 {
+  margin-top: 3rem;
+}
+.location-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #2b3a55;
+  padding: 10px 18px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 15px;
+  width: max-content;
+  margin: auto;
+  margin-top: 1rem;
 }
 
 /* أيقونة GPS */
-.gps-icon{
-font-size:18px;
-font-weight: 800;
-animation:pulse 1.5s infinite;
+.gps-icon {
+  font-size: 18px;
+  font-weight: 800;
+  animation: pulse 1.5s infinite;
 }
 
 /* loading effect */
-.loading{
-opacity:.7;
+.loading {
+  opacity: 0.7;
 }
 
 /* زر التحديث */
-#refreshLocationBtn{
-background:#e74c3c;
-border:none;
-color:#fff;
-width:34px;
-height:34px;
-border-radius:50%;
-cursor:pointer;
-font-size:16px;
-transition:.3s;
+#refreshLocationBtn {
+  background: #e74c3c;
+  border: none;
+  color: #fff;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
 }
 
-#refreshLocationBtn:hover{
-transform:rotate(180deg);
+#refreshLocationBtn:hover {
+  transform: rotate(180deg);
 }
 
 /* animation */
-@keyframes pulse{
-0%{transform:scale(1)}
-50%{transform:scale(1.2)}
-100%{transform:scale(1)}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
-.page-header{
+.page-header {
   display: none;
 }
 .mobile-nav {
@@ -235,20 +247,19 @@ transform:rotate(180deg);
 }
 
 /* hover */
-.mobile-nav ul li:hover{
+.mobile-nav ul li:hover {
   transform: translateY(-3px) scale(1.1);
   color: #fff;
 }
 
 /* العنصر النشط */
-.mobile-nav ul li.active{
+.mobile-nav ul li.active {
   color: #fff;
-  transform: translateY(-5px) scale(1.3)rotate(-360deg);
-  
+  transform: translateY(-5px) scale(1.3) rotate(-360deg);
 }
 
 /* الدايرة خلف الايقونة */
-.mobile-nav ul li.active::before{
+.mobile-nav ul li.active::before {
   content: "";
   position: absolute;
   width: 48px;
@@ -257,18 +268,17 @@ transform:rotate(180deg);
   border-radius: 50%;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   z-index: -1;
   box-shadow: 0 2px 10px #07b5ff5c;
 }
-
 
 .zikr {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.25rem;
   width: 100%;
-  max-width: 600px; 
+  max-width: 600px;
   margin: 2rem auto;
   padding: 0 1rem;
 }
@@ -283,14 +293,16 @@ transform:rotate(180deg);
   align-items: center;
   font-size: 1.2rem;
   min-height: 150px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .zikr .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
-.close-nav{
+.close-nav {
   position: fixed;
   top: 0;
   left: -280px;
@@ -310,7 +322,7 @@ transform:rotate(180deg);
   z-index: 10000;
 }
 
-.close-nav a{
+.close-nav a {
   text-decoration: none;
   color: #fff;
 
@@ -323,18 +335,18 @@ transform:rotate(180deg);
   transition: 0.2s;
 }
 
-.close-nav a:hover{
+.close-nav a:hover {
   background: #2f4264;
 }
 
-.close-nav.open{
+.close-nav.open {
   left: 0;
 }
-.more-btn{
+.more-btn {
   color: #fff;
   font-size: 2.2rem;
 }
-.side-nav{
+.side-nav {
   position: fixed;
   top: 0;
   left: -280px;
@@ -353,14 +365,13 @@ transform:rotate(180deg);
 
   z-index: 10001;
 
-  box-shadow: 10px 0 25px rgba(0,0,0,0.4);
+  box-shadow: 10px 0 25px rgba(0, 0, 0, 0.4);
 }
 
-.side-nav.open{
+.side-nav.open {
   left: 0;
 }
-.side-nav a{
-
+.side-nav a {
   color: #fff;
   text-decoration: none;
 
@@ -375,15 +386,12 @@ transform:rotate(180deg);
   transition: 0.2s;
 }
 
-.side-nav a:hover{
-
+.side-nav a:hover {
   background: #2e4268;
 
   transform: translateX(5px);
-
 }
-.close-icon{
-
+.close-icon {
   font-size: 1.4rem;
 
   margin-bottom: 20px;
@@ -393,10 +401,8 @@ transform:rotate(180deg);
   align-self: flex-end;
 
   color: #fff;
-
 }
-.menu-overlay{
-
+.menu-overlay {
   position: fixed;
 
   top: 0;
@@ -405,7 +411,7 @@ transform:rotate(180deg);
   width: 100%;
   height: 100%;
 
-  background: rgba(0,0,0,0.45);
+  background: rgba(0, 0, 0, 0.45);
 
   opacity: 0;
 
@@ -414,13 +420,10 @@ transform:rotate(180deg);
   transition: 0.3s;
 
   z-index: 10000;
-
 }
 
-.menu-overlay.show{
-
+.menu-overlay.show {
   opacity: 1;
 
   visibility: visible;
-
 }
