@@ -79,23 +79,60 @@ function drawKaaba(rotation) {
   qCtx.restore();
 }
 
+let currentRotation = 0; // الزاوية الحالية اللي السهم واقف عندها
+let targetRotation = 0;  // الزاوية المطلوبة اللي الحساس بيقول عليها
+const lerpFactor = 0.1;  // سرعة التنعيم (0.1 يعني بيتحرك 10% من المسافة في كل فريم)
+
 function initQibla(lat, lng) {
+  const bearing = calculateBearing(lat, lng);
+
   function handleOrientation(e) {
-    const alpha = e.alpha || 0;
-    const bearing = calculateBearing(lat, lng);
-    const rotation = bearing - alpha;
-    drawCompassBase();
-    drawArrow(rotation);
-    drawKaaba(rotation);
+    let compass = 0;
+    if (e.webkitCompassHeading) {
+      compass = e.webkitCompassHeading;
+    } else if (e.alpha !== null) {
+      compass = 360 - e.alpha;
+    }
+
+    // الزاوية المستهدفة
+    let newTarget = bearing - compass;
+    
+    // --- حل مشكلة النطّة بين 0 و 360 درجة ---
+    // ده بيضمن إن السهم ياخد أقصر طريق للزاوية الجديدة
+    let diff = (newTarget - currentRotation + 180) % 360 - 180;
+    if (diff < -180) diff += 360;
+    
+    targetRotation = currentRotation + diff;
   }
+
+  // دالة التحريك (تشتغل 60 مرة في الثانية)
+  function animate() {
+    // معادلة التنعيم: الزاوية الحالية تقترب من المستهدفة تدريجياً
+    currentRotation += (targetRotation - currentRotation) * lerpFactor;
+
+    // المسح والرسم بالزاوية المنعّمة
+    drawCompassBase();
+    drawArrow(currentRotation);
+    drawKaaba(currentRotation);
+
+    requestAnimationFrame(animate); // اطلب الفريم اللي بعده
+  }
+
+  // تشغيل الأنيميشن لأول مرة
+  requestAnimationFrame(animate);
+
+  // تشغيل المستشعرات
+  const eventName = 'ondeviceorientationabsolute' in window ? 'deviceorientationabsolute' : 'deviceorientation';
   if (typeof DeviceOrientationEvent.requestPermission === "function") {
     DeviceOrientationEvent.requestPermission().then((permission) => {
-      if (permission === "granted")
-        window.addEventListener("deviceorientation", handleOrientation, true);
+      if (permission === "granted") {
+        window.addEventListener(eventName, handleOrientation, true);
+      }
     });
-  } else window.addEventListener("deviceorientation", handleOrientation, true);
+  } else {
+    window.addEventListener(eventName, handleOrientation, true);
+  }
 }
-
 // ======== التاريخ الهجري ========
 function gregorianToHijri(gDate, offset = 0) {
   const day = gDate.getDate() + offset;
