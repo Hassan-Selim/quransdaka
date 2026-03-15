@@ -627,19 +627,23 @@ main {
 
 /* الـ popup */
 .ios-popup {
-  display: none;
-  position: absolute;
-  top: 100%; /* يبدأ تحت الزرار مباشرة */
+  position: fixed;
+  margin-bottom: 4rem;
   left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px;
-  width: 260px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  animation: popupSlide 0.3s ease forwards;
-  z-index: 999;
+  transform: translateX(-50%) translateY(50px);
+  width: 90%;
+  max-width: 420px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: 20px;
+  background: #1e1e1ebf;
+  backdrop-filter: blur(14px);
+  color: #fff;
+  box-shadow: 0 10px 40px #00000066;
+  z-index: 9999;
+  transition: all 0.5s ease;
 }
 
 /* محتوى الـ popup */
