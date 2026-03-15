@@ -148,34 +148,99 @@ window.addEventListener("scroll", () => {
 
 /* تثبيت التطبيق */
 let deferredPrompt;
+const installBar = document.getElementById('installBar');
+const installBtn = document.getElementById('installBtn');
+const installLater = document.getElementById('installLater');
 
-function isStandalone(){
- return window.matchMedia('(display-mode: standalone)').matches
-     || window.navigator.standalone === true;
+const iosBar = document.getElementById('iosBar');
+const iosBtn = document.getElementById('iosBtn');
+const iosPopup = document.getElementById('iosPopup');
+const closePopup = document.getElementById('closePopup');
+
+// Detect platform
+const ua = window.navigator.userAgent.toLowerCase();
+const isIos = /iphone|ipad|ipod/.test(ua);
+const isSafari = /^((?!chrome|android).)*safari/i.test(window.navigator.userAgent);
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                     (window.navigator.standalone === true);
+
+// Reset UI
+installBar.style.display = 'none';
+iosBar.style.display = 'none';
+iosPopup.style.display = 'none';
+
+// iOS Safari logic
+if (isIos && isSafari && !isStandalone) {
+  iosBar.style.display = 'flex'; // يظهر الزرار بس لو النظام iOS Safari
 }
 
-if(isStandalone()){
- installBar.style.display="none";
-}
+// Android/Windows logic
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
 
-window.addEventListener("beforeinstallprompt",(e)=>{
-
- e.preventDefault();
-
- deferredPrompt = e;
-
+  // يظهر بعد delay معين (مثلاً 5 ثواني)
+  setTimeout(() => {
+    if (!localStorage.getItem('installLater') && !localStorage.getItem('appInstalled')) {
+      installBar.style.display = 'flex';
+    }
+  }, 5000);
 });
 
-installBtn.onclick = async ()=>{
+// زرار تثبيت (Android/Windows)
+installBtn.addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const choiceResult = await deferredPrompt.userChoice;
+    if (choiceResult.outcome === 'accepted') {
+      console.log('User accepted install');
+      installBar.style.display = 'none';
+      localStorage.setItem('appInstalled', 'true');
+    } else {
+      console.log('User dismissed install');
+    }
+    deferredPrompt = null;
+  }
+});
 
- if(!deferredPrompt) return;
+// زرار لاحقاً
+installLater.addEventListener('click', () => {
+  installBar.style.display = 'none';
+  localStorage.setItem('installLater', 'true');
+});
 
- deferredPrompt.prompt();
+// منطق إخفاء/إظهار حسب الحالة
+if (localStorage.getItem('installLater') === 'true') {
+  installBar.style.display = 'none';
+}
 
-};
+if (localStorage.getItem('appInstalled') === 'true' || isStandalone) {
+  installBar.style.display = 'none';
+  iosBar.style.display = 'none';
+  iosPopup.style.display = 'none';
+}
 
-window.addEventListener("appinstalled",()=>{
+// iOS زرار "إضافة"
+iosBtn.addEventListener('click', () => {
+  iosPopup.style.display = 'flex';
+});
 
- installBar.style.display="none";
+// إغلاق الـ popup
+closePopup.addEventListener('click', () => {
+  iosPopup.style.display = 'none';
+});
 
+// منطق إضافي: لو المستخدم رجع للرئيسية بعد ما يتنقل
+window.addEventListener('popstate', () => {
+  if (deferredPrompt && !localStorage.getItem('appInstalled') && !localStorage.getItem('installLater')) {
+    installBar.style.display = 'flex';
+  }
+});
+
+iosBtn.addEventListener('click', () => {
+  iosPopup.style.display = 'block';
+});
+
+closePopup.addEventListener('click', () => {
+  iosPopup.style.display = 'none';
 });
