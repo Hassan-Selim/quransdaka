@@ -14,12 +14,6 @@ const todayDateEl = document.getElementById("todayDate");
 const locationNameEl = document.getElementById("locationName");
 const refreshLocationBtn = document.getElementById("refreshLocationBtn");
 
-const qiblaCanvas = document.getElementById("qiblaCompass");
-const qCtx = qiblaCanvas.getContext("2d");
-const center = qiblaCanvas.width / 2;
-const radius = center - 15;
-const kaabaLat = 21.4225;
-const kaabaLng = 39.8262;
 
 // ======== صوت الأذان داخل الصفحة فقط ========
 const adhanAudio = new Audio("../img/adhan.mp3");
@@ -30,108 +24,124 @@ let prayerTimes = {};
 let countdownInterval;
 
 // ======== القبلة ========
+// ======== متغيرات القبلة (Global) ========
+let qiblaCanvas, qCtx, center, radius;
+let currentRotation = 0; 
+let targetRotation = 0;  
+const lerpFactor = 0.1; 
+const kaabaLat = 21.4225;
+const kaabaLng = 39.8262;
+
+// ======== حساب الزاوية (Bearing) ========
 function calculateBearing(lat1, lng1) {
-  const φ1 = (lat1 * Math.PI) / 180;
-  const φ2 = (kaabaLat * Math.PI) / 180;
-  const Δλ = ((kaabaLng - lng1) * Math.PI) / 180;
-  const y = Math.sin(Δλ) * Math.cos(φ2);
-  const x =
-    Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
-  let θ = Math.atan2(y, x);
-  return ((θ * 180) / Math.PI + 360) % 360;
+    const φ1 = (lat1 * Math.PI) / 180;
+    const φ2 = (kaabaLat * Math.PI) / 180;
+    const Δλ = ((kaabaLng - lng1) * Math.PI) / 180;
+    const y = Math.sin(Δλ) * Math.cos(φ2);
+    const x = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
+    let θ = Math.atan2(y, x);
+    return ((θ * 180) / Math.PI + 360) % 360;
 }
 
-function drawCompassBase() {
-  qCtx.clearRect(0, 0, qiblaCanvas.width, qiblaCanvas.height);
-  qCtx.beginPath();
-  qCtx.arc(center, center, radius, 0, 2 * Math.PI);
-  qCtx.strokeStyle = "#555";
-  qCtx.lineWidth = 4;
-  qCtx.stroke();
-}
-
-function drawArrow(rotation) {
-  qCtx.save();
-  qCtx.translate(center, center);
-  qCtx.rotate((rotation * Math.PI) / 180);
-  qCtx.beginPath();
-  qCtx.moveTo(0, -radius + 20);
-  qCtx.lineTo(-8, -radius + 35);
-  qCtx.lineTo(8, -radius + 35);
-  qCtx.closePath();
-  qCtx.fillStyle = "#ff4d4d";
-  qCtx.fill();
-  qCtx.restore();
-}
-
-function drawKaaba(rotation) {
-  qCtx.save();
-  qCtx.translate(center, center);
-  qCtx.rotate((rotation * Math.PI) / 180);
-  const kaabaSize = 16;
-  qCtx.fillStyle = "#000";
-  qCtx.fillRect(
-    -kaabaSize / 2,
-    -radius + 50 - kaabaSize / 2,
-    kaabaSize,
-    kaabaSize,
-  );
-  qCtx.restore();
-}
-
-let currentRotation = 0; // الزاوية الحالية اللي السهم واقف عندها
-let targetRotation = 0;  // الزاوية المطلوبة اللي الحساس بيقول عليها
-const lerpFactor = 0.1;  // سرعة التنعيم (0.1 يعني بيتحرك 10% من المسافة في كل فريم)
-
-function initQibla(lat, lng) {
-  const bearing = calculateBearing(lat, lng);
-
-  function handleOrientation(e) {
-    let compass = 0;
-    if (e.webkitCompassHeading) {
-      compass = e.webkitCompassHeading;
-    } else if (e.alpha !== null) {
-      compass = 360 - e.alpha;
-    }
-
-    // الزاوية المستهدفة
-    let newTarget = bearing - compass;
+// ======== دالة الرسم الجديدة (التصميم العصري) ========
+function drawNewCompass(rotation) {
+    if (!qCtx) return;
+    qCtx.clearRect(0, 0, qiblaCanvas.width, qiblaCanvas.height);
     
-    // --- حل مشكلة النطّة بين 0 و 360 درجة ---
-    // ده بيضمن إن السهم ياخد أقصر طريق للزاوية الجديدة
-    let diff = (newTarget - currentRotation + 180) % 360 - 180;
+    qCtx.save();
+    qCtx.translate(center, center);
+    qCtx.rotate((rotation * Math.PI) / 180); 
+
+    // 1. الحلقة الحمراء الأساسية
+    qCtx.beginPath();
+    qCtx.arc(0, 0, radius, 0, 2 * Math.PI);
+    qCtx.lineWidth = 22; 
+    qCtx.strokeStyle = "#ff4d5a"; 
+    qCtx.stroke();
+
+    // 2. رأس السهم (المثلث) مدمج في الحلقة
+    qCtx.beginPath();
+    qCtx.fillStyle = "#ff4d5a";
+    qCtx.moveTo(-18, -radius - 2); 
+    qCtx.lineTo(18, -radius - 2);
+    qCtx.lineTo(0, -radius - 38); 
+    qCtx.closePath();
+    qCtx.fill();
+
+    qCtx.restore();
+
+    // 3. رسم الكعبة في المركز (ثابتة)
+    drawKaabaIcon();
+}
+
+function drawKaabaIcon() {
+    qCtx.save();
+    qCtx.translate(center, center);
+    
+    // إعدادات الخط وحجم الإيموجي
+    const fontSize = 45; // كبرنا الحجم شوية عشان يبقى واضح
+    qCtx.font = `${fontSize}px serif`;
+    qCtx.textAlign = "center";
+    qCtx.textBaseline = "middle";
+
+    // إضافة ظل خفيف للإيموجي عشان يبرز عن الخلفية
+    qCtx.shadowBlur = 10;
+    qCtx.shadowColor = "rgba(0,0,0,0.5)";
+
+    // رسم إيموجي الكعبة
+    qCtx.fillText("🕋", 0, 0);
+    
+    qCtx.restore();
+}
+
+// ======== دالة التحريك السلس ========
+function animateQibla() {
+    // حل مشكلة النطة بين 0 و 360 درجة
+    let diff = (targetRotation - currentRotation + 180) % 360 - 180;
     if (diff < -180) diff += 360;
     
-    targetRotation = currentRotation + diff;
-  }
+    currentRotation += diff * lerpFactor;
 
-  // دالة التحريك (تشتغل 60 مرة في الثانية)
-  function animate() {
-    // معادلة التنعيم: الزاوية الحالية تقترب من المستهدفة تدريجياً
-    currentRotation += (targetRotation - currentRotation) * lerpFactor;
+    drawNewCompass(currentRotation);
+    requestAnimationFrame(animateQibla);
+}
 
-    // المسح والرسم بالزاوية المنعّمة
-    drawCompassBase();
-    drawArrow(currentRotation);
-    drawKaaba(currentRotation);
+// ======== تشغيل القبلة ========
+function initQibla(lat, lng) {
+    qiblaCanvas = document.getElementById("qiblaCompass");
+    if (!qiblaCanvas) return;
+    
+    qCtx = qiblaCanvas.getContext("2d");
+    center = qiblaCanvas.width / 2;
+    radius = 85; // القطر المناسب للحلقة
 
-    requestAnimationFrame(animate); // اطلب الفريم اللي بعده
-  }
+    const bearing = calculateBearing(lat, lng);
 
-  // تشغيل الأنيميشن لأول مرة
-  requestAnimationFrame(animate);
+    function handleOrientation(e) {
+        let compass = 0;
+        if (e.webkitCompassHeading) {
+            compass = e.webkitCompassHeading; // للأيفون
+        } else if (e.alpha !== null) {
+            compass = 360 - e.alpha; // للأندرويد
+        }
+        targetRotation = bearing - compass;
+    }
 
-  // تشغيل المستشعرات
-  const eventName = 'ondeviceorientationabsolute' in window ? 'deviceorientationabsolute' : 'deviceorientation';
-  if (typeof DeviceOrientationEvent.requestPermission === "function") {
-    DeviceOrientationEvent.requestPermission().then((permission) => {
-      if (permission === "granted") {
+    // ابدأ الأنيميشن
+    requestAnimationFrame(animateQibla);
+
+    // تفعيل الحساسات حسب نوع المتصفح
+    const eventName = 'ondeviceorientationabsolute' in window ? 'deviceorientationabsolute' : 'deviceorientation';
+    
+    if (typeof DeviceOrientationEvent.requestPermission === "function") {
+        DeviceOrientationEvent.requestPermission().then((permission) => {
+            if (permission === "granted") {
+                window.addEventListener(eventName, handleOrientation, true);
+            }
+        });
+    } else {
         window.addEventListener(eventName, handleOrientation, true);
-      }
-    });
-  } else {
-    window.addEventListener(eventName, handleOrientation, true);
-  }
+    }
 }
 // ======== التاريخ الهجري ========
 function gregorianToHijri(gDate, offset = 0) {
