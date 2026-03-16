@@ -121,7 +121,7 @@
   color: var(--color-white);
 }
 .ramadan{
-  font-family: "Aviny",sans-serif;
+  
   font-weight: 400;
   display: inline-flex;
   align-items: center;
@@ -132,6 +132,7 @@
   animation: floatMoon 0.9s ease-in-out infinite;
 }
 .ramadan span{
+  font-family: "Aviny",sans-serif;
   color: #023d3b;
   font-size: clamp(3rem, 3vw, 1rem);
   font-weight: 600;
