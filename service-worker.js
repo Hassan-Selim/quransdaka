@@ -1,13 +1,13 @@
-// service-worker.js
-const CACHE_VERSION = "v1.2.0";
+const CACHE_VERSION = "v1.3.0"; // ارفع الفيرجن عشان نضمن المسح القديم
 const STATIC_CACHE = `quran-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `quran-dynamic-${CACHE_VERSION}`;
 
 const urlsToCache = [
   "/",
   "/index.html",
+  "/ramadan/",
   "/ramadan/index.html",
-  "/404.html",
+  "/quran-read/",
   "/quran-read/index.html",
   "/css/style.css",
   "/css/ramadan.css",
@@ -21,7 +21,7 @@ const urlsToCache = [
 // ======= INSTALL =======
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(STATIC_CACHE).then((cache) => cache.addAll(urlsToCache)),
+    caches.open(STATIC_CACHE).then((cache) => cache.addAll(urlsToCache))
   );
   self.skipWaiting();
 });
@@ -32,88 +32,89 @@ self.addEventListener("activate", (event) => {
     caches.keys().then((keys) =>
       Promise.all(
         keys.map((key) => {
-          if (key !== STATIC_CACHE && key !== DYNAMIC_CACHE)
+          if (key !== STATIC_CACHE && key !== DYNAMIC_CACHE) {
             return caches.delete(key);
-        }),
-      ),
-    ),
+          }
+        })
+      )
+    )
   );
   self.clients.claim();
 });
 
-// ======= FETCH =======
+// ======= FETCH (النسخة المختصرة والمضمونة) =======
 self.addEventListener("fetch", (event) => {
   const request = event.request;
-  if (!request.url.startsWith(self.location.origin)) return;
-  if (request.destination === "audio") return;
 
-  if (request.mode === "navigate") {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const clone = response.clone();
-          caches.open(DYNAMIC_CACHE).then((cache) => cache.put(request, clone));
-          return response;
-        })
-        .catch(() => caches.match("/index.html")),
-    );
-    return;
-  }
+  // تجاهل أي شيء غير موقعنا وتجاهل الصوت
+  if (!request.url.startsWith(self.location.origin) || request.destination === "audio") return;
 
   event.respondWith(
-    caches.match(request).then(
-      (cached) =>
-        cached ||
-        fetch(request).then((resp) => {
-          const clone = resp.clone();
+    caches.match(request).then((cachedResponse) => {
+      // 1. لو موجود في الكاش رجعه
+      if (cachedResponse) {
+        // تحديث الكاش في الخلفية
+        fetch(request).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            caches.open(DYNAMIC_CACHE).then((cache) => cache.put(request, networkResponse));
+          }
+        }).catch(() => {}); // تجاهل أخطاء الشبكة في الخلفية
+        
+        return cachedResponse;
+      }
+
+      // 2. لو مش موجود، روحه هاته من النت
+      return fetch(request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const clone = networkResponse.clone();
           caches.open(DYNAMIC_CACHE).then((cache) => cache.put(request, clone));
-          return resp;
-        }),
-    ),
+        }
+        return networkResponse;
+      }).catch(() => {
+          // 3. لو نت مفيش وكاش مفيش (الأوفلاين التام)
+          if (request.mode === "navigate") {
+            return caches.match("/index.html");
+          }
+      });
+    })
   );
 });
 
-// ======= إشعارات =======
+// ======= الإشعارات (كما هي) =======
 let prayerTimers = [];
-
 self.addEventListener("message", (event) => {
   const data = event.data;
-  if (data.type === "SHOW_NOTIFICATION") {
-    self.registration.showNotification(data.title, {
-      body: data.body,
-      icon: "/img/icon.webp",
-      badge: "/img/icon.webp",
-      data: { url: data.url },
-    });
-  }
   if (data.type === "SET_PRAYER_TIMES") {
-    // الغاء أي مؤقتات سابقة
-    prayerTimers.forEach((id) => clearTimeout(id));
+    prayerTimers.forEach(clearTimeout);
     prayerTimers = [];
-    const times = data.times;
-    Object.entries(times).forEach(([name, timeObj]) => {
-      const time = new Date(timeObj);
-      const now = new Date();
-      const diff = time - now;
+    Object.entries(data.times).forEach(([name, timeObj]) => {
+      const diff = new Date(timeObj) - new Date();
       if (diff > 0) {
-        const timer = setTimeout(() => {
-          self.registration.showNotification(`حان الآن موعد صلاة ${name}`, {
-            body: `الوقت الآن ${time.toLocaleTimeString("ar-EG-u-nu-latn", { hour: "2-digit", minute: "2-digit" })}`,
-            icon: "/img/icon.webp",
-            badge: "/img/icon.webp",
-            data: { url: "/prayer" },
+        const t = setTimeout(() => {
+          self.registration.showNotification(`موعد صلاة ${name}`, {
+            body: "حان الآن وقت الصلاة",
+            icon: "/img/icon.webp"
           });
         }, diff);
-        prayerTimers.push(timer);
+        prayerTimers.push(t);
       }
     });
   }
 });
 
-// فتح صفحة عند الضغط على الإشعار
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  if (event.notification.data?.url) {
-    event.waitUntil(clients.openWindow(event.notification.data.url));
-  }
+  event.waitUntil(clients.openWindow("/"));
 });
+
+// دالة لتحديد حجم الكاش
+const limitCacheSize = (name, maxItems) => {
+  caches.open(name).then((cache) => {
+    cache.keys().then((keys) => {
+      if (keys.length > maxItems) {
+        // امسح أقدم ملف (أول واحد في المصفوفة)
+        cache.delete(keys[0]).then(() => limitCacheSize(name, maxItems));
+      }
+    });
+  });
+};

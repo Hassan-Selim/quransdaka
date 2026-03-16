@@ -1,22 +1,26 @@
 {
-  "id": "/index.html",
   "name": "القرآن الكريم || صدقة جارية",
   "short_name": "صدقة جارية",
-  "start_url": "/index.html",
+  "description": "استمع واقرأ القرآن الكريم، الرقية الشرعية، والأذكار - صدقة جارية",
+  "id": "/",
+  "start_url": "/?source=pwa",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#10172a",
   "theme_color": "#0f766e",
   "orientation": "portrait",
+  "categories": ["books", "education", "utilities"],
   "icons": [
     {
       "src": "/img/icon-192.webp",
       "sizes": "192x192",
-      "type": "image/webp"
+      "type": "image/webp",
+      "purpose": "any"
     },
     {
-      "src": "/img/icon.webp",
+      "src": "/img/icon-512.webp",
       "sizes": "512x512",
-      "type": "image/webp"
+      "type": "image/webp",
+      "purpose": "maskable"
     }
   ],
   "screenshots": [
@@ -24,19 +28,18 @@
       "src": "/img/screenshot-wide.webp",
       "sizes": "1280x720",
       "type": "image/webp",
-      "form_factor": "wide"
+      "form_factor": "wide",
+      "label": "واجهة الموقع على الكمبيوتر"
     },
     {
       "src": "/img/screenshot-mobile.webp",
       "sizes": "1080x1920",
-      "type": "image/webp"
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "واجهة الموقع على الهاتف"
     }
   ],
-  "protocol_handlers": [
-    {
-      "protocol": "mailto",
-      "url": "/mail?to=%s"
-    }
-  ],
-  "display_override": ["window-controls-overlay", "standalone"]
+  "display_override": ["window-controls-overlay", "standalone"],
+  "dir": "rtl",
+  "lang": "ar"
 }

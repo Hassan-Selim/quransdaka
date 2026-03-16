@@ -1,7 +1,7 @@
 /* الخط العام */
 body,
 html {
-  font-family: "cairo";
+  /* font-family: "cairo"; */
   src: url("../fonts/cairo.ttf") format("truetype");
   background: #1f2d45;
   color: #fff;
@@ -18,6 +18,9 @@ html {
   transition: 0.1s ease-in-out;
 }
 
+* {
+  font-family: "cairo", sans-serif;
+}
 /* الصلاة القادمة */
 .next-prayer-section {
   text-align: center;
@@ -109,11 +112,8 @@ html {
 }
 
 p span {
-  font-size: 2rem;
+  font-size: 1rem;
   text-align: center;
-}
-h2 {
-  margin-bottom: 1rem;
 }
 
 /* اتجاه القبلة */
@@ -122,33 +122,46 @@ h2 {
   margin: auto;
   width: 100%;
   height: 100%;
-  
-  color: white;
-  padding: 20px;
 }
 
 #qiblaSection p {
-  margin-top: 8px;
-  font-size: 1.5rem;
-  color:#0280ab;
-  font-weight: 600;
-}
-#qiblaSection p span{
   font-size: 1rem;
-  color: #50575f;
+  color: #0280ab;
+  font-weight: 600;
+  margin-top: 0.5rem;
 }
+
 #qiblaSection .rot-hint {
   color: aliceblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  text-align: center;
 }
-#qiblaSection .rot-hint span{
+#qiblaSection .rot-hint span {
   font-size: 3rem;
+  font-weight: 400;
+  color: #0275f7;
+  padding: 0 10px;
 }
 #qiblaSection .dis-hint {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 1rem;
+  border: #0280ab 1px solid;
+  border-radius: 1rem;
+  padding: 10px;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
   color: rgb(123, 136, 148);
-  font-size: 1rem;
+  font-size: 0.7rem;
+  max-width: 200px;
 }
 #qiblaSection h2 {
-  margin-top: 3rem;
+  margin-top: 1rem;
 }
 .location-bar {
   display: flex;
@@ -179,13 +192,15 @@ h2 {
 /* زر التحديث */
 #refreshLocationBtn {
   background: #e74c3c;
+  text-align: center;
+  display: block;
   border: none;
   color: #fff;
   width: 34px;
   height: 34px;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1.5rem;
   transition: 0.3s;
 }
 

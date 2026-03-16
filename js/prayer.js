@@ -284,7 +284,7 @@ function drawProgress(prevTime, nextTime) {
     2 * Math.PI,
   );
   ctx.strokeStyle = "#3c4f6b";
-  ctx.lineWidth = 8;
+  ctx.lineWidth = 12;
   ctx.stroke();
 
   ctx.beginPath();
@@ -296,7 +296,7 @@ function drawProgress(prevTime, nextTime) {
     -Math.PI / 2 + Math.PI * 2 * percent,
   );
   ctx.strokeStyle = "#ff4d5a";
-  ctx.lineWidth = 8;
+  ctx.lineWidth = 12;
   ctx.stroke();
 }
 
