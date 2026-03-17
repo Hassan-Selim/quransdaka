@@ -418,7 +418,6 @@
   backdrop-filter: blur(14px);
   color: #fff;
   box-shadow: 0 10px 40px #00000066;
-  z-index: 9999;
   left: 1.5rem;
   bottom: 3rem;
   border: none;
