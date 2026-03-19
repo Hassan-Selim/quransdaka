@@ -25,9 +25,9 @@ let countdownInterval;
 
 // ======== القبلة ========
 // ======== متغيرات القبلة (Global) ========
-let qiblaCanvas, qCtx, center, radius;
-let currentRotation = 0; 
-let targetRotation = 0;  
+
+
+
 const lerpFactor = 0.1; 
 const kaabaLat = 21.4225;
 const kaabaLng = 39.8262;
@@ -107,103 +107,115 @@ function animateQibla() {
 }
 
 // ======== تشغيل القبلة ========
+// 1. المتغيرات لازم تكون معرفة عالمياً (Global) عشان الكل يشوفها
+let qiblaBearing = 0;
+let currentRotation = 0;
+let targetRotation = 0;
+let qiblaCanvas, qCtx, center, radius;
+
 function initQibla(lat, lng) {
     qiblaCanvas = document.getElementById("qiblaCompass");
     if (!qiblaCanvas) return;
-    
+
     qCtx = qiblaCanvas.getContext("2d");
     center = qiblaCanvas.width / 2;
-    radius = 85; // القطر المناسب للحلقة
+    radius = 85;
 
-    const bearing = calculateBearing(lat, lng);
+    // الحساب الأصلي بتاعك (البوصلة ثابتة في البداية)
+    qiblaBearing = calculateBearing(lat, lng);
+    targetRotation = qiblaBearing; 
 
-    function handleOrientation(e) {
-        let compass = 0;
-        if (e.webkitCompassHeading) {
-            compass = e.webkitCompassHeading; // للأيفون
-        } else if (e.alpha !== null) {
-            compass = 360 - e.alpha; // للأندرويد
-        }
-        targetRotation = bearing - compass;
-    }
+    // ابدأ الرسم فوراً حتى لو مفيش إذن (عشان السيركل تظهر)
+    animateQibla();
 
-    // ابدأ الأنيميشن
-    requestAnimationFrame(animateQibla);
+    const enableBtn = document.getElementById('enableCompass');
+    const statusText = document.getElementById('statusText');
 
-    // تفعيل الحساسات حسب نوع المتصفح
-    const eventName = 'ondeviceorientationabsolute' in window ? 'deviceorientationabsolute' : 'deviceorientation';
-    
-    if (typeof DeviceOrientationEvent.requestPermission === "function") {
-        DeviceOrientationEvent.requestPermission().then((permission) => {
-            if (permission === "granted") {
-                window.addEventListener(eventName, handleOrientation, true);
+    if (enableBtn) {
+        enableBtn.onclick = function() {
+            // طلب الإذن للأيفون
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                    .then(permission => {
+                        if (permission === 'granted') {
+                            startCompassData();
+                            enableBtn.style.display = 'none';
+                            if(statusText) statusText.textContent = "البوصلة تعمل";
+                        }
+                    })
+                    .catch(console.error);
+            } else {
+                // أندرويد
+                startCompassData();
+                enableBtn.style.display = 'none';
             }
-        });
-    } else {
-        window.addEventListener(eventName, handleOrientation, true);
+        };
     }
 }
+
+function startCompassData() {
+    const eventName = 'ondeviceorientationabsolute' in window ? 'deviceorientationabsolute' : 'deviceorientation';
+    window.addEventListener(eventName, (e) => {
+        let compass = 0;
+        if (e.webkitCompassHeading) {
+            compass = e.webkitCompassHeading;
+        } else if (e.alpha !== null) {
+            compass = 360 - e.alpha;
+        }
+        // تحديث الهدف للأنيميشن
+        targetRotation = qiblaBearing - compass;
+    }, true);
+}
+
+
 // ======== التاريخ الهجري ========
-function gregorianToHijri(gDate, offset = 0) {
-  const day = gDate.getDate() + offset;
-  const month = gDate.getMonth();
-  const year = gDate.getFullYear();
+function getManualHijri(offset = 0) {
+    let date = new Date();
+    date.setDate(date.getDate() + offset);
 
-  const jd =
-    Math.floor((1461 * (year + 4800 + Math.floor((month - 14) / 12))) / 4) +
-    Math.floor((367 * (month - 2 - 12 * Math.floor((month - 14) / 12))) / 12) -
-    Math.floor(
-      (3 * Math.floor((year + 4900 + Math.floor((month - 14) / 12)) / 100)) / 4,
-    ) +
-    day -
-    32075;
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
 
-  let l = jd - 1948440 + 10632;
-  const n = Math.floor((l - 1) / 10631);
-  l = l - 10631 * n + 354;
-  let j =
-    Math.floor((10985 - l) / 5316) * Math.floor((50 * l) / 17719) +
-    Math.floor(l / 5670) * Math.floor((43 * l) / 15238);
-  l =
-    l -
-    Math.floor((30 - j) / 15) * Math.floor((17719 * j) / 50) -
-    Math.floor(j / 16) * Math.floor((15238 * j) / 43) +
-    29;
-  const m = Math.floor((24 * l) / 709);
-  const d = l - Math.floor((709 * m) / 24);
-  const y = 30 * n + j - 30;
+    if (month < 3) {
+        year -= 1;
+        month += 12;
+    }
 
-  return { day: d, month: m, year: y };
+    let a = Math.floor(year / 100);
+    let b = 2 - a + Math.floor(a / 4);
+    let jd = Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + b - 1524.5;
+
+    let z = Math.floor(jd + 0.5);
+    let cyc = Math.floor((z - 1948440 + 1.0) / 10631);
+    let l = z - 1948440 - 10631 * cyc;
+    let j = Math.floor((l - 1) / 354.36667);
+    let r = l - Math.floor(j * 354.36667 + 0.5);
+    let m = Math.floor((r - 1) / 29.5);
+    let d = Math.floor(r - 29.5 * m + 0.5);
+    let y = 30 * cyc + j + 1;
+
+    // أسماء الشهور
+    const months = ["محرم", "صفر", "ربيع الأول", "ربيع الآخر", "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة"];
+    const weekdays = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+
+    return {
+        dayName: weekdays[date.getDay()],
+        day: d,
+        monthName: months[m],
+        year: y
+    };
 }
 
 function updateHijriDate() {
-  const now = new Date();
-  const hijri = gregorianToHijri(now);
-  const months = [
-    "محرم",
-    "صفر",
-    "ربيع الأول",
-    "ربيع الآخر",
-    "جمادى الأولى",
-    "جمادى الآخرة",
-    "رجب",
-    "شعبان",
-    "رمضان",
-    "شوال",
-    "ذو القعدة",
-    "ذو الحجة",
-  ];
-  const weekdays = [
-    "الأحد",
-    "الاثنين",
-    "الثلاثاء",
-    "الأربعاء",
-    "الخميس",
-    "الجمعة",
-    "السبت",
-  ];
-  todayDateEl.textContent = `${weekdays[now.getDay()]} ${[hijri.day] - 2} ${months[hijri.month]} ${hijri.year} هـ`;
+    // جرب -1 أو -2 لحد ما تظبط معاك 29 رمضان
+    const h = getManualHijri(); 
+    todayDateEl.textContent = `${h.dayName} ${h.day} ${h.monthName} ${h.year} هـ`;
 }
+
+updateHijriDate();
+
+
 // ======== الإشعارات ========
 if ("Notification" in window && Notification.permission !== "granted") {
   Notification.requestPermission();
@@ -522,3 +534,18 @@ moreBtn.addEventListener("click", openMenu);
 closeIcon.addEventListener("click", closeMenu);
 
 overlay.addEventListener("click", closeMenu);
+
+
+// Draw route
+async function drawRoute(from, to) {
+  if (routeLayer) map.removeLayer(routeLayer);
+
+  const url = `https://router.project-osrm.org/route/v1/driving/${from.lon},${from.lat};${to.lon},${to.lat}?overview=full&geometries=geojson`;
+  const res = await fetch(url);
+  const data = await res.json();
+
+  routeLayer = L.geoJSON(data.routes[0].geometry).addTo(map);
+  map.fitBounds(routeLayer.getBounds());
+}
+
+
