@@ -203,8 +203,17 @@
         <p  class="rot-hint">حرّك الهاتف <span>  &infin;  </span> لتحسين الدقة</p>
         <span class="dis-hint">حرّك جهازك بشكل دائري بعيداً عن أي معادن أو أجهزة إلكترونية لضمان دقة البوصلة.</span>
     </p>
+    <div class="qibla-container">
+    <div id="compass">
+        <div class="arrow"></div> <div class="compass-circle"></div>
+    </div>
     
+    <button id="enableCompass" class="btn-primary">تفعيل البوصلة</button>
+    
+    <p id="statusText">تم تفعيل البوصلة</p>
+</div>
 </section>
+
     <div class="zikr" style="display: none;">
       <div class="card">🌞 أذكار الصباح</div>
       <div class="card">🌛 أذكار المساء</div>
@@ -212,9 +221,10 @@
       <div class="card">🤲 أدعية</div>
     </div>
 
-    <!-- زر المشاركة -->
+   
 
-    <!-- فقط هذا السطر -->
+<!-- Leaflet JS -->
+
     <script type="module" src="../js/adhan.js" defer></script>
     <script src="../js/notifications.js" defer></script>
     <script type="module" src="../js/prayer.js" defer></script>
