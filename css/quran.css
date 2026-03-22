@@ -408,3 +408,33 @@
     min-width: 100%;
   }
 }
+
+
+.search-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 25px;
+  flex-wrap: wrap; /* عشان تنزل تحت بعض في الموبايل */
+}
+
+.search-input {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px 10px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: #333;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background-color: #f8fafc;
+  outline: none;
+  transition: all 0.3s ease;
+  direction: rtl;
+}
+
+.search-input:focus {
+  border-color: #10b981; /* لون أخضر يتماشى مع الستايل الإسلامي */
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.2);
+}

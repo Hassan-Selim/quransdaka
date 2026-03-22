@@ -108,6 +108,7 @@ function animateQibla() {
 
 // ======== تشغيل القبلة ========
 // 1. المتغيرات لازم تكون معرفة عالمياً (Global) عشان الكل يشوفها
+// ======== تشغيل القبلة ========
 let qiblaBearing = 0;
 let currentRotation = 0;
 let targetRotation = 0;
@@ -121,36 +122,70 @@ function initQibla(lat, lng) {
     center = qiblaCanvas.width / 2;
     radius = 85;
 
-    // الحساب الأصلي بتاعك (البوصلة ثابتة في البداية)
     qiblaBearing = calculateBearing(lat, lng);
     targetRotation = qiblaBearing; 
-
-    // ابدأ الرسم فوراً حتى لو مفيش إذن (عشان السيركل تظهر)
+    
+    // تشغيل الأنيميشن (رسم البوصلة)
     animateQibla();
 
     const enableBtn = document.getElementById('enableCompass');
     const statusText = document.getElementById('statusText');
 
-    if (enableBtn) {
-        enableBtn.onclick = function() {
-            // طلب الإذن للأيفون
-            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-                DeviceOrientationEvent.requestPermission()
-                    .then(permission => {
-                        if (permission === 'granted') {
-                            startCompassData();
-                            enableBtn.style.display = 'none';
-                            if(statusText) statusText.textContent = "البوصلة تعمل";
-                        }
-                    })
-                    .catch(console.error);
-            } else {
-                // أندرويد
-                startCompassData();
-                enableBtn.style.display = 'none';
-            }
-        };
+    // 1. الشيك المباشر على اللوكال ستوريدج
+    const isCompassEnabled = localStorage.getItem('compassEnabled');
+
+    if (isCompassEnabled === 'true') {
+        // لو متسجل إنه "true" (يعني داس عليه قبل كده)
+        if (enableBtn) {
+            enableBtn.style.display = 'none'; // اخفي الزرار فوراً
+        }
+        if (statusText) {
+            statusText.textContent = "البوصلة تعمل بشكل سليم";
+        }
+        // تشغيل قراءة الحساسات
+        startCompassData(); 
+    } else {
+        // لو مش متسجل (يعني أول زيارة)
+        if (enableBtn) {
+            enableBtn.style.display = 'block'; // تأكيد إظهار الزرار
+            
+            enableBtn.onclick = function() {
+                // الكود اللي بيتنفذ لما يدوس على الزرار
+                if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    // للأجهزة اللي بتطلب إذن
+                    DeviceOrientationEvent.requestPermission()
+                        .then(permission => {
+                            if (permission === 'granted') {
+                                activateCompass(enableBtn, statusText);
+                            } else {
+                                if (statusText) statusText.textContent = "تم رفض إذن البوصلة";
+                            }
+                        })
+                        .catch(console.error);
+                } else {
+                    // للأجهزة العادية واللاب توب
+                    activateCompass(enableBtn, statusText);
+                }
+            };
+        }
     }
+}
+
+// الدالة المسؤولة عن التفعيل والحفظ في اللوكال ستوريدج
+function activateCompass(btnElement, textElement) {
+    startCompassData();
+    
+    // 2. إخفاء الزرار بمجرد الضغط
+    if (btnElement) {
+        btnElement.style.display = 'none';
+    }
+    
+    if (textElement) {
+        textElement.textContent = "البوصلة تعمل بشكل سليم";
+    }
+    
+    // 3. الحفظ في اللوكال ستوريدج عشان ميظهرش في الريفرش اللي جاي
+    localStorage.setItem('compassEnabled', 'true');
 }
 
 function startCompassData() {
@@ -162,7 +197,6 @@ function startCompassData() {
         } else if (e.alpha !== null) {
             compass = 360 - e.alpha;
         }
-        // تحديث الهدف للأنيميشن
         targetRotation = qiblaBearing - compass;
     }, true);
 }
@@ -217,6 +251,7 @@ updateHijriDate();
 
 
 // ======== الإشعارات ========
+// ======== الإشعارات (طلب الإذن الاحتياطي) ========
 if ("Notification" in window && Notification.permission !== "granted") {
   Notification.requestPermission();
 }
@@ -228,15 +263,20 @@ function loadPrayerTimes(lat, lng) {
   const times = new adhan.PrayerTimes(coords, new Date(), params);
 
   prayerTimes = {
-    الفجر: times.fajr,
-    الشروق: times.sunrise,
-    الظهر: times.dhuhr,
-    العصر: times.asr,
-    المغرب: times.maghrib,
-    العشاء: times.isha,
+    "الفجر": times.fajr,
+    "الشروق": times.sunrise,
+    "الظهر": times.dhuhr,
+    "العصر": times.asr,
+    "المغرب": times.maghrib,
+    "العشاء": times.isha,
   };
 
   updatePrayerList();
+
+  // السطر السحري: إرسال المواقيت لملف الإشعارات ليراقبها في الخلفية
+  if (window.setupPrayerNotifications) {
+    window.setupPrayerNotifications(prayerTimes);
+  }
 }
 
 // ======== عرض المواقيت ========
@@ -247,7 +287,7 @@ function updatePrayerList() {
       const time = prayerTimes[name];
       item.querySelector(".prayer-time").textContent = time.toLocaleTimeString(
         "ar-EG-u-nu-latn",
-        { hour: "2-digit", minute: "2-digit" },
+        { hour: "2-digit", minute: "2-digit" }
       );
       item.querySelector(".prayer-time").dataset.time = time;
     }
@@ -287,25 +327,27 @@ function drawProgress(prevTime, nextTime) {
   const r = progressCanvas.width / 2 - 10;
   ctx.clearRect(0, 0, progressCanvas.width, progressCanvas.height);
 
+  // الدائرة الخلفية
   ctx.beginPath();
   ctx.arc(
     progressCanvas.width / 2,
     progressCanvas.height / 2,
     r,
     0,
-    2 * Math.PI,
+    2 * Math.PI
   );
   ctx.strokeStyle = "#3c4f6b";
   ctx.lineWidth = 12;
   ctx.stroke();
 
+  // دائرة التقدم (البروجرس)
   ctx.beginPath();
   ctx.arc(
     progressCanvas.width / 2,
     progressCanvas.height / 2,
     r,
     -Math.PI / 2,
-    -Math.PI / 2 + Math.PI * 2 * percent,
+    -Math.PI / 2 + Math.PI * 2 * percent
   );
   ctx.strokeStyle = "#ff4d5a";
   ctx.lineWidth = 12;
@@ -316,80 +358,51 @@ function updateNextPrayer() {
   const next = getNextPrayer();
   if (!next) return;
 
+  // تحديث الكلاسات لتحديد الصلاة القادمة في القائمة
   prayerListEl.querySelectorAll(".prayer-item").forEach((item) => {
     item.classList.remove("next-prayer");
-    if (item.querySelector(".prayer-name").textContent === next.name)
+    if (item.querySelector(".prayer-name").textContent === next.name) {
       item.classList.add("next-prayer");
+    }
   });
 
   nextPrayerNameEl.textContent = next.name;
 
+  // تنظيف العداد القديم وبدء عداد جديد
   clearInterval(countdownInterval);
+  
   countdownInterval = setInterval(() => {
     const now = new Date();
     const prev = getPreviousPrayer(next.name);
     const diff = next.time - now;
 
+    // رسم دائرة التقدم
     drawProgress(prev.time, next.time);
 
     let displayDiff;
 
     if (diff >= 0) {
-      displayDiff = diff; // قبل الصلاة
+      displayDiff = diff; // قبل الصلاة (عد تنازلي)
     } else {
       const passed = Math.abs(diff);
 
       if (passed <= 15 * 60 * 1000) {
-        displayDiff = passed; // بعد الصلاة عد تصاعدي
+        displayDiff = passed; // بعد الصلاة بـ 15 دقيقة (عد تصاعدي)
       } else {
-        updateNextPrayer();
+        updateNextPrayer(); // التحديث للصلاة اللي بعدها
         return;
       }
     }
 
+    // حساب الساعات والدقائق والثواني للعداد
     const hours = Math.floor(displayDiff / 3600000);
     const minutes = Math.floor((displayDiff % 3600000) / 60000);
     const seconds = Math.floor((displayDiff % 60000) / 1000);
 
     countdownEl.textContent = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 
-    if(Math.abs(diff)<1000 && adhanPlayedFor!==next.name){
-
-  // تشغيل الأذان داخل الصفحة
-  adhanAudio.play().catch(()=>console.log("Audio play failed"));
-
-  // إشعار داخل أو خارج الصفحة
-  if ("Notification" in window) {
-
-    if (Notification.permission === "granted") {
-
-      if (navigator.serviceWorker) {
-
-        navigator.serviceWorker.getRegistration().then(reg => {
-          if (reg) {
-            reg.showNotification("حان الآن موعد الصلاة", {
-              body: next.name,
-              icon: "/icons/icon-192.png",
-              badge: "/icons/icon-192.png",
-              tag: "prayer-notification"
-            });
-          }
-        });
-
-      } else {
-
-        new Notification("حان الآن موعد الصلاة", {
-          body: next.name
-        });
-
-      }
-
-    }
-
-  }
-
-  adhanPlayedFor = next.name;
-}
+    // تم إزالة كود الأذان والإشعارات من هنا
+    // ملف notifications.js سيقوم بهذه المهمة الآن بكفاءة في الخلفية
 
   }, 1000);
 }
@@ -477,7 +490,7 @@ const prayerBtn = document.querySelector(".prayer-btn");
   // نجيب الأقسام
   const prayerContent = document.querySelector(".prayer-content");
   const qiblaSection = document.querySelector("#qiblaSection");
-  const zikrSection = document.querySelector(".zikr");
+  const zikrSection = document.querySelector(".azkar-wrapper");
 
   // دالة تعرض قسم واحد وتخفي الباقي
   function showSection(section) {
@@ -536,16 +549,257 @@ closeIcon.addEventListener("click", closeMenu);
 overlay.addEventListener("click", closeMenu);
 
 
-// Draw route
-async function drawRoute(from, to) {
-  if (routeLayer) map.removeLayer(routeLayer);
 
-  const url = `https://router.project-osrm.org/route/v1/driving/${from.lon},${from.lat};${to.lon},${to.lat}?overview=full&geometries=geojson`;
-  const res = await fetch(url);
-  const data = await res.json();
 
-  routeLayer = L.geoJSON(data.routes[0].geometry).addTo(map);
-  map.fitBounds(routeLayer.getBounds());
+
+
+const dailyAzkar = [
+    "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ (100 مرة)",
+    "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+    "اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ",
+    "أستغفر الله وأتوب إليه",
+    "لا حول ولا قوة إلا بالله العلي العظيم"
+];
+
+function displayDailyZikr() {
+    // استخدام تاريخ اليوم للحصول على رقم ثابت طوال اليوم
+    const today = new Date();
+    const dateSeed = today.getFullYear() + today.getMonth() + today.getDate();
+    
+    // اختيار ذكر بناءً على التاريخ
+    const index = dateSeed % dailyAzkar.length;
+    
+    document.getElementById('dailyZikrText').innerText = dailyAzkar[index];
 }
 
+// تشغيل الدالة عند تحميل الصفحة
+window.onload = displayDailyZikr;
 
+// دالة إظهار الأذكار
+function showAzkar(sectionId) {
+    document.getElementById('main-grid').style.display = 'none'; // اخفاء الشبكة
+    document.getElementById('azkar-display-area').style.display = 'block'; // اظهار منطقة العرض
+    
+    // سكرول لأعلى الصفحة
+    window.scrollTo(0, 0);
+}
+
+// دالة العودة
+function hideAzkar() {
+    document.getElementById('azkar-display-area').style.display = 'none';
+    document.getElementById('main-grid').style.display = 'grid';
+}
+
+// دالة الضغط على "تم"
+function markAsDone(btn) {
+    const card = btn.parentElement;
+    card.style.opacity = '0.5';
+    btn.innerText = 'تمت';
+    btn.classList.add('clicked');
+}
+
+const prayerZikr =document.querySelector(".prayer-zikr");
+const morningZikr =document.querySelector(".morning-zikr");
+const prayerCard =document.querySelector(".card");
+const morningCard =document.querySelector(".morning");
+const eveningCard =document.querySelector(".evening");
+const tasbeehCard =document.querySelector(".tasbeeh");
+const tasbeehsection =document.querySelector(".tasbeeh-section");
+const duaCard =document.querySelector(".dua");
+const eveningzikr =document.querySelector(".evening-zikr");
+const doaazikr =document.querySelector(".doaa-zikr");
+const backBtn =document.querySelector(".back-btn");
+const backBtnz =document.querySelector(".morning-zikr .back-btn");
+const backBtnev =document.querySelector(".evening-zikr .back-btn");
+const doaa =document.querySelector(".doaa-zikr .back-btn");
+const backBtnt =document.querySelector(".tasbeeh-section .back-btn");
+
+prayerCard.addEventListener("click", function () {
+  prayerZikr.style.display = "flex";
+});
+
+backBtn.addEventListener("click", function () {
+  prayerZikr.style.display = "none";
+  
+});
+backBtnz.addEventListener("click", function () {
+  morningZikr.style.display = "none";
+  
+});
+morningCard.addEventListener("click", function () {
+  morningZikr.style.display = "flex";
+})
+eveningCard.addEventListener("click", function () {
+  eveningzikr.style.display = "flex";
+})
+backBtnev.addEventListener("click", function () {
+  eveningzikr.style.display = "none";
+  
+});
+duaCard.addEventListener("click", function () {
+  doaazikr.style.display = "flex";
+})
+doaa.addEventListener("click", function () {
+  doaazikr.style.display = "none";
+})
+tasbeehCard.addEventListener("click", function () {
+  tasbeehsection.style.display = "flex";
+});
+backBtnt.addEventListener("click", function () {
+  tasbeehsection.style.display = "none";
+  
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    
+    const showHiddenBtn = document.querySelector('.showHiddenBtnazz');
+
+    // 1. كود إخفاء الذكر عند الضغط على "تم"
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('done-btn')) {
+            const listItem = event.target.closest('li');
+            
+            if (listItem) {
+                // أنيميشن الاختفاء
+                listItem.style.transition = "all 0.4s ease-in-out";
+                listItem.style.opacity = "0";
+                listItem.style.transform = "translateX(30px)";
+                
+                // بعد ما الأنيميشن يخلص (400 ملي ثانية)
+                setTimeout(() => {
+                    listItem.style.display = "none";
+                    listItem.classList.add('completed-zikr'); // بنحطله كلاس كـ "علامة" إنه خلص
+                    
+                    // نظهر زرار "إظهار الأذكار المنجزة"
+                    if (showHiddenBtn) {
+                        showHiddenBtn.style.display = "block";
+                        // أنيميشن ناعم لظهور الزرار
+                        setTimeout(() => { showHiddenBtn.style.opacity = "1"; }, 10);
+                    }
+                }, 400);
+            }
+        }
+    });
+
+    // 2. كود إرجاع الأذكار عند الضغط على زرار "إظهار الأذكار المنجزة"
+    if (showHiddenBtn) {
+        // إعداد مبدئي للزرار عشان يظهر بنعومة
+        showHiddenBtn.style.transition = "opacity 0.3s";
+        showHiddenBtn.style.opacity = "0";
+
+        showHiddenBtn.addEventListener('click', function() {
+            // ندور على كل الأذكار اللي مخفية (اللي أخدت الكلاس بتاعنا)
+            const hiddenItems = document.querySelectorAll('.completed-zikr');
+            
+            hiddenItems.forEach(item => {
+                // نرجعه يظهر في الصفحة الأول (بدون أنيميشن)
+                item.style.display = "block"; // أو "flex" لو كنت مستخدم flex
+                
+                // نستنى لحظة صغيرة جداً عشان المتصفح يلحق يطبق الأنيميشن وهو بيرجع
+                setTimeout(() => {
+                    item.style.opacity = "1";
+                    item.style.transform = "translateX(0)";
+                }, 10);
+                
+                // نشيل منه "العلامة" عشان يرجع كأنه جديد
+                item.classList.remove('completed-zikr');
+            });
+            
+            // نخفي الزرار نفسه تاني بعد ما رجعنا الأذكار
+            this.style.opacity = "0";
+            setTimeout(() => {
+                this.style.display = "none";
+            }, 300);
+        });
+    }
+});
+
+document.querySelectorAll(".copy-btn").forEach(btn => {
+  btn.addEventListener("click", function() {
+    // نجيب النص المرتبط بالزرار (الـ span اللي جنبه)
+    const textToCopy = this.previousElementSibling.textContent;
+
+   btn.textContent = "تم النسخ ✅";
+    // نرجع النص الأصلي بعد 2 ثانية
+    setTimeout(() => {
+      btn.textContent = "نسخ";
+    }, 2000);
+    if (!textToCopy) return;
+
+    // نسخ النص إلى الحافظة
+    navigator.clipboard.writeText(textToCopy)
+      .catch((err) => {
+        console.error("خطأ في النسخ:", err);
+        alert("حدث خطأ في النسخ، حاول مرة أخرى.");
+      });       
+  });
+});
+
+
+
+// تحديد العناصر من الـ HTML
+const dhikrSelect = document.getElementById('dhikrSelect');
+const counterDisplay = document.getElementById('counter');
+const tasbeehBtn = document.getElementById('tasbeehBtn');
+const resetBtn = document.getElementById('resetBtn');
+
+// إعداد كائن (Object) لتخزين العداد لكل نوع من الذكر
+// نقوم بجلب البيانات المحفوظة مسبقاً، وإن لم توجد ننشئ أصفاراً كبداية
+let tasbeehCounts = JSON.parse(localStorage.getItem('tasbeehData')) || {
+  subhan: 0,
+  hamd: 0,
+  takbeer: 0,
+  tahlil: 0,
+  istighfar: 0
+};
+
+// دالة لتحديث الرقم المعروض على الشاشة بناءً على الذكر المختار
+function updateDisplay() {
+  const currentDhikr = dhikrSelect.value;
+  counterDisplay.textContent = tasbeehCounts[currentDhikr];
+}
+
+// دالة لحفظ التغييرات في ذاكرة المتصفح
+function saveData() {
+  localStorage.setItem('tasbeehData', JSON.stringify(tasbeehCounts));
+}
+
+// 1. حدث الضغط على زر التسبيح
+tasbeehBtn.addEventListener('click', () => {
+  // معرفة الذكر المحدد حالياً
+  const currentDhikr = dhikrSelect.value;
+  
+  // زيادة العداد بمقدار 1
+  tasbeehCounts[currentDhikr]++;
+  
+  // تحديث الشاشة وحفظ البيانات
+  updateDisplay();
+  saveData();
+  
+  // تفعيل اهتزاز خفيف للموبايل (إن كان المتصفح يدعم ذلك)
+  // 50 مللي ثانية تعطي إحساساً بنقرة زر خفيفة
+  if (navigator.vibrate) {
+    navigator.vibrate(50); 
+  }
+});
+
+// 2. حدث الضغط على زر تصفير العداد
+resetBtn.addEventListener('click', () => {
+  const currentDhikr = dhikrSelect.value;
+  
+  // التأكد من نية المستخدم قبل التصفير (اختياري، يمكنك إزالته إن أردت التصفير المباشر)
+  if (confirm("هل أنت متأكد أنك تريد تصفير عداد هذا الذكر؟")) {
+    tasbeehCounts[currentDhikr] = 0;
+    updateDisplay();
+    saveData();
+  }
+});
+
+// 3. حدث تغيير الذكر من القائمة المنسدلة
+dhikrSelect.addEventListener('change', () => {
+  // بمجرد اختيار ذكر آخر، يتم عرض العداد الخاص به
+  updateDisplay();
+});
+
+// تشغيل دالة التحديث عند فتح الصفحة لأول مرة لعرض الرقم الصحيح
+updateDisplay();

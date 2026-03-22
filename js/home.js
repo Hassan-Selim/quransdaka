@@ -1,27 +1,26 @@
-/* 
-window.addEventListener("load", function () {
-  const popup = document.getElementById("welcomePopup");
-  if (popup) {
-    popup.classList.add("show");
-  } else {
-    console.warn("عنصر النافذة المنبثقة غير موجود");
-  }
-}); */
-document.addEventListener("DOMContentLoaded", function () {
-  const popup = document.getElementById("welcomePopup");
 
-  if (!popup) return;
+/* const popup = document.getElementById("welcomePopup");
+const STORAGE_KEY = "welcomePopupShown";
 
-  // شغل الـ popup بعد 3 ثواني
-  setTimeout(function () {
-    popup.classList.add("show");
+// لو العنصر موجود وما ظهرش قبل كده
+if (popup && !localStorage.getItem(STORAGE_KEY)) {
+  window.addEventListener("load", () => {
+    // تظهر بعد 5 ثواني
+    setTimeout(() => {
+      popup.classList.add("show");
 
-    // اخفيه بعد 2.5 ثانية
-    setTimeout(function () {
-      popup.classList.remove("show");
-    }, 4000);
-  }, 3000);
-});
+      // تختفي بعد 3 ثواني
+      setTimeout(() => {
+        popup.classList.remove("show");
+      }, 3000);
+
+      // سجلنا إنها ظهرت مرة واحدة
+      localStorage.setItem(STORAGE_KEY, "true");
+    }, 5000);
+  });
+}
+
+ */
 window.addEventListener("load", () => {
   const splash = document.getElementById("splash");
   setTimeout(() => {
@@ -137,5 +136,4 @@ closePopup.addEventListener('click', () => {
   iosBtn.style.display = 'none';
   
 });
-
 

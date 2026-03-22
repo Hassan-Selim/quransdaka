@@ -14,9 +14,6 @@
   <loc>https://www.quransadaka.online/ruqyah/index.html</loc>
 </url>
 
-<url>
-  <loc>https://www.quransadaka.online/tasbeeh/index.html</loc>
-</url>
 
 <url>
   <loc>https://www.quransadaka.online/quran/index.html</loc>
@@ -30,10 +27,9 @@
   <loc>https://www.quransadaka.online/radio-read/index.html</loc>
 </url>
 
+
+
 <url>
-  <loc>https://www.quransadaka.online/ramadan/index.html</loc>
-  </url>
-<url>
-  <loc>https://www.quransadaka.online/azkar/index.html</loc>
+  <loc>https://www.quransadaka.online/prayer/index.html</loc>
   </url>
 </urlset>

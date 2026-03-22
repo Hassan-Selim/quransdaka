@@ -1,166 +1,267 @@
-:root{
-  --font-btn:"Tajawal";
-  src: url("../fonts/Tajawal.ttf") format("truetype"); ;
-} 
+/* ===== 1. Fonts & Essentials ===== */
 @font-face {
-  font-family: "Aviny";
-  src: url("../fonts/Aviny.ttf") format("truetype");
+  font-family: "Tajawal";
+  src: url("../fonts/Tajawal.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
-}/* ===== Home Page ===== */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Tajawal", sans-serif;
+  -webkit-tap-highlight-color: transparent; /* تحسين تجربة اللمس للموبايل */
+}
+
 .home {
-  min-height: 100vh;
+  min-height: 100%;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 2rem 1.5rem;
+  justify-content: flex-start; /* التغيير لـ start لضمان عدم السكرول */
+  padding: 1rem;
+  background-color: var(--color-bg);
   text-align: center;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-*{
-  font-family: "Tajawal", sans-serif;
+  user-select: none;
 }
 
+/* ===== 3. Logo & Header Section ===== */
 .home-logo {
-  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1vh 0;
+}
+
+.home-logo img {
+  width: clamp(200px, 20vw, 600px);
+  height: auto;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  transition:
+    transform 0.3s ease,
+    width 0.3s ease;
 }
 
 .home-logo h3 {
+  font-size: 0.85rem;
   font-weight: 500;
-  color: var(--color-text-muted);
+  color: var(--color-text);
   margin-bottom: 1rem;
 }
 
-.home-logo .address {
-  max-width: 500px;
-  margin-bottom: 0.5rem;
-}
 .home-logo .name {
-  max-width: 400px;
-  margin-bottom: 1rem;
-}
-.home-logo p {
-  color: var(--color-text-muted);
-  font-size: 0.95rem;
+  max-width: 12rem;
+  height: auto;
+  opacity: 0.9;
 }
 
+.home-logo p {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  max-width: 600px;
+  margin: 8px auto 0;
+  padding: 12px;
+  background: var(--color-bg-card);
+  border: 1px solid rgba(13, 148, 136, 0.1);
+  border-radius: 15px;
+  box-shadow: var(--shadow-soft);
+}
+
+/* ===== 4. Bento Grid (The Buttons) ===== */
 .home-buttons {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.25rem;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(85px, 11.5vh); /* ارتفاع مدروس لإلغاء السكرول */
+  gap: 10px;
   width: 100%;
-  max-width: 300px;
-  margin-top: 2rem;
+  max-width: 450px;
+  margin: 15px auto;
+  padding: 5px;
 }
 
-.home-btn {
-  font-family: var(--font-btn);
-  display: grid;
+/* الاستهداف الموحد لكل الأزرار كـ Link */
+a.home-btn {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: row; /* الأساس صف */
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  padding: 1.25rem;
-  background: var(--color-bg-card, var(--color-white));
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
-  border: 2px solid rgba(13, 148, 136, 0.15);
-  color: var(--color-text);
-  font-size: 1.2rem;
-  font-weight: 600;
   text-decoration: none;
-  text-align: center;
-  transition: all 0.25s;
+  border: 1px solid rgba(13, 148, 136, 0.15);
+  box-shadow: var(--shadow-soft);
+  padding: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-.home-btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(13, 148, 136, 0.2);
-  border-color: var(--color-teal);
-  color: var(--color-teal-dark);
+a.home-btn:active {
+  transform: scale(0.95);
+  background: var(--color-cream);
+}
+
+.btn-text {
+  font-weight: 700;
+  font-size: clamp(1rem, 2.5vw, 2rem);
+  color: var(--color-text);
 }
 
 .home-btn .btn-icon {
-  width: 48px;
-  height: 48px;
+  font-size: 1.6rem;
+  margin-left: 8px; /* مسافة بسيطة بين الأيقونة والنص */
+}
+
+/* --- تخصيص الأزرار بناءً على الـ Layout المطلوب --- */
+
+.home-btn.ramadan {
+  grid-column: span 4;
+  background: var(--color-cream);
+  display: none; /* كما طلبت */
+}
+
+.home-btn.prayer {
+  grid-column: span 2;
+  grid-row: span 2;
+  flex-direction: row; /* الصلاة عمودية */
+  background: var(--color-beige);
+  border-color: var(--color-gold-light);
+}
+
+.home-btn.prayer .btn-icon {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+.home-btn.prayer .btn-text {
+  color: var(--color-gold);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+}
+
+/* تأثير الـ Sparkle "جديد" */
+.home-btn.prayer::after {
+  content: "✨";
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 2rem;
+  color: var(--color-gold);
+  animation: floatMoon 1.5s ease-in-out infinite;
+}
+
+.home-btn.quran {
+  grid-column: span 2;
+  background: var(--color-teal);
+}
+.home-btn.quran .btn-text {
+  color: #fff;
+}
+
+.home-btn.quran-read {
+  grid-column: span 2;
+  background: var(--color-teal-dark);
+}
+.home-btn.quran-read .btn-text {
+  color: #fff;
+}
+
+.home-btn.radio, .home-btn.ruqyah {
+  grid-column: span 2;
+  background: var(--color-beige);
+  border-color: var(--color-gold-light);
+}
+.home-btn.radio .btn-text, .home-btn.ruqyah .btn-text {
+  color: var(--color-gold);
+  font-size: 1.1rem;
+}
+
+.home-btn.about {
+  grid-column: span 4;
+}
+
+.home-btn.azkar,
+.home-btn.tasbeeh {
+  grid-column: span 2;
+}
+
+@keyframes floatMoon {
+  0%,
+  100% {
+    transform: scale(0.8) rotate(-30deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.2) rotate(30deg);
+    opacity: 1;
+  }
+}
+
+/* تحسين زر About بداخل الـ Grid */
+.home-btn.about .btn-icon {
+  background: linear-gradient(
+    135deg,
+    var(--color-teal) 0%,
+    var(--color-teal-dark) 100%
+  );
+  height: 2.2rem;
+  width: 2.2rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translateX(-50%);
-  font-size: 1.7rem;
-  flex-shrink: 0;
+  color: white;
+  font-size: 2rem;
 }
 
-.home-btn.quran .btn-icon {
-  background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-teal-dark) 100%);
-  color: var(--color-white);
-}
-
-.home-btn.ruqyah .btn-icon {
-  background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-gold) 100%);
-  color: var(--color-white);
-}
-
-.home-btn.radio .btn-icon {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
-  color: var(--color-white);
-}
-.home-btn.azkar .btn-icon {
-  background: linear-gradient(135deg, #008884 0%, #047857 100%);
-  color: var(--color-white);
-}
-
-.home-btn.read .btn-icon {
-  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
-  color: var(--color-white);
-}
-
-.home-btn.tasbeeh .btn-icon {
-  background: linear-gradient(135deg, #0841ab 0%, #8718fd 100%);
-  color: var(--color-white);
-}
-.ramadan{
-  
-  font-weight: 400;
-  display: inline-flex;
-  align-items: center;
-  width: 100%;
-  height: 4rem;
-  gap: 0.5rem;
-  background-color: rgb(255, 204, 0);
-  animation: floatMoon 0.9s ease-in-out infinite;
-}
-.ramadan span{
-  font-family: "Aviny",sans-serif;
-  color: #023d3b;
-  font-size: clamp(3rem, 3vw, 1rem);
-  font-weight: 600;
-}
-.ramadan .btn-icon{
-  font-size: 1.8rem;
-  background-color: #023d3b;
-  border-radius: 50%;
-  animation: iconRotate 0.9s infinite alternate ease-in-out;
-}
-@keyframes floatMoon {
-  0%, 100% { transform: scale(0.9); }
-  50% { transform: scale(1); }
-}
-@keyframes iconRotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(90deg); }
-}
-
-
-.home-btn.about .btn-icon {
-  background: linear-gradient(135deg, #034485 0%, #046393 100%);
-  color: var(--color-white);
-  img{
-    width: 240px;
-    height: 240px;
+/* ===== 6. Responsive Tuning ===== */
+@media (max-height: 650px) {
+  .home-logo p {
+    display: none;
+  } /* إخفاء الحديث في الشاشات القصيرة جداً لمنع السكرول */
+  .home-buttons {
+    grid-auto-rows: minmax(75px, 10vh);
+    gap: 8px;
   }
 }
+
+@media (min-width: 768px) {
+  .home-buttons {
+    max-width: 700px;
+    grid-auto-rows: 120px;
+  }
+}
+
+#splash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    var(--color-teal) 0%,
+    var(--color-teal-dark) 100%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+@keyframes zoomin {
+  0% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 .popup-message {
   display: flex;
   position: fixed;
@@ -175,14 +276,19 @@
   text-align: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  z-index: 9999;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+  pointer-events: none;
   animation: floatMoon 2s ease-in-out infinite;
+  display: none;
 }
 
-.show {
+/* .show {
   opacity: 1;
-}
+  pointer-events: auto;
+  transform: translateX(0);
+} */
 
 @media (min-width: 500px) {
   .home-buttons {
@@ -208,18 +314,22 @@
     font-size: 2.5rem;
   }
   .home-btn {
-    flex-direction: column;
+    flex-direction: row;
     padding: 2rem 1.5rem;
   }
-  .ramadan{
-    flex-direction: row;
-  }
 }
+
 #splash {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-teal-dark) 100%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    var(--color-teal) 0%,
+    var(--color-teal-dark) 100%
+  );
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -232,17 +342,15 @@
   width: 120px;
   height: 120px;
   margin-bottom: 20px;
-  animation: zoomin  alternate 1.5s ease-in-out ;
+  animation: zoomin alternate 1.5s ease-in-out;
 }
 
-
-
-@keyframes zoomin{
+@keyframes zoomin {
   0% {
     transform: scale(5);
     opacity: 0;
   }
- 
+
   100% {
     transform: scale(0);
     opacity: 1;
@@ -309,7 +417,6 @@
   color: #fff;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
   z-index: 9999;
-
   transition: all 0.5s ease;
 }
 .install-bar::before {
@@ -317,7 +424,7 @@
   display: inline-block !important;
   width: 0;
   height: 0;
-  border-top: 1rem solid #0effbf;       /* ده اللي بيعمل السهم لتحت */
+  border-top: 1rem solid #0effbf; /* ده اللي بيعمل السهم لتحت */
   border-left: 1rem solid transparent;
   border-right: 1rem solid transparent;
   vertical-align: middle;
@@ -332,10 +439,9 @@
   }
   to {
     opacity: 1;
-    transform: translateY(15px);     /* ينزل لتحت */
+    transform: translateY(15px); /* ينزل لتحت */
   }
 }
-
 
 .install-info {
   display: flex;
@@ -428,9 +534,8 @@
   text-decoration: ltr;
   text-align: center;
   user-select: none;
-  
 }
-.ios-popup li{
+.ios-popup li {
   list-style: none;
   margin: 0.5rem 0;
   text-align: right;

@@ -3,7 +3,7 @@ console.log("Notifications script loaded ✅");
 
 // ======== تسجيل Service Worker ========
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js')
+  navigator.serviceWorker.register('/service-worker.js') // تأكد إن ده مسار ملف الـ SW بتاعك
     .then(reg => console.log("Service Worker مسجل بنجاح:", reg))
     .catch(err => console.error("فشل تسجيل Service Worker:", err));
 } else {
@@ -37,8 +37,7 @@ function firstRandomAzkar() {
       "لا إله إلا الله وحده لا شريك له"
     ];
     const randomZikr = azkar[Math.floor(Math.random() * azkar.length)];
-    console.log(`First random azkar: ${randomZikr}`);
-    // نرسل الإشعار بعد التأكد من جاهزية SW
+    
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.ready.then(registration => {
         registration.showNotification("ذكر اليوم 🌙", {
@@ -81,41 +80,77 @@ function scheduleNotification(title, body, hour, minute, url) {
   const target = new Date();
   target.setHours(hour, minute, 0, 0);
   let diff = target - now;
-  if(diff < 0) diff += 24*60*60*1000; // لو الوقت فات، نضيف يوم
+  if(diff < 0) diff += 24*60*60*1000; 
 
   setTimeout(() => {
     sendNotification(title, body, url);
-    setInterval(() => sendNotification(title, body, url), 24*60*60*1000); // كرر كل يوم
+    setInterval(() => sendNotification(title, body, url), 24*60*60*1000); 
   }, diff);
 }
 
-// ======== إشعارات مواقيت الصلاة ========
+// ======== التعديل الجديد: المراقبة المستمرة لمواقيت الصلاة ========
+let currentPrayerTimes = null;
+let lastNotifiedPrayer = null;
+
 function setupPrayerNotifications(prayerTimes) {
   if (Notification.permission !== "granted") return;
-
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.ready.then(() => {
-      // ✅ تحقق من وجود controller قبل postMessage
-      if (navigator.serviceWorker.controller) {
-        navigator.serviceWorker.controller.postMessage({
-          type: "SET_PRAYER_TIMES",
-          times: prayerTimes
-        });
-      } else {
-        console.warn("SW controller غير موجود، لم يتم إرسال مواقيت الصلاة");
-      }
-    });
-  }
+  currentPrayerTimes = prayerTimes;
+  console.log("تم استلام مواقيت الصلاة وتفعيل المراقبة ✅");
 }
 window.setupPrayerNotifications = setupPrayerNotifications;
+
+// حلقة تفحص الوقت كل 10 ثواني طول ما الموقع مفتوح في أي صفحة
+setInterval(() => {
+  if (!currentPrayerTimes) return;
+
+  const now = new Date();
+  const currentHour = now.getHours().toString().padStart(2, '0');
+  const currentMinute = now.getMinutes().toString().padStart(2, '0');
+  const currentTimeString = `${currentHour}:${currentMinute}`;
+
+  Object.entries(currentPrayerTimes).forEach(([prayerName, timeObj]) => {
+    // بناءً على كودك القديم، إنت بتبعت التاريخ كـ Date String أو Object
+    // بنحوله لـ ساعات ودقائق عشان نقارنه بالوقت الحالي
+    const prayerDate = new Date(timeObj);
+    const prayerHour = prayerDate.getHours().toString().padStart(2, '0');
+    const prayerMinute = prayerDate.getMinutes().toString().padStart(2, '0');
+    const prayerTimeString = `${prayerHour}:${prayerMinute}`;
+
+    if (currentTimeString === prayerTimeString && lastNotifiedPrayer !== prayerName) {
+      lastNotifiedPrayer = prayerName;
+      
+      // 1. تشغيل صوت الأذان (تأكد من مسار ملف الصوت بتاعك)
+      playAzanSound();
+
+      // 2. إرسال أمر للـ Service Worker ليعرض الإشعار فوراً
+      if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({
+          type: "SHOW_PRAYER_NOTIFICATION",
+          prayerName: prayerName
+        });
+      }
+    }
+  });
+
+  // تفريغ المتغير في آخر دقيقة من الساعة عشان يشتغل اليوم اللي بعده
+  if (now.getMinutes() === 59) {
+     lastNotifiedPrayer = null;
+  }
+}, 10000);
+
+function playAzanSound() {
+  // ⚠️ ضع المسار الصحيح لملف الأذان الخاص بك هنا
+  const azanAudio = new Audio('../img/adhan.mp3'); 
+  azanAudio.play().catch(err => console.log("المتصفح منع التشغيل التلقائي للصوت:", err));
+}
 
 // ======== طلب إذن الإشعارات وتشغيل الأذكار ========
 document.addEventListener("DOMContentLoaded", () => {
   Notification.requestPermission().then(permission => {
     if(permission === "granted"){
       console.log("تم السماح بالإشعارات ✅");
-      setTimeout(firstRandomAzkar, 3000); // أول ذكر بعد 3 ثواني
-      scheduleDailyAzkar(); // أذكار الصباح والمساء
+      setTimeout(firstRandomAzkar, 3000); 
+      scheduleDailyAzkar(); 
     } else {
       console.warn("الإشعارات مرفوضة ❌");
     }

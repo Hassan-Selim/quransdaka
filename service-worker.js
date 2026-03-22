@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v1.3.0"; // ارفع الفيرجن عشان نضمن المسح القديم
+const CACHE_VERSION = "v1.3.1"; 
 const STATIC_CACHE = `quran-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `quran-dynamic-${CACHE_VERSION}`;
 
@@ -80,24 +80,16 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-// ======= الإشعارات (كما هي) =======
-let prayerTimers = [];
+// ======= الإشعارات المباشرة (التعديل الجديد لمواقيت الصلاة) =======
 self.addEventListener("message", (event) => {
   const data = event.data;
-  if (data.type === "SET_PRAYER_TIMES") {
-    prayerTimers.forEach(clearTimeout);
-    prayerTimers = [];
-    Object.entries(data.times).forEach(([name, timeObj]) => {
-      const diff = new Date(timeObj) - new Date();
-      if (diff > 0) {
-        const t = setTimeout(() => {
-          self.registration.showNotification(`موعد صلاة ${name}`, {
-            body: "حان الآن وقت الصلاة",
-            icon: "/img/icon.webp"
-          });
-        }, diff);
-        prayerTimers.push(t);
-      }
+  // الـ SW هنا مجرد "مُنفذ" بيعرض الإشعار فوراً لما الـ notifications.js يطلب منه
+  if (data.type === "SHOW_PRAYER_NOTIFICATION") {
+    self.registration.showNotification(`موعد صلاة ${data.prayerName} 🕌`, {
+      body: "حي على الصلاة، حي على الفلاح",
+      icon: "/img/icon.webp",
+      badge: "/img/icon.webp",
+      vibrate: [200, 100, 200, 100, 200]
     });
   }
 });

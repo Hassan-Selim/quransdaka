@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateRamadanCountdown() {
 
     const ramadanStart = new Date("2026-02-19T00:00:00");
-    const ramadanEnd   = new Date("2026-03-20T00:00:00");
+    const ramadanEnd   = new Date("2026-03-21T00:00:00");
 
     const now = new Date();
     const messageEl = document.getElementById("message");

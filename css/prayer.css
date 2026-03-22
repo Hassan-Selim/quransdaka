@@ -12,6 +12,7 @@ html {
   align-items: center;
   user-select: none;
   height: 100dvh;
+  min-height: 100%;
   width: 100%;
 }
 .prayer-content {
@@ -168,21 +169,21 @@ p span {
 }
 
 #enableCompass {
-    background-color: var(--color-teal);
-    color: var(--color-white);
-    padding: 5px 12px;
-    border-radius: var(--radius);
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-    margin: 20px auto;
-    display: block; /* عشان يتوسطن */
+  background-color: var(--color-teal);
+  color: var(--color-white);
+  padding: 5px 12px;
+  border-radius: var(--radius);
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 20px auto;
+  display: block; /* عشان يتوسطن */
 }
 
 #enableCompass:hover {
-    background-color: var(--color-teal-dark);
-    transform: scale(1.05);
+  background-color: var(--color-teal-dark);
+  transform: scale(1.05);
 }
 .location-bar {
   display: flex;
@@ -240,110 +241,411 @@ p span {
   display: none;
 }
 .mobile-nav {
-  display: flex;
+  max-width: 888px;
   position: fixed;
-  font-size: 2rem;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 92%;
-  max-width: 888px;
-  height: 70px;
-  background: var(--color-bg-card);
-  border-radius: 20px;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 2px 10px 25px #002d3ccf;
+  width: 100%;
+  border-radius: 1rem 1rem 0 0;
+  background: var(--color-bg);
+  border-top: 1px solid #2a354b;
+  height: 75px;
   z-index: 9999;
-  transition: 0.3s ease-in-out;
 }
 
 .mobile-nav ul {
   display: flex;
-  width: 100%;
-  padding: 0;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
   margin: 0;
-  position: relative;
+  padding: 0;
+  list-style: none;
 }
 
 .mobile-nav ul li {
-  list-style: none;
-  flex: 1;
-  text-align: center;
-  z-index: 1;
-  transition: 0.3s ease-in-out;
-  cursor: pointer;
-  position: relative;
-  color: #9fb3d9;
-}
-
-/* hover */
-.mobile-nav ul li:hover {
-  transform: translateY(-3px) scale(1.1);
-  color: #fff;
-}
-
-/* العنصر النشط */
-.mobile-nav ul li.active {
-  color: #fff;
-  transform: translateY(-5px) scale(1.3);
-}
-
-/* الدايرة خلف الايقونة */
-.mobile-nav ul li.active::before {
-  content: "";
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: -1;
-  box-shadow: 0 0 10px #f7959c;
-}
-.mobile-nav ul li.active::after {
-  content: "🔻";
-  position: absolute;
-  font-size: 2rem;
-  width: 3rem;
-  background: #ff4d5a;
-  height: 3px;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9;
-  bottom: 5px;
-}
-
-.zikr {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.25rem;
-  width: 100%;
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-}
-
-.zikr .card {
-  border-radius: 20px;
-  background: #435f72e7;
-  box-shadow: 0 4px 12px #0000001a;
-  padding: 1rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  font-size: 1.2rem;
-  min-height: 150px;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  gap: 5px;
+  color: #718096; /* لون رمادي باهت للزراير العادية */
+  cursor: pointer;
+  font-size: 1.4rem;
+  transition: 0.3s ease-in-out;
 }
 
-.zikr .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+/* إضافة نص تحت الأيقونة زي الصورة */
+.mobile-nav ul li::after {
+  content: attr(title);
+  font-size: 0.8rem;
+  font-family: "cairo";
+  font-weight: 600;
 }
+
+.mobile-nav ul li.active {
+  color: #d63d46;
+  transform: translateY(-2px) scale(1.2);
+}
+
+.azkar-wrapper {
+  padding: 20px;
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 كروت في الصف زي الصورة */
+  gap: 10px;
+  margin-top: 1rem;
+  max-width: 888px;
+  margin: auto;
+}
+
+.card {
+  background-color: #2a354b;
+  border-radius: 1.5rem;
+  padding: 20px 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: 0.7s ease-in-out;
+}
+
+.card .icon {
+  font-size: 1.8rem;
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+/* قائمة الأذكار الطولية */
+.azkar-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2a354b;
+  padding: 18px 20px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #37445c;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.azkar-list-item .number-badge {
+  color: #d63d46;
+  border: 1px solid #d63d46;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.prayer {
+  grid-column: span 2;
+  grid-row: span 3;
+  flex-direction: row;
+  background: #007465;
+}
+.morning,
+.evening,.tasbeeh {
+  grid-column: span 2;
+  grid-row: span 1;
+  flex-direction: row;
+  background: #a99a6b;
+}
+.evening {
+  background: #1b445cd4;
+}
+.tasbeeh{
+  background: #03567c;
+}
+.dua {
+  grid-column: span 4;
+  grid-row: span 1;
+  flex-direction: row;
+  background: #028383cb;
+}
+
+.daily {
+  grid-column: span 4;
+  grid-row: span 4;
+  flex-direction: row;
+  background: #007465;
+}
+.daily .label {
+  color: #e2e8f0;
+  font-weight: 600;
+  font-size: 1.2rem;
+  font-family: "cairo";
+}
+
+.card:hover {
+  transform: scale(0.95);
+  opacity: 0.9;
+  transition: 0.3s ease-in-out;
+}
+/* --- إعدادات حاوية الأذكار --- */
+.azkar-wrapper {
+  position: relative; 
+  overflow: hidden; 
+  margin-top: 2rem;
+  background: #1f2d45;
+  width: 100%;
+  height: 100%;
+}
+
+.azkar-main-view {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 20px;
+}
+.azkar-detail-view {
+  position: absolute;
+  top: 0;
+  left: 0; /* لأننا في محتوى عربي RTL، الشاشة هتدخل من اليسار */
+  width: 100%;
+  height: 100%;
+  background-color: #1a2235; /* نفس لون الخلفية */
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+
+  transform: translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.azkar-detail-view.open {
+  transform: translateX(0);
+}
+.detail-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: #2a354b;
+  border-bottom: 1px solid #37445c;
+  position: sticky;
+  top: 0;
+  z-index: 60;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-left: 15px; 
+}
+
+#azkarCategoryTitle {
+  margin: 0;
+  color: #d63d46;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+
+.azkar-list-container {
+  padding: 20px;
+  overflow-y: auto; 
+  flex-grow: 1;
+  padding-bottom: 100px; 
+}
+
+/* --- تصميم كارت الذكر الواحد --- */
+.zikr-card {
+  background-color: #2a354b;
+  border: 1px solid #37445c;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.zikr-text {
+  color: #e2e8f0;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  font-family: "Amiri", "Cairo", serif; /* خط عربي أصيل للقراءة */
+  margin-bottom: 20px;
+}
+
+/* زرار العداد (Counter) */
+.zikr-counter {
+  background-color: #d63d46;
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.zikr-counter:active {
+  transform: scale(0.95);
+  background-color: #b52b33;
+}
+
+/* حاوية الشاشة بالكامل */
+.prayer-zikr, .morning-zikr, .evening-zikr, .doaa-zikr, .tasbeeh-section {
+  background: var(--color-bg, #1f2d45);
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100dvh;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  transition: 0.7s ease-in-out;
+  overflow: hidden;
+  
+}
+/* الهيدر العلوي */
+.prayer-header {
+  background: #1f2d45;
+  color: #e3e3e3;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
+}
+.headZikr{
+  text-align: center;
+  color: #d2d2d2;
+}
+ .back-btn{
+text-align: right;
+padding: 5px 20px;
+border-radius: 10px;
+font-size: 1rem;
+background: #0b2946;
+cursor: pointer;
+}
+.back-btn:hover{
+  background: #0b2946cc;
+}
+
+.section-azkar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  background: var(--color-bg, #1f2d45);
+  overflow-y: auto;
+  flex-grow: 1;
+
+  list-style: none;
+  margin: 0;
+}
+
+.section-azkar li {
+  color: var(--color-text);
+  background: var(--color-bg-card, var(--color-white));
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+  list-style: none;
+  padding-left: 100px;
+  font-weight: 600;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.8;
+  position: relative;
+  box-sizing: border-box;
+}
+summary{
+  background: #007465;
+  padding: 1rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  font-family: inherit;
+  text-align: center;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+}
+summary:hover{
+  background: #006153;
+}
+.doaa li{
+  margin-bottom: 1rem;
+}
+li .done-btn, .copy-btn {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  color: #fff;
+  background: #d63d46;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+  font-family: inherit;
+}
+
+li .done-btn:hover, .copy-btn:hover {
+  background: #b52b33;
+  
+  transform: translateY(-50%) scale(0.95);
+}
+
+
+li span {
+  display: inline-block;
+  text-align: justify;
+  max-width: 55ch;
+}
+
+
+.showHiddenBtnazz {
+    display: none; 
+    margin: 20px auto;
+    padding: 12px 25px;
+    background: #034884bb;
+    color: #c9d4df;
+    border: 1px dashed #066587; 
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+}
+
+.showHiddenBtnazz:hover {
+    color: #fff;
+    border-color: #d63d46;
+    transform: scale(1.05);
+}
+
 .close-nav {
   position: fixed;
   top: 0;
@@ -468,4 +770,161 @@ p span {
   opacity: 1;
 
   visibility: visible;
+}
+
+
+
+
+/* إعدادات عامة للحاوية لتكون متجاوبة وبتصميم "البطاقة" (Card) */
+
+
+.tasbeeh-section{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  margin: auto;
+  top: 0;
+  background: #0b2946;
+}
+.tasbeeh-container {
+  font-family: 'Cairo', sans-serif;
+  background: #dfefff;
+  border-radius: 24px;
+  box-shadow: var(--shadow-card);
+  max-width: 80%;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  border: 1px solid #ffffffcc;
+  user-select: none;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* القائمة المنسدلة لاختيار الذكر */
+#dhikrSelect {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  font-family: inherit;
+  font-weight: 600;
+  color: #2c3e50;
+  background-color: #f1f5f9;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+  appearance: none; /* لإخفاء السهم الافتراضي في بعض المتصفحات وإضافة سهم مخصص إن أردت */
+}
+
+#dhikrSelect:hover {
+  border-color: #cbd5e1;
+}
+
+#dhikrSelect:focus {
+  border-color: #10b981; /* لون أخضر زمردي عند التحديد */
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+  background-color: #ffffff;
+}
+
+/* شاشة العداد */
+#counter {
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  background: #e2e8f0;
+  width: 180px;
+  height: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  box-shadow: inset 0 6px 10px rgba(0, 0, 0, 0.1), inset 0 -2px 5px rgba(255, 255, 255, 0.8);
+  letter-spacing: 2px;
+  text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+}
+
+/* الزر الأساسي للتسبيح (تم تصميمه ليكون دائرياً ومجسمًا) */
+#tasbeehBtn {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: none;
+  /* إضافة ظلال خارجية وداخلية ليعطي شكل الزر البارز (3D) */
+  box-shadow: 
+    0 10px 20px rgba(16, 185, 129, 0.4), 
+    inset 0 -6px 10px rgba(0, 0, 0, 0.2), 
+    inset 0 6px 10px rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); /* حركة ناعمة جداً */
+}
+
+/* تأثير الضغط على زر التسبيح (أهم جزء لتجربة المستخدم) */
+#tasbeehBtn:active {
+  transform: translateY(4px) scale(0.96);
+  box-shadow: 
+    0 4px 10px rgba(16, 185, 129, 0.4), 
+    inset 0 4px 10px rgba(0, 0, 0, 0.3), 
+    inset 0 -4px 10px rgba(255, 255, 255, 0.1);
+}
+
+/* كلمة توضيحية داخل الزر الفارغ */
+#tasbeehBtn::after {
+  content: "اضغط";
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-family: 'Cairo', sans-serif;
+}
+
+/* زر تصفير العداد */
+#resetBtn {
+  margin-top: 10px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: #ef4444; /* لون أحمر هادئ */
+  background: transparent;
+  border: 1.5px solid #ef4444;
+  border-radius: 30px; /* حواف دائرية بالكامل */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#resetBtn:hover {
+  background: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+#resetBtn:active {
+  transform: scale(0.95);
+}
+
+/* استجابة الشاشات الصغيرة (الموبايل) */
+@media (max-width: 400px) {
+  .tasbeeh-container {
+    padding: 2rem 1.5rem;
+    box-shadow: none; /* تقليل الظلال في الموبايل ليكون أخف */
+    border-radius: 0;
+  }
+  
+  #counter {
+    width: 350px;
+    height: 90px;
+    font-size: 3.5rem;
+  }
+  
+  #tasbeehBtn {
+    width: 110px;
+    height: 110px;
+  }
 }
