@@ -1,142 +1,274 @@
-
-.banner{
-  text-align:center;
-  margin-bottom: 1rem;
+/* إعداد الخط من مسارك المحلي */
+@font-face {
+  font-family: "Cairo";
+  src: url("../fonts/cairo.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
-.about-page{
-  max-width:900px;
-  margin:auto;
-  padding:40px 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.about-page h1{
-  text-align:center;
-  background-color: #0d9488;
-  border-radius: 10px;
-  padding: 10px 10px;
-  margin-bottom:30px;
-  font-size: 2rem;
-}
-.list{
-  list-style: none;
-  padding: 0;
-  margin: 20px 0;
-  display: grid;
-  grid-template-columns: repeat(2,1fr); /* موبايل: 2 كارد */
-  gap: 10px;
-}
-
-.list li{
-  background: var(--color-bg-card, var(--color-white));
-  padding: 10px;
-  border-radius:10px;
-  box-shadow:0 2px 6px #00000014;
-  transition:0.2s;
-  font-size:15px;
-  cursor:pointer;
-  border: #0d948990 1px solid;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-}
-
-.list li:hover{
-  transform: translateY(-4px);
-  box-shadow: 0 12px 28px #0d948833;
-  color: var(--color-teal-dark);
-}
-
-
-
-.list a:hover{
-  text-decoration:underline;
-}
-
-.about-page h2{
-  margin-top:35px;
-  background-color: #0d9488;
-  border-radius: 10px;
-  padding: 10px;
-  border-right:7px solid #e7770e;
-  padding-right:10px;
-}
-
-.about-page p{
-  font-size:17px;
-  line-height:1.9;
-  color:var(--color-text);
-  margin:14px 0;
-  max-width:750px;
-  
-}
-
-.about-page ul{
-  padding-right:20px;
-}
-
-.about-page li{
-  margin:10px 0;
-}
-
-.about-page strong{
-  color:#e7770e;
-}
-
-.shareSite{
-  margin: auto;
-  display: flex;
-  padding: 10px 20px;
-  background: var(--color-bg-card);
-  outline: none;
-  border: none;
-  border-radius: 20px;
-  font-size: 1.2rem;
+/* تنسيق قسم "عن الموقع" - النسخة الاحترافية المربوطة بالـ Root */
+.about-section-modern {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem 4rem;
+  font-family: "Cairo", var(--font-arabic), sans-serif;
   color: var(--color-text);
-  box-shadow:0 2px 6px #00000014;
-  border-right:7px solid #0d9488;
-  border-left:7px solid #0d9488;
-  transition: 0.5s ease-in-out;
+  line-height: 1.6;
+}
+
+/* البانر */
+.banner-wrapper {
+  position: relative;
+  height: 350px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-card);
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay-text {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 2rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: #ffffff;
+  text-align: center;
+}
+
+.overlay-text h1 {
+  font-size: 1.7rem;
+  margin: 0;
+}
+
+.sub-title {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* صندوق التعريف */
+.intro-box {
+  background: var(--color-bg-card);
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 2.5rem;
+  border-right: 5px solid var(--color-teal);
+  transition: background 0.3s;
+}
+
+.intro-box p {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.intro-box a {
+  color: var(--color-teal);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* شبكة الكروت (5 كروت) */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.feature-item {
+  background: var(--color-bg-card);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  text-align: center;
+  border: 1px solid rgba(13, 148, 136, 0.1);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.3s ease-in-out;
   cursor: pointer;
 }
-.shareSite:hover{
-  transform: scale(1.1);
-  border: #0d9488 2px solid;
-  box-shadow:0 2px 6px #0d9488;
-}
-/* موبايل */
 
-@media(max-width:600px){
-
-.about-page h1{
-  font-size:26px;
+.feature-item:hover {
+  transform: translateY(-5px);
+  border-color: var(--color-teal-light);
+  box-shadow: var(--shadow-card);
 }
 
-.about-page p{
-  font-size:16px;
+.f-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
 }
 
+.feature-item h3 {
+  color: var(--color-teal);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
 }
-.completed-btn {
-  margin: 5px 5px 10px 0;
-  padding: 5px 10px;
+
+.feature-item p {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+/* قصة الموقع */
+.story-card {
+  background: var(--color-bg-card);
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  margin-bottom: 3rem;
+  border: 1px solid rgba(13, 148, 136, 0.05);
+}
+
+.story-card h2 {
+  color: var(--color-teal-dark);
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+  background: #c7d3cf;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+}
+
+.story-card p {
+  font-size: 1.1rem;
+  color: var(--color-text);
+}
+
+.story-card a {
+  color: var(--color-gold);
+  font-weight: bold;
+}
+
+/* زر المشاركة */
+.cta-wrapper {
+  text-align: center;
+}
+.prayer{
+  grid-column: span 2;
+  border-right: 5px solid var(--color-teal);
+}
+.btn-premium {
+  background: linear-gradient(135deg, var(--color-teal), var(--color-teal-dark));
+  color: #ffffff;
+  padding: 1rem 3rem;
+  font-size: 1.2rem;
+  font-weight: 600;
   border: none;
-  border-radius: 6px;
-  background-color: #d4edda;
-  color: #155724;
+  border-radius: 50px;
   cursor: pointer;
-}
-@media (min-width:768px){
-  .list{
-    grid-template-columns: repeat(3,1fr);
-  }
+  font-family: "Cairo", sans-serif;
+  box-shadow: var(--shadow-soft);
+  transition: 0.3s;
 }
 
-/* لاب توب */
-@media (min-width:1024px){
-  .list{
-    grid-template-columns: repeat(4,1fr);
+.btn-premium:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-card);
+}
+
+/* تعديلات الموبايل */
+@media (max-width: 600px) {
+  .banner-wrapper { height: 250px; }
+  .overlay-text h1 { font-size: 1.5rem; }
+  .intro-box { padding: 1.5rem; }
+}
+/* حاوية قسم التواصل */
+.contact {
+  background: var(--color-bg-card);
+  padding: 2.5rem 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+  margin-top: 3rem;
+  border: 1px dashed var(--color-teal-light); /* إطار مقطع ليعطي إيحاء بالتطوير المستمر */
+  position: relative;
+  overflow: hidden;
+}
+
+/* النص التوضيحي */
+.contact-hint {
+  font-size: 1.1rem;
+  color: var(--color-text);
+  margin-bottom: 2rem;
+  line-height: 1.8;
+  max-width: 600px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* تنسيق الروابط والأزرار داخل التواصل */
+.contact a {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px;
+  transition: transform 0.3s ease;
+}
+
+/* زر الإيميل (مبني على btn-primary بتاعك) */
+.contact .btn-primary {
+  padding: 0.8rem 2rem;
+  font-family: "Cairo", sans-serif;
+  font-size: 1.05rem;
+  border-radius: 50px;
+  background: linear-gradient(135deg, var(--color-teal), var(--color-teal-dark));
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+}
+
+/* زر الواتساب - تنسيق خاص احترافي */
+.contact a[href*="whatsapp"] {
+  background: #25d366; /* لون واتساب الرسمي */
+  color: #fff;
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+}
+
+/* تأثير الـ Hover */
+.contact a:hover {
+  transform: translateY(-5px);
+  opacity: 0.9;
+}
+
+/* أيقونات Boxicons (لو مستخدمها) */
+.contact i {
+  font-size: 1.4rem;
+}
+
+/* تعديل بسيط للـ Dark Mode */
+[data-theme="dark"] .contact {
+  border-color: var(--color-bg-soft);
+  background: var(--color-bg-card);
+}
+
+/* للموبايل */
+@media (max-width: 600px) {
+  .contact {
+    padding: 1.5rem;
+    margin-top: 2rem;
+  }
+  .contact a {
+    display: flex; /* يخلي الأزرار تحت بعض في الموبايل */
+    width: 100%;
+    margin: 10px 0;
+  }
+  .contact .btn-primary, .contact a[href*="whatsapp"] {
+    width: 100%;
   }
 }
