@@ -90,15 +90,74 @@
       </div>
       
     </div>
-    <div class="ruqyah-player-bar" id="ruqyahPlayerBar">
-      <div class="ruqyah-player-title" id="ruqyahPlayerTitle"></div>
-      <div class="ruqyah-player-controls">
-        <button type="button" id="ruqyahBtnPrev" class="ctrl-btn" aria-label="السابق">⏮ السابق</button>
-        <button type="button" id="ruqyahBtnPlayPause" class="ctrl-btn ctrl-play" aria-label="إيقاف">⏸ إيقاف</button>
-        <button type="button" id="ruqyahBtnNext" class="ctrl-btn" aria-label="التالي">التالي ⏭</button>
-      </div>
+   <div class="read-ruqyah">
+    <div class="ruqyah-wrapper">
+        <div class="tabs-control">
+            <button class="tab-btn active" onclick="openTab(event, 'audio-section')">
+                <span class="icon">🎧</span> استماع
+            </button>
+            <button class="tab-btn" onclick="openTab(event, 'text-section')">
+                <span class="icon">📖</span> قراءة
+            </button>
+        </div>
+
+        <div id="audio-section" class="tab-content active">
+            <div class="ruqyah-player-bar card" id="ruqyahPlayerBar">
+                <div class="ruqyah-player-title" id="ruqyahPlayerTitle">اختر مقطعاً للاستماع</div>
+                <div class="ruqyah-player-controls">
+                    <button type="button" id="ruqyahBtnPrev" class="ctrl-btn">⏮ السابق</button>
+                    <button type="button" id="ruqyahBtnPlayPause" class="ctrl-btn ctrl-play">▶ تشغيل</button>
+                    <button type="button" id="ruqyahBtnNext" class="ctrl-btn">التالي ⏭</button>
+                </div>
+            </div>
+            
+            <div class="ruqyah-list" id="ruqyahList">
+                </div>
+        </div>
+
+        <div id="text-section" class="tab-content">
+            <div class="card text-card">
+        <span class="badge">سورة الفاتحة</span>
+        <p class="quran-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ (1) الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ (2) الرَّحْمَنِ الرَّحِيمِ (3) مَالِكِ يَوْمِ الدِّينِ (4) إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ (5) اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ (6) صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ (7)</p>
+        <span class="repeat-hint">تُكرر 7 مرات</span>
     </div>
-    <div class="ruqyah-list" id="ruqyahList"></div>
+
+    <div class="card text-card">
+        <span class="badge">سورة البقرة (1-5)</span>
+        <p class="quran-text">الم (1) ذَلِكَ الْكِتَابُ لَا رَيْبَ فِيهِ هُدًى لِلْمُتَّقِينَ (2) الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنْفِقُونَ (3) وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنْزِلَ إِلَيْكَ وَمَا أُنْزِلَ مِنْ قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ (4) أُولَئِكَ عَلَى هُدًى مِنْ رَبِّهِمْ وَأُولَئِكَ هُمُ الْمُفْلِحُونَ (5)</p>
+    </div>
+
+    <div class="card text-card">
+        <span class="badge">آية الكرسي</span>
+        <p class="quran-text">اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ</p>
+        <span class="repeat-hint">تُكرر 3 مرات</span>
+    </div>
+
+    <div class="card text-card">
+        <span class="badge">سورة البقرة (285-286)</span>
+        <p class="quran-text">آمَنَ الرَّسُولُ بِمَا أُنْزِلَ إِلَيْهِ مِنْ رَبِّهِ وَالْمُؤْمِنُونَ كُلٌّ آمَنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ لَا نُفَرِّقُ بَيْنَ أَحَدٍ مِنْ رُسُلِهِ وَقَالُوا سَمِعْنَا وَأَطَعْنَا غُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ...</p>
+    </div>
+
+    <div class="card text-card">
+    <span class="badge">سورة الإخلاص</span>
+    <p class="quran-text">قُلْ هُوَ اللَّهُ أَحَدٌ (1) اللَّهُ الصَّمَدُ (2) لَمْ يَلِدْ وَلَمْ يُولَدْ (3) وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ (4)</p>
+    <span class="repeat-hint">تُكرر 3 مرات</span>
+</div>
+
+<div class="card text-card">
+    <span class="badge">سورة الفلق</span>
+    <p class="quran-text">قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ (1) مِنْ شَرِّ مَا خَلَقَ (2) وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ (3) وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ (4) وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ (5)</p>
+    <span class="repeat-hint">تُكرر 3 مرات</span>
+</div>
+
+<div class="card text-card">
+    <span class="badge">سورة الناس</span>
+    <p class="quran-text">قُلْ أَعُوذُ بِرَبِّ النَّاسِ (1) مَلِكِ النَّاسِ (2) إِلَهِ النَّاسِ (3) مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ (4) الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ (5) مِنَ الْجِنَّةِ وَالنَّاسِ (6)</p>
+    <span class="repeat-hint">تُكرر 3 مرات</span>
+</div>
+            </div>
+    </div>
+</div>
   </main>
  
 
