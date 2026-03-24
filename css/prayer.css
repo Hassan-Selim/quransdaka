@@ -316,17 +316,12 @@ p{
 
 .bento-grid {
   display: grid;
-
   grid-template-columns: repeat(3, 1fr);
-
   gap: 0.7rem;
-
   margin-top: 1rem;
-
   max-width: 888px;
   margin-left: 1rem;
   margin-right: 1rem; 
-  margin: auto;
 }
 
 .card {
@@ -353,18 +348,6 @@ p{
   font-weight: 600;
 }
 
-.azkar-list-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #2a354b;
-  padding: 18px 20px;
-  border-radius: 12px;
-  margin-bottom: 10px;
-  border: 1px solid #37445c;
-  color: #e2e8f0;
-  font-weight: 600;
-}
 
 .prayer {
   grid-column: span 2;
@@ -414,7 +397,6 @@ p{
 
 .azkar-wrapper {
   position: relative;
-  overflow: hidden;
   margin-top: 2rem;
   background: linear-gradient(
     180deg,
@@ -469,8 +451,10 @@ p{
 
 .prayer-header {
   background: #1f2d45;
+  position: fixed;
   color: #e3e3e3;
-  padding: 1.5rem;
+  padding:1rem 1.5rem 0;
+  top: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -478,6 +462,7 @@ p{
   box-sizing: border-box;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   flex-shrink: 0;
+  z-index: 100;
 }
 .headZikr {
   text-align: center;

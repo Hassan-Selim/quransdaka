@@ -30,7 +30,8 @@
 .hero-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center center;
 }
 
 .overlay-text {
@@ -66,8 +67,8 @@
 }
 
 .intro-box p {
-  font-size: 1.2rem;
-  margin: 0;
+  font-size: 1rem;
+  text-align: center;
 }
 
 .intro-box a {
@@ -80,13 +81,13 @@
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 3rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .feature-item {
   background: var(--color-bg-card);
-  padding: 1.5rem;
+  padding: 1rem;
   border-radius: var(--radius);
   text-align: center;
   border: 1px solid rgba(13, 148, 136, 0.1);
@@ -109,13 +110,13 @@
 
 .feature-item h3 {
   color: var(--color-teal);
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-bottom: 0.5rem;
 }
 
 .feature-item p {
   color: var(--color-text-muted);
-  font-size: 0.95rem;
+  font-size: 0.7rem;
 }
 
 /* قصة الموقع */
@@ -124,7 +125,7 @@
   padding: 2.5rem;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   border: 1px solid rgba(13, 148, 136, 0.05);
 }
 
@@ -132,14 +133,14 @@
   color: var(--color-teal-dark);
   margin-bottom: 1rem;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1rem;
   background: #c7d3cf;
   padding: 0.5rem 1rem;
   border-radius: var(--radius);
 }
 
 .story-card p {
-  font-size: 1.1rem;
+  font-size: 0.7rem;
   color: var(--color-text);
 }
 
@@ -160,7 +161,7 @@
   background: linear-gradient(135deg, var(--color-teal), var(--color-teal-dark));
   color: #ffffff;
   padding: 1rem 3rem;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 600;
   border: none;
   border-radius: 50px;

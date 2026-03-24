@@ -162,7 +162,7 @@
     border-radius: var(--radius-lg);
     margin-bottom: 1.5rem;
     box-shadow: var(--shadow-soft);
-    border: 1px solid rgba(13, 148, 136, 0.1);
+    border: 1px solid #0d94881a;
 }
 
 .tab-btn {

@@ -1,20 +1,20 @@
-const CACHE_VERSION = "v1.3.4"; 
+const CACHE_VERSION = "v1.3.5"; 
 const STATIC_CACHE = `quran-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `quran-dynamic-${CACHE_VERSION}`;
 
 const urlsToCache = [
   "/",
   "/index.html",
-  "/ramadan/",
-  "/ramadan/index.html",
+  "/prayer/",
+  "/prayer/index.html",
   "/quran-read/",
   "/quran-read/index.html",
   "/css/style.css",
-  "/css/ramadan.css",
+  "/css/prayer.css",
   "/css/quran-read.css",
   "/js/theme.js",
   "/js/quran-read.js",
-  "/js/ramadan.js",
+  "/js/prayer.js",
   "/img/icon.webp",
 ];
 
