@@ -59,6 +59,10 @@ html {
   transition: all 0.3s ease;
   font-weight: bold;
 }
+.prayer-name{
+  font-size: 1rem;
+  font-weight: 600;
+}
 
 /* اسم الصلاة بالـ Highlight */
 .prayer-item.next-prayer .prayer-name {
@@ -95,8 +99,8 @@ html {
 }
 
 .next-prayer-countdown {
-  font-size: 48px;
-  font-weight: 700;
+  font-size: 3.2rem;
+  font-weight: bolder;
   margin-top: 10px;
 }
 
@@ -122,11 +126,16 @@ html {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #2b3c56;
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-card);
+  color: var(--color-text);
   padding: 16px;
   border-radius: 14px;
   margin-bottom: 12px;
   font-size: 16px;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  user-select: none;
 }
 
 .prayer-item.active {
@@ -145,7 +154,6 @@ p{
 /* اتجاه القبلة */
 #qiblaSection {
   text-align: center;
-  background: #1f2d45;
   border-radius: var(--radius-lg);
   padding: 1.25rem;
   transition: background 0.3s;
@@ -161,7 +169,7 @@ p{
 }
 
 #qiblaSection .rot-hint {
-  color: aliceblue;
+  color: var(--color-text);
   display: flex;
   justify-content: center;
   align-items: center;
