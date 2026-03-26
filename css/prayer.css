@@ -14,6 +14,7 @@ body{
   margin: 0;
   padding: 0;
   background-color: var(--color-bg);
+ font-style: normal;
 }
 .prayer-content, .qiblaSection, .azkar-wrapper {
   transition: 0.1s ease-in-out;

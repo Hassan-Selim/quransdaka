@@ -660,9 +660,10 @@ zikrCategories.forEach((item) => {
 
   // التأكد إن العناصر موجودة عشان الكود ميضربش Error لو صفحة مفيهاش العناصر دي
   if (cardElement && sectionElement) {
-    // حدث الفتح
+    window.scrollTo({ top: 0, behavior: "instant" });
     cardElement.addEventListener("click", () => {
       sectionElement.style.display = "flex";
+      
     });
   }
 
@@ -670,6 +671,7 @@ zikrCategories.forEach((item) => {
     // حدث الإغلاق
     backBtnElement.addEventListener("click", () => {
       sectionElement.style.display = "none";
+      window.scrollTo({ top: 0, behavior: "instant" });
     });
   }
 });
@@ -697,6 +699,7 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
           listItem.style.display = "none";
           listItem.classList.add("completed-zikr"); 
+          
 
           // هنا التعديل: سمينا المتغير sectionShowBtn عشان يمسك زرار القسم ده بس
           const sectionShowBtn = currentSection.querySelector(".showHiddenBtnazz");

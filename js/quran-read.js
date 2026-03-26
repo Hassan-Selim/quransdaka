@@ -3,9 +3,12 @@
 
   var API_SUWAR = "../json/surah-name.json";
   var API_RECITERS = "../json/reciters.json";
+  var API_PAGES = "../json/quran-pages.json"; // مسار ملف الصفحات الجديد
+
   var STORAGE_RECITER = "quran-sadaka-reciter";
   var STORAGE_MOSHAF = "quran-sadaka-moshaf";
 
+  // عناصر السور
   var elListView = document.getElementById("listView");
   var elSurahView = document.getElementById("surahView");
   var elListLoading = document.getElementById("listLoading");
@@ -15,6 +18,8 @@
   var elSurahTitle = document.getElementById("surahTitle");
   var elVersesLoading = document.getElementById("versesLoading");
   var elVersesContainer = document.getElementById("versesContainer");
+  
+  // عناصر الصوت
   var elReadAudioBar = document.getElementById("readAudioBar");
   var elReadReciter = document.getElementById("readReciter");
   var elReadMoshaf = document.getElementById("readMoshaf");
@@ -29,6 +34,22 @@
   var currentReciter = null;
   var currentMoshaf = null;
   var currentSurahNumber = 0;
+  
+  // متغيرات قسم الصفحات
+  var currentPageNumber = 0;
+  var totalPages = 604; // عدد صفحات المصحف
+
+  // --- [تحديث: وظيفة الإخفاء الشاملة] ---
+ function updateUIVisibility(isReading) {
+    const toHide = document.querySelectorAll('.qpage, .ruqyah-wrapper, .banner, .continueBtn, .read-intro, #main-footer');
+    const displayValue = isReading ? 'none' : '';
+
+    toHide.forEach(el => {
+        if(el) el.style.display = displayValue;
+    });
+    
+    // باقي الكود بتاعك...
+}
 
   function pad(num) {
     return String(num).padStart(3, "0");
@@ -50,11 +71,13 @@
   function showList() {
     elListView.style.display = "block";
     elSurahView.style.display = "none";
+    updateUIVisibility(false);
   }
 
   function showSurah() {
     elListView.style.display = "none";
     elSurahView.style.display = "block";
+    updateUIVisibility(true);
   }
 
   function showListError(msg) {
@@ -124,7 +147,7 @@
   function fillReadReciterSelect() {
     elReadReciter.innerHTML = '<option value="">-- اختر القارئ --</option>';
     const sortedReciters = [...reciters].sort((a, b) =>
-      a.name.localeCompare(b.name, "ar"),
+      a.name.localeCompare(b.name, "ar")
     );
     sortedReciters.forEach(function (r) {
       var opt = document.createElement("option");
@@ -136,11 +159,7 @@
 
   function fillReadMoshafSelect() {
     elReadMoshaf.innerHTML = '<option value="">-- نوع التلاوة --</option>';
-    if (
-      !currentReciter ||
-      !currentReciter.moshaf ||
-      !currentReciter.moshaf.length
-    )
+    if (!currentReciter || !currentReciter.moshaf || !currentReciter.moshaf.length)
       return;
     currentReciter.moshaf.forEach(function (m, i) {
       var opt = document.createElement("option");
@@ -149,21 +168,19 @@
       elReadMoshaf.appendChild(opt);
     });
   }
+
   elBackToList.addEventListener("click", function () {
     showList();
     elReadAudio.pause();
     elReadAudio.currentTime = 0;
   });
+
   function onReadReciterChange() {
     var id = elReadReciter.value;
     currentReciter = reciters.find((r) => String(r.id) === id) || null;
     currentMoshaf = null;
     fillReadMoshafSelect();
-    if (
-      currentReciter &&
-      currentReciter.moshaf &&
-      currentReciter.moshaf.length
-    ) {
+    if (currentReciter && currentReciter.moshaf && currentReciter.moshaf.length) {
       elReadMoshaf.value = "0";
       currentMoshaf = currentReciter.moshaf[0];
     }
@@ -234,13 +251,13 @@
       elReadAudio.currentTime += 5;
     }
   }
-  // عناصر البار
+
   const elReadCurrentTime = document.getElementById("readCurrentTime");
   const elReadDuration = document.getElementById("readDuration");
   const elReadProgressBar = document.getElementById("readProgressBar");
   const elReadProgressFill = document.getElementById("readProgressFill");
   const progressKnob = document.getElementById("readProgressKnob");
-  // دالة لتحويل الثواني لصيغة دقيقة:ثانية
+
   function formatTime(seconds) {
     if (isNaN(seconds)) return "0:00";
     const m = Math.floor(seconds / 60);
@@ -248,49 +265,41 @@
     return m + ":" + (s < 10 ? "0" + s : s);
   }
 
-  // تحديث مدة الملف عند التحميل
-  elReadAudio.addEventListener("loadedmetadata", () => {
-    elReadDuration.textContent = formatTime(elReadAudio.duration);
-  });
+  if (elReadAudio) {
+    elReadAudio.addEventListener("loadedmetadata", () => {
+      elReadDuration.textContent = formatTime(elReadAudio.duration);
+    });
 
-  // تحديث الوقت والبار أثناء التشغيل
-  elReadAudio.addEventListener("timeupdate", () => {
-    elReadCurrentTime.textContent = formatTime(elReadAudio.currentTime);
-    const percent = (elReadAudio.currentTime / elReadAudio.duration) * 100;
-    elReadProgressFill.style.width = percent + "%";
-  });
+    elReadAudio.addEventListener("timeupdate", () => {
+      elReadCurrentTime.textContent = formatTime(elReadAudio.currentTime);
+      const percent = (elReadAudio.currentTime / elReadAudio.duration) * 100;
+      elReadProgressFill.style.width = percent + "%";
+      if (progressKnob) progressKnob.style.left = percent + "%";
+    });
+  }
 
-  // التحكم بالبار (لما المستخدم يضغط عليه)
-  elReadProgressBar.addEventListener("click", (e) => {
-    const rect = elReadProgressBar.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const percent = clickX / rect.width;
-    elReadAudio.currentTime = percent * elReadAudio.duration;
-  });
-  elReadAudio.addEventListener("timeupdate", () => {
-    elReadCurrentTime.textContent = formatTime(elReadAudio.currentTime);
-    const percent = (elReadAudio.currentTime / elReadAudio.duration) * 100;
-    elReadProgressFill.style.width = percent + "%";
-    progressKnob.style.left = percent + "%"; // يتحرك من الشمال لليمين
-  });
+  if (elReadProgressBar) {
+    elReadProgressBar.addEventListener("click", (e) => {
+      const rect = elReadProgressBar.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const percent = clickX / rect.width;
+      elReadAudio.currentTime = percent * elReadAudio.duration;
+    });
+  }
 
   function openSurah(number) {
-    // عرض صفحة السورة
     showSurah();
     currentSurahNumber = number;
 
-    // إعادة ضبط الصوت
     elReadAudio.pause();
     elReadAudio.removeAttribute("src");
     elReadAudio.load();
     updateReadPlayPauseLabel();
 
-    // إعادة ضبط العنوان والآيات
     elSurahTitle.textContent = "";
     elVersesContainer.innerHTML = "";
     elVersesLoading.style.display = "block";
 
-    // --- استدعاء القارئ والموشاف قبل fetch ---
     if (reciters.length > 0) {
       fillReadReciterSelect();
       fillReadMoshafSelect();
@@ -307,48 +316,17 @@
             onReadMoshafChange();
           }
         }
-      } else {
-        // إذا مفيش حاجة محفوظة، خلي القارئ والموشاف فارغين
-        elReadReciter.value = "";
-        currentReciter = null;
-        currentMoshaf = null;
       }
     }
 
-    // --- حفظ اسم السورة وآيتك الأولى في localStorage ---
-    // تعريف الدالة مرة واحدة في بداية الكود
-    function updateSEOMeta(surah) {
-      // تغيير الرابط بدون إضافة خطوة في history
-      history.replaceState(null, "", "#/surah/" + surah.number);
-
-      document.title = `سورة ${surah.name} (${surah.englishName}) مكتوبة كاملة | Quran Sadaka`;
-
-      let metaDesc = document.querySelector("meta[name='description']");
-      if (!metaDesc) {
-        metaDesc = document.createElement("meta");
-        metaDesc.setAttribute("name", "description");
-        document.head.appendChild(metaDesc);
-      }
-
-      metaDesc.setAttribute(
-        "content",
-        `قراءة سورة ${surah.name} (${surah.englishName}) مكتوبة بالكامل مع إمكانية الاستماع وتحديد القارئ.`,
-      );
-    }
-
-    // داخل دالة openSurah
     let surahInfo = suwar.find((s) => s.number === number);
     if (surahInfo) {
-      // تحديث SEO ورابط الصفحة
-
-      updateSEOMeta(surahInfo);
-
-      // حفظ السورة وآية البداية
+      history.replaceState(null, "", "#/surah/" + surahInfo.number);
+      document.title = `سورة ${surahInfo.name} مكتوبة كاملة | Quran Sadaka`;
       localStorage.setItem("surah-lastSurah", number);
-      localStorage.setItem("surah-lastSurahName", surahInfo.name || "");
       localStorage.setItem("surah-lastAyah", 1);
     }
-    // --- تحميل الآيات ---
+
     fetch("../json/quran.json")
       .then((res) => res.json())
       .then((allSurahs) => {
@@ -356,30 +334,25 @@
         let surahData = allSurahs.find((s) => s.number === number);
 
         if (!surahData || !surahData.ayahs) {
-          elVersesContainer.innerHTML =
-            '<p class="read-error">تعذر تحميل الآيات.</p>';
+          elVersesContainer.innerHTML = '<p class="read-error">تعذر تحميل الآيات.</p>';
           return;
         }
 
         let block = document.createElement("div");
         block.className = "mushaf-block";
 
-        // عنوان السورة
         let surahTitle = document.createElement("div");
         surahTitle.className = "surah-title";
         surahTitle.textContent = surahInfo.name;
         block.appendChild(surahTitle);
 
-        // البسملة (ما عدا التوبة)
         if (number !== 9) {
           let basmalaSpan = document.createElement("span");
           basmalaSpan.className = "basmala";
-          basmalaSpan.textContent =
-            "﴿ بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ ﴾";
+          basmalaSpan.textContent = "﴿ بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ ﴾";
           block.appendChild(basmalaSpan);
         }
 
-        // عرض الآيات
         surahData.ayahs.forEach((a) => {
           let verseWrapper = document.createElement("span");
           verseWrapper.className = "verse-wrapper";
@@ -405,90 +378,25 @@
         });
 
         elVersesContainer.appendChild(block);
-
-        // --- تطبيق highlight محفوظ لو موجود ---
-        const savedSurah = localStorage.getItem("surah-lastSurah");
         const savedAyah = localStorage.getItem("surah-lastAyah");
-        if (savedAyah && parseInt(savedSurah, 10) === number) {
+        if (savedAyah && parseInt(localStorage.getItem("surah-lastSurah"), 10) === number) {
           setTimeout(() => highlightAyah(savedAyah), 100);
         }
       })
       .catch((err) => {
         elVersesLoading.style.display = "none";
-        elVersesContainer.innerHTML =
-          '<p class="read-error">حدث خطأ في تحميل الملف المحلي.</p>';
         console.error(err);
       });
   }
 
-  // التعامل مع زر الرجوع
-  window.addEventListener("popstate", function (event) {
-    if (event.state && event.state.surah) {
-      openSurah(event.state.surah);
-    }
-  });
-
-  // زر "تابع من حيث توقفت"
   if (resumeBtn) {
     resumeBtn.addEventListener("click", function () {
       const savedSurah = localStorage.getItem("surah-lastSurah");
-      const savedAyah = localStorage.getItem("surah-lastAyah");
-
-      if (!savedSurah) {
-        alert("لا يوجد تقدم محفوظ");
-        return;
-      }
-
-      openSurah(parseInt(savedSurah, 10));
-
-      setTimeout(() => {
-        if (savedAyah) highlightAyah(savedAyah);
-      }, 200);
-    });
-  }
-
-  // تحميل البيانات الأولية
-  Promise.all([loadSuwar(), loadReciters()])
-    .then(function () {
-      renderSurahList();
-    })
-    .catch(function (err) {
-      console.error(err);
-      showListError("حدث خطأ في تحميل البيانات.");
-    });
-
-  elBackToList.addEventListener("click", function () {
-    showList();
-  });
-
-  elReadReciter.addEventListener("change", onReadReciterChange);
-  elReadMoshaf.addEventListener("change", onReadMoshafChange);
-  elReadPlayPause.addEventListener("click", toggleReadPlayPause);
-  elReadBack5.addEventListener("click", readBack5);
-  elReadFwd5.addEventListener("click", readFwd5);
-
-  // أزرار التنقل بين السور
-  var prevBtn = document.querySelector(".prev-btn");
-  var nextBtn = document.querySelector(".next-btn");
-
-  if (prevBtn) {
-    prevBtn.addEventListener("click", function () {
-      if (currentSurahNumber > 1) {
-        openSurah(currentSurahNumber - 1);
-      }
-    });
-  }
-
-  if (nextBtn) {
-    nextBtn.addEventListener("click", function () {
-      if (currentSurahNumber < suwar.length) {
-        openSurah(currentSurahNumber + 1);
-      }
+      if (savedSurah) openSurah(parseInt(savedSurah, 10));
     });
   }
 
   function highlightAyah(ayahId) {
-    if (!ayahId) return;
     document.querySelectorAll(".verse-wrapper").forEach((v) => {
       if (parseInt(v.dataset.ayah, 10) === parseInt(ayahId, 10)) {
         v.classList.add("ayah-highlight");
@@ -498,39 +406,271 @@
       }
     });
   }
+
+  var prevBtn = document.querySelector(".prev-btn");
+  var nextBtn = document.querySelector(".next-btn");
+
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => currentSurahNumber > 1 && openSurah(currentSurahNumber - 1));
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => currentSurahNumber < suwar.length && openSurah(currentSurahNumber + 1));
+  }
+
+  // ==========================================
+  // --- [قسم الصفحات الجديد بالكامل] ---
+  // ==========================================
+
+  function renderPagesList() {
+    const elPagesList = document.getElementById("pages-list");
+    if (!elPagesList) return;
+    elPagesList.innerHTML = "";
+
+    // إنشاء أزرار أو عناصر لـ 604 صفحة
+    for (let i = 1; i <= totalPages; i++) {
+      let item = document.createElement("div");
+      item.className = "read-surah-item"; 
+      item.style.textAlign = "center";
+      item.style.justifyContent = "center";
+      item.innerHTML = `<span class="surah-name-ar" style="font-size:1.1rem;">صفحة ${i}</span>`;
+      
+      item.addEventListener("click", () => openPage(i));
+      elPagesList.appendChild(item);
+    }
+  }
+
+  // --- [تحديث: دالة فتح الصفحة المظبوطة] ---
+  function openPage(pageNum) {
+    currentPageNumber = pageNum;
+    
+    document.getElementById("pages-list").style.display = "none";
+    document.getElementById("pages-view").style.display = "block";
+    if(typeof updateUIVisibility === 'function') updateUIVisibility(true);
+
+    const pageVerses = document.getElementById("page-verses");
+    const pageTitleEl = document.getElementById("page-title");
+    pageVerses.innerHTML = '<p class="read-loading">جاري تجهيز الصفحة...</p>';
+
+    Promise.all([
+      fetch("../json/quran-pages.json").then((res) => res.json()),
+      fetch("../json/quran.json").then((res) => res.json())
+    ])
+      .then(([pagesIndex, quranData]) => {
+        pageVerses.innerHTML = "";
+        let pageMap = pagesIndex[String(pageNum)];
+
+        if (!pageMap || pageMap.length === 0) {
+          pageVerses.innerHTML = '<p class="read-error">بيانات هذه الصفحة غير متوفرة.</p>';
+          return;
+        }
+
+        let block = document.createElement("div");
+        block.className = "mushaf-block";
+        
+        let currentSurahRendered = null; 
+        let isFirstAyahOnPage = true; 
+
+        pageMap.forEach((ref) => {
+          let parts = ref.split(':'); 
+          let surahNum = parts[0]; 
+          let ayahNum = parts[1];  
+
+          if (!surahNum || !ayahNum) return;
+
+          let surahObj = quranData.find(s => String(s.number) === String(surahNum));
+          let ayahObj = surahObj ? surahObj.ayahs.find(a => String(a.number) === String(ayahNum)) : null;
+          
+          let text = ayahObj ? ayahObj.text : "";
+
+          // جلب اسم السورة الحقيقي من مصفوفة suwar
+          let realSurahInfo = suwar.find(s => String(s.number) === String(surahNum));
+          let cleanSurahName = realSurahInfo ? realSurahInfo.name : `سورة ${surahNum}`;
+
+          // --- [لوجيك: رسم ترويسة السورة والبسملة] ---
+          let shouldDrawHeader = false;
+          if (isFirstAyahOnPage) {
+              shouldDrawHeader = true;
+              isFirstAyahOnPage = false; 
+              if (pageTitleEl) pageTitleEl.textContent = ` ﴿ ${pageNum} ﴾ `;
+          } else if (String(ayahNum) === "1" && currentSurahRendered !== String(surahNum)) {
+              shouldDrawHeader = true;
+          }
+
+          if (shouldDrawHeader) {
+              currentSurahRendered = String(surahNum);
+              let titleDiv = document.createElement("div");
+              titleDiv.className = "surah-title";
+              titleDiv.textContent = cleanSurahName;
+              block.appendChild(titleDiv);
+
+              // إضافة البسملة (لأي سورة بتبدأ بآية 1، ما عدا سورة التوبة)
+              if (String(ayahNum) === "1" && String(surahNum) !== "9") {
+                  let basmalaDiv = document.createElement("div");
+                  basmalaDiv.className = "basmala";
+                  basmalaDiv.textContent = "﴿ بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّيمِ ﴾";
+                  block.appendChild(basmalaDiv);
+              }
+          }
+
+          // --- [رسم الآية والترقيم (تجاهل الفاتحة آية 1 لو فاضية)] ---
+          if (text && text.trim() !== "") {
+              let verseWrapper = document.createElement("span");
+              verseWrapper.className = "verse-wrapper";
+              verseWrapper.dataset.surah = surahNum;
+              verseWrapper.dataset.ayah = ayahNum;
+
+              verseWrapper.addEventListener("click", function () {
+                  localStorage.setItem("page-surah-lastSurah", surahNum);
+                  localStorage.setItem("page-surah-lastAyah", ayahNum);
+                  localStorage.setItem("page-quran-last-page", pageNum);
+
+                  document.querySelectorAll(".verse-wrapper").forEach(v => v.classList.remove("ayah-highlight"));
+                  this.classList.add("ayah-highlight");
+              });
+
+              let textSpan = document.createElement("span");
+              textSpan.className = "verse-text";
+              textSpan.textContent = text + " "; 
+
+              let markerSpan = document.createElement("span");
+              markerSpan.className = "verse-marker";
+              markerSpan.textContent = ayahNum;
+
+              verseWrapper.appendChild(textSpan);
+              verseWrapper.appendChild(markerSpan);
+              block.appendChild(verseWrapper);
+          }
+        });
+
+        pageVerses.appendChild(block);
+        localStorage.setItem("quran-last-page", pageNum);
+
+        // --- [استرجاع التظليل بالمفاتيح المخصصة] ---
+        const savedSurah = localStorage.getItem("page-surah-lastSurah"); 
+        const savedAyah = localStorage.getItem("page-surah-lastAyah");
+        
+        if (savedSurah && savedAyah) {
+            setTimeout(() => {
+                let targetVerse = pageVerses.querySelector(`.verse-wrapper[data-surah="${savedSurah}"][data-ayah="${savedAyah}"]`);
+                if (targetVerse) {
+                    targetVerse.classList.add("ayah-highlight");
+                    targetVerse.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            }, 150); 
+        }
+      })
+      .catch((err) => {
+        pageVerses.innerHTML = '<p class="read-error">حدث خطأ في عرض الصفحة.</p>';
+        console.error("Pages View Error:", err);
+      });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
-    const swarBtn = document.querySelector(".swar-page-btn");
-    const juzBtn = document.querySelector(".juz-page-btn");
-    const listView = document.getElementById("listView");
-    const juzView = document.getElementById("juzView");
-    const juzSection = document.querySelector(".juz-section");
-    const swarSection = document.querySelector(".swar-section");
-    const pageBtns = document.querySelector(".page-btns");
-    const qpage = document.querySelector(".qpage");
+    const backToPagesBtn = document.getElementById("backToPages");
+    const prevPageBtn = document.querySelector(".prev-page");
+    const nextPageBtn = document.querySelector(".next-page");
+    const resumePageBtn = document.getElementById("resumePageBtn");
 
-    // تأكد العناصر موجودة قبل إضافة الـ event
-    if (juzBtn) {
-      juzBtn.addEventListener("click", function () {
-        juzSection.style.display = "block";
-        swarSection.style.display = "none";
-        window.scrollTo({ top: 0, behavior: "instant" });
+    if (backToPagesBtn) {
+      backToPagesBtn.addEventListener("click", () => {
+        document.getElementById("pages-view").style.display = "none";
+        document.getElementById("pages-list").style.display = "grid"; 
+        updateUIVisibility(false); 
       });
     }
 
-    if (swarBtn) {
-      swarBtn.addEventListener("click", function () {
-        juzSection.style.display = "none";
-        swarSection.style.display = "block";
+    if (prevPageBtn) {
+      prevPageBtn.addEventListener("click", () => {
+        if (currentPageNumber > 1) openPage(currentPageNumber - 1);
       });
     }
 
-    if (pageBtns) {
-      pageBtns.addEventListener("click", () => {
-        if (qpage) qpage.style.display = "none";
+    if (nextPageBtn) {
+      nextPageBtn.addEventListener("click", () => {
+        if (currentPageNumber < totalPages) openPage(currentPageNumber + 1);
+      });
+    }
+
+    if (resumePageBtn) {
+      resumePageBtn.addEventListener("click", () => {
+        let savedPage = localStorage.getItem("quran-last-page");
+        if (savedPage) openPage(parseInt(savedPage, 10));
+        else alert("لا يوجد تقدم محفوظ للصفحات.");
+      });
+    }
+    
+    renderPagesList();
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const btns = {
+      swar: document.querySelector(".swar-page-btn"),
+      juz: document.querySelector(".juz-page-btn"),
+      pages: document.querySelector(".pages-page-btn") 
+    };
+
+    const sections = {
+      swar: document.querySelector(".swar-section"),
+      juz: document.querySelector(".juz-section"),
+      pages: document.querySelector(".pages-section") 
+    };
+
+    function switchTab(activeTab) {
+      Object.keys(btns).forEach((key) => {
+        if (btns[key] && sections[key]) {
+          if (key === activeTab) {
+            btns[key].classList.add("active");
+            sections[key].style.display = "block";
+          } else {
+            btns[key].classList.remove("active");
+            sections[key].style.display = "none";
+          }
+        }
+      });
+      updateUIVisibility(false);
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+
+    if (btns.swar) btns.swar.addEventListener("click", () => switchTab("swar"));
+    if (btns.juz) btns.juz.addEventListener("click", () => switchTab("juz"));
+    if (btns.pages) btns.pages.addEventListener("click", () => switchTab("pages"));
+    
+    const backToJuz = document.getElementById("backToJuz");
+    if (backToJuz) {
+      backToJuz.addEventListener("click", () => {
+        document.getElementById("juz-view").style.display = "none";
+        document.getElementById("juz-list").style.display = "grid";
+        updateUIVisibility(false);
       });
     }
   });
-})();
 
-/* *************************************** */
-/* pages-read-conde */
+  Promise.all([loadSuwar(), loadReciters()]).then(() => renderSurahList());
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const swipeZone = document.getElementById("pages-view");
+    let touchstartX = 0;
+    let touchendX = 0;
+
+    if (swipeZone) {
+        swipeZone.addEventListener('touchstart', function(e) {
+            touchstartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        swipeZone.addEventListener('touchend', function(e) {
+            touchendX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+    }
+
+    function handleSwipe() {
+        const threshold = 60; 
+        if (touchendX < touchstartX - threshold) {
+            if (currentPageNumber > 1) openPage(currentPageNumber - 1);
+        }
+        if (touchendX > touchstartX + threshold) {
+            if (currentPageNumber < totalPages) openPage(currentPageNumber + 1);
+        }
+    }
+  });
+})();

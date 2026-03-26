@@ -134,7 +134,7 @@
          <a href="../quran">🔊 استمع للقرآن</a>
     <a href="../quran-read">📜 إقرأ القرآن</a>
     <a href="../prayer/">🕌 أقم صلاتك</a>
-    <a href="../ruqyah">✨ الرقية الشرعية</a>
+    <a href="../ruqyah">🛡️ الرقية الشرعية</a>
     <a href="../radio">📻 الراديو</a>
     <a href="../about">ℹ️ عن الموقع</a>
         </nav>
@@ -147,17 +147,24 @@
   alt="بانر صفحة قراءة القرآن" />
         <p>﴿ الَّذِينَ آَتَيْنَاهُمُ الْكِتَابَ يَتْلُونَهُ حَقَّ تِلَاوَتِهِ أُولَئِكَ يُؤْمِنُونَ بِهِ وَمَنْ يَكْفُرْ بِهِ فَأُولَئِكَ هُمُ الْخَاسِرُونَ ﴾</p>
       </div>
-    <div class="page-btns">
-      
-      <button class="swar-page-btn btn">📜 سور القرآن</button>
-      <button class="juz-page-btn btn">📖 أجزاء القرآن</button>
+    
     </div>
-    </div>
+     <div class="ruqyah-wrapper">
+        <div class="tabs-control">
+            <button class="swar-page-btn btn tab-btn active" >
+                <span class="icon">📃</span> السور
+            </button>
+            <button class="juz-page-btn btn tab-btn">
+                <span class="icon">📖</span> الأجزاء
+            </button>
+           <button class="pages-page-btn btn tab-btn" id="qrbtn"><span class="icon">📄</span> الصفحات</button>
+        </div>
+        </div>
     <div class="juz-section" style="display: none">
       <div class="read-view">
         <div class="quran-container">
           
-          <button id="continueBtn">تابع من حيث توقفت <span class="arrow"> ↪ </span></button>
+          <button id="continueBtn" class="continueBtn">تابع من حيث توقفت <span class="arrow"> ↪ </span></button>
           <p class="read-intro">اختر جزء للقراءة</p>
           <div id="juz-list" class="read-surah-list"></div>
           <!-- CSS الخاص بـ Swiper -->
@@ -193,10 +200,10 @@
       
     </div>
 
-    <main class="swar-section" style="display: none">
+    <main class="swar-section">
       <div class="read-view read-list-view" id="listView">
         
-        <button id="resumeBtn">تابع من حيث توقفت <span class="arrow"> ↪ </span></button>
+        <button id="resumeBtn" class="continueBtn">تابع من حيث توقفت <span class="arrow"> ↪ </span></button>
         <p class="read-intro">اختر سورة للقراءة</p>
         <div class="read-loading" id="listLoading">جاري تحميل السور...</div>
         <!-- <button id="resumeBtn">▶ تابع من حيث توقفت</button> -->
@@ -284,7 +291,39 @@
         <div class="read-verses" id="versesContainer"></div>
       </div>
     </main>
-
+    <div class="pages-section" style="display: none;">
+    <div class="read-view">
+        <div class="quran-container">
+            <button class="continueBtn" id="resumePageBtn">تابع من حيث توقفت <span class="arrow"> ↪ </span></button>
+            <p class="read-intro">اختر صفحة للقراءة</p>
+            
+            <div id="pages-list" class="read-surah-list"></div>
+            
+            <div id="pages-view" class="read-surah-view" style="display: none">
+    <div class="read-surah-header">
+        <button class="btn-back" id="backToPages">← قائمة الصفحات</button>
+    </div>
+    
+    <div class="read-verses">
+        <div class="mushaf-block" id="page-verses"></div>
+         <div class="mushaf-page-footer">
+        <button type="button" class="prev-page mushaf-nav-btn" title="الصفحة التالية">
+            <span class="icon">❮</span>
+        </button>
+        
+        <div id="page-title" class="mushaf-page-number"></div>
+        
+        <button type="button" class="next-page mushaf-nav-btn" title="الصفحة السابقة">
+            <span class="icon">❯</span>
+        </button>
+    </div>
+    </div>
+    
+   
+</div>
+        </div>
+    </div>
+</div>
     
 
     <script>

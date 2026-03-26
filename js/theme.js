@@ -1,89 +1,102 @@
-
-
 (function () {
-  'use strict';
+  "use strict";
 
- var STORAGE_KEY = 'quran-sadaka-theme';
-var THEME_DARK = 'dark';
-var THEME_LIGHT = 'light';
-var THEME_AUTO = 'auto';
+  var STORAGE_KEY = "quran-sadaka-theme";
+  var THEME_DARK = "dark";
+  var THEME_LIGHT = "light";
+  var THEME_AUTO = "auto";
 
-function getStored() {
-  try {
-    var stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? stored : THEME_AUTO;
-  } catch (e) {
-    return THEME_AUTO;
-  }
-}
-
-function applyTheme() {
-  var root = document.documentElement;
-  var stored = getStored();
-
-  if (stored === THEME_DARK) {
-    root.setAttribute('data-theme', 'dark');
-  } else if (stored === THEME_LIGHT) {
-    root.setAttribute('data-theme', 'light');
-  } else {
-    // Auto: حسب نظام الجهاز
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      root.setAttribute('data-theme', 'dark');
-    } else {
-      root.setAttribute('data-theme', 'light');
+  function getStored() {
+    try {
+      var stored = localStorage.getItem(STORAGE_KEY);
+      return stored ? stored : THEME_AUTO;
+    } catch (e) {
+      return THEME_AUTO;
     }
   }
-}
 
-function toggleTheme() {
-  var current = getStored();
-  var next;
-  if (current === THEME_DARK) next = THEME_LIGHT;
-  else if (current === THEME_LIGHT) next = THEME_AUTO; // يرجع للجهاز
-  else next = THEME_DARK; // auto -> dark
-  try { localStorage.setItem(STORAGE_KEY, next); } catch(e){}
-  applyTheme();
-  updateToggleButton();
-}
+  function applyTheme() {
+    var root = document.documentElement;
+    var stored = getStored();
 
-function updateToggleButton() {
-  var btn = document.getElementById('themeToggle');
-  if (!btn) return;
-  var stored = getStored();
-  var label, icon;
+    if (stored === THEME_DARK) {
+      root.setAttribute("data-theme", "dark");
+    } else if (stored === THEME_LIGHT) {
+      root.setAttribute("data-theme", "light");
+    } else {
+      // Auto: حسب نظام الجهاز
+      if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        root.setAttribute("data-theme", "dark");
+      } else {
+        root.setAttribute("data-theme", "light");
+      }
+    }
+  }
 
-  if (stored === THEME_DARK) { label='الوضع النهاري'; icon='☀️'; }
-  else if (stored === THEME_LIGHT) { label='الوضع الداكن'; icon='🌙'; }
-  else { label='اتباع نظام الجهاز'; icon='🩵'; }
-
-  btn.setAttribute('aria-label', label);
-  btn.title = label;
-  btn.textContent = icon;
-}
-
-function init() {
-  applyTheme();
-  var btn = document.getElementById('themeToggle');
-  if (btn) {
-    btn.addEventListener('click', toggleTheme);
+  function toggleTheme() {
+    var current = getStored();
+    var next;
+    if (current === THEME_DARK) next = THEME_LIGHT;
+    else if (current === THEME_LIGHT)
+      next = THEME_AUTO; // يرجع للجهاز
+    else next = THEME_DARK; // auto -> dark
+    try {
+      localStorage.setItem(STORAGE_KEY, next);
+    } catch (e) {}
+    applyTheme();
     updateToggleButton();
   }
 
-  // لو المستخدم غيّر وضع الجهاز live
-  if (window.matchMedia) {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (getStored() === THEME_AUTO) applyTheme();
-    });
-  }
-}
+  function updateToggleButton() {
+    var btn = document.getElementById("themeToggle");
+    if (!btn) return;
+    var stored = getStored();
+    var label, icon;
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}
-  
-     const menu = document.getElementById("close-nav");
+    if (stored === THEME_DARK) {
+      label = "الوضع النهاري";
+      icon = "☀️";
+    } else if (stored === THEME_LIGHT) {
+      label = "الوضع الداكن";
+      icon = "🌙";
+    } else {
+      label = "اتباع نظام الجهاز";
+      icon = "🩵";
+    }
+
+    btn.setAttribute("aria-label", label);
+    btn.title = label;
+    btn.textContent = icon;
+  }
+
+  function init() {
+    applyTheme();
+    var btn = document.getElementById("themeToggle");
+    if (btn) {
+      btn.addEventListener("click", toggleTheme);
+      updateToggleButton();
+    }
+
+    // لو المستخدم غيّر وضع الجهاز live
+    if (window.matchMedia) {
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", (e) => {
+          if (getStored() === THEME_AUTO) applyTheme();
+        });
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+
+  const menu = document.getElementById("close-nav");
   const menuicon = document.getElementById("menu-icon");
   const closeIcon = document.querySelector(".close-icon"); // عنصر الـ ❌
 
@@ -109,65 +122,69 @@ if (document.readyState === 'loading') {
       }
     });
   }
-  
 
   const header = document.querySelector(".page-header");
 
-let lastScroll = 0;
-let ticking = false;
-const threshold = 20;
-const offset = 80;
+  let lastScroll = 0;
+  let ticking = false;
+  const threshold = 20;
+  const offset = 80;
 
-function updateHeader() {
-  if (!header) return; // لو العنصر مش موجود، اخرج من الدالة
+  function updateHeader() {
+    if (!header) return; // لو العنصر مش موجود، اخرج من الدالة
 
-  const currentScroll = window.scrollY;
-  const diff = currentScroll - lastScroll;
+    const currentScroll = window.scrollY;
+    const diff = currentScroll - lastScroll;
 
-  if (Math.abs(diff) < threshold) {
+    if (Math.abs(diff) < threshold) {
+      ticking = false;
+      return;
+    }
+
+    if (diff > 0 && currentScroll > offset) {
+      // نازل
+      header.classList.add("hide");
+    } else {
+      // طالع
+      header.classList.remove("hide");
+    }
+
+    lastScroll = currentScroll;
     ticking = false;
-    return;
   }
 
-  if (diff > 0 && currentScroll > offset) {
-    // نازل
-    header.classList.add("hide");
-  } else {
-    // طالع
-    header.classList.remove("hide");
-  }
-
-  lastScroll = currentScroll;
-  ticking = false;
-}
-
-window.addEventListener("scroll", () => {
-  if (!ticking) {
-    requestAnimationFrame(updateHeader);
-    ticking = true;
-  }
-});
-
-  (function () {
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      requestAnimationFrame(updateHeader);
+      ticking = true;
+    }
+  });
+(function () {
     const year = new Date().getFullYear();
     const ownerName = "Hassan Selim";
     const website = "https://www.hassanselim.art/";
 
-    const copyright = document.createElement("div");
+    const copyright = document.createElement("footer"); // غيرناه لـ footer عشان الـ SEO
+    copyright.id = "main-footer"; // مهم جداً عشان الإخفاء في وضع القراءة
 
+    // التنسيق اللي يخليه دايماً تحت
     copyright.style.textAlign = "center";
-    copyright.style.padding = "15px";
+    copyright.style.padding = "20px 15px";
     copyright.style.fontSize = "14px";
     copyright.style.color = "#999";
+    copyright.style.marginTop = "auto"; // السر هنا: بيدفع نفسه لآخر الحاوية
+    copyright.style.width = "100%";
+
 
     copyright.innerHTML = `
-        جميع الحقوق محفوظة © ${year} —
-        <a href="${website}" target="_blank" style="color:#999;text-decoration:none;">
-            ${ownerName}
-        </a>
-    `;
+        <div class="copyright" style="direction: rtl; font-family: 'Cairo', sans-serif;">
+            جميع الحقوق محفوظة © ${year} — 
+            <a href="${website}" target="_blank" style="color:#0d9488; text-decoration:none; font-weight:bold;">
+                ${ownerName}
+            </a>
+            <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">صدقة جارية</div>
+        </div>`;
 
     document.body.appendChild(copyright);
-  })();
 })();
-
+})();

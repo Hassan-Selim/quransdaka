@@ -54,6 +54,7 @@ body {
   direction: rtl;
   margin: 0;
   transition: background 0.3s, color 0.3s;
+ 
 }
 
 [data-theme="dark"] body {
@@ -481,4 +482,15 @@ main {
   body {
     padding-bottom: 110px;
   }
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* يخلي الجسم واخد طول الشاشة كلها */
+    margin: 0;
+}
+
+/* أي سيكشن رئيسي عندك خليه يتمدد عشان يزق الفوتر لتحت */
+main, .swar-section, .juz-section, .pages-section {
+    flex: 1;
 }
