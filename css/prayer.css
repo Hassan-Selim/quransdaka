@@ -8,41 +8,17 @@
 * {
   font-family: "cairo", sans-serif;
 }
-body,
-html {
-  background: linear-gradient(
-    180deg,
-    var(--color-cream) 0%,
-    var(--color-white) 100% 
-  ) no-repeat center center fixed; 
-  
-  background-size: cover; 
-  min-height: 100vh; 
-  line-height: 1.6;
-  direction: rtl;
-  margin: 0;
-  transition: background 0.3s, color 0.3s;
-}
-
-[data-theme="dark"] body {
-  background: linear-gradient(
-    180deg, 
-    var(--color-bg) 0%, 
-    #1e293b 100%
-  ) no-repeat center center fixed;
-  color: #fff;
+body{
+  height: 100dvh;
+  width: 100%;
   margin: 0;
   padding: 0;
-  font-variant: lining-nums;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-  height: 100dvh;
-  min-height: 100%;
-  width: 100%;
+  background-color: var(--color-bg);
 }
-.prayer-content {
+.prayer-content, .qiblaSection, .azkar-wrapper {
   transition: 0.1s ease-in-out;
+  max-width: 888px;
+  width: 100%;
 }
 
 .next-prayer-section {
@@ -159,6 +135,7 @@ p{
   transition: background 0.3s;
   width: 100%;
   height: 100%;
+  margin: 1rem auto;
 }
 
 #qiblaSection p {
@@ -404,6 +381,7 @@ p{
 }
 
 .azkar-wrapper {
+  display: grid;
   position: relative;
   margin-top: 2rem;
   background: linear-gradient(
@@ -411,7 +389,7 @@ p{
     var(--color-cream) 0%,
     var(--color-white) 100% 
   ) no-repeat center center fixed; 
-  
+  margin:1rem auto;
   background-size: cover; 
   min-height: 100vh; 
   line-height: 1.6;
@@ -471,6 +449,7 @@ p{
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   flex-shrink: 0;
   z-index: 100;
+  transition: 0.7s ease-in-out;
 }
 .headZikr {
   text-align: center;
@@ -489,7 +468,7 @@ p{
 }
 
 .section-azkar {
-  display: flex;
+  display: grid;
   flex-direction: column;
   gap: 1rem;
   width: 100%;
@@ -498,11 +477,15 @@ p{
   background: var(--color-bg, #1f2d45);
   overflow-y: auto;
   flex-grow: 1;
-
   list-style: none;
-  margin: 0;
+  
 }
-
+.section-azkar > :first-child {
+  margin-top: 2.5rem;
+}
+.section-azkar > :last-child {
+  margin-bottom: 3rem;
+}
 .section-azkar li {
   color: var(--color-text);
   background: var(--color-bg-card, var(--color-white));
@@ -519,6 +502,7 @@ p{
   line-height: 1.8;
   position: relative;
   box-sizing: border-box;
+  text-align: center;
 }
 summary {
   background: #007465;
