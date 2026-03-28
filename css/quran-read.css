@@ -536,10 +536,11 @@
   margin: auto;
 }
 
+
 .tabs-control {
   display: flex;
   background: var(--color-bg-card);
-  padding: 6px;
+  padding: 4px;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
   border: 1px solid #0d94881a;
@@ -547,11 +548,11 @@
 
 .tab-btn {
   flex: 1;
-  padding: 14px;
+  padding: 10px;
   font-family: "tajawal", sans-serif;
   border: none;
   background: transparent;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   border-radius: var(--radius);
