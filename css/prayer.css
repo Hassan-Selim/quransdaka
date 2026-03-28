@@ -566,14 +566,15 @@ li span {
   border-radius: 12px;
   font-size: 1rem;
   font-family: inherit;
+  margin-top: 3.5rem;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
 
 .showHiddenBtnazz:hover {
   color: #fff;
-  border-color: #d63d46;
-  transform: scale(1.05);
+  background: #0b2946;
+  transform: scale(0.9);
 }
 
 .tasbeeh-container {

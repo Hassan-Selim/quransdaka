@@ -15,8 +15,45 @@ const locationNameEl = document.getElementById("locationName");
 const refreshLocationBtn = document.getElementById("refreshLocationBtn");
 
 // ======== صوت الأذان داخل الصفحة فقط ========
+// 1. تعريف ملف الأذان (باستخدام المسار بتاعك)
 const adhanAudio = new Audio("../img/adhan.mp3");
-let adhanPlayedFor = null;
+let adhanPlayedFor = null; // هنخليها عشان نمنع تكرار الأذان لنفس الصلاة
+
+// 2. دالة تشغيل الأذان الأساسية
+function playAdhan(prayerName) {
+    // التأكد إن الأذان ماشتغلش قبل كدة لنفس الصلاة في نفس الدقيقة
+    if (adhanPlayedFor !== prayerName) {
+        adhanAudio.play()
+            .then(() => {
+                console.log(`تم تشغيل أذان ${prayerName}`);
+                adhanPlayedFor = prayerName;
+            })
+            .catch(err => {
+                console.log("المتصفح يحتاج تفاعل (ضغطة) لتشغيل الصوت أول مرة.");
+            });
+    }
+}
+
+// 3. استقبال "إشارة" التشغيل من الـ Service Worker (لو الصفحة مفتوحة)
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data.type === 'PLAY_AZAN_NOW') {
+            // هنا بنشغل الأذان فوراً لأن المستخدم ضغط على الإشعار (تفاعل مقبول)
+            playAdhan("الصلاة"); 
+        }
+    });
+}
+
+// 4. التحقق عند تحميل الصفحة (لو اتفتحت جديدة من الإشعار)
+window.addEventListener('load', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('playAzan') === 'true') {
+        // تأخير بسيط لضمان استقرار الصفحة قبل التشغيل
+        setTimeout(() => {
+            playAdhan("الصلاة");
+        }, 1000);
+    }
+});
 
 // ======== المتغيرات ========
 let prayerTimes = {};

@@ -159,22 +159,29 @@
       ticking = true;
     }
   });
-(function () {
+  (function () {
+    // تأمين: لو الـ footer موجود قبل كده امسحه عشان ميتكررش
+    if (document.getElementById("main-footer")) {
+      document.getElementById("main-footer").remove();
+    }
+
     const year = new Date().getFullYear();
     const ownerName = "Hassan Selim";
     const website = "https://www.hassanselim.art/";
 
-    const copyright = document.createElement("footer"); // غيرناه لـ footer عشان الـ SEO
-    copyright.id = "main-footer"; // مهم جداً عشان الإخفاء في وضع القراءة
+    const copyright = document.createElement("footer");
+    copyright.id = "main-footer";
 
-    // التنسيق اللي يخليه دايماً تحت
-    copyright.style.textAlign = "center";
-    copyright.style.padding = "20px 15px";
-    copyright.style.fontSize = "14px";
-    copyright.style.color = "#999";
-    copyright.style.marginTop = "auto"; // السر هنا: بيدفع نفسه لآخر الحاوية
-    copyright.style.width = "100%";
-
+    // التنسيق بتاعك (زي ما هو)
+    Object.assign(copyright.style, {
+      textAlign: "center",
+      padding: "20px 15px",
+      fontSize: "14px",
+      color: "#999",
+      marginTop: "auto", // هيشتغل دلوقتي بفضل الـ Flexbox في الـ CSS
+      width: "100%",
+      zIndex: "10",
+    });
 
     copyright.innerHTML = `
         <div class="copyright" style="direction: rtl; font-family: 'Cairo', sans-serif;">
@@ -186,5 +193,25 @@
         </div>`;
 
     document.body.appendChild(copyright);
+  })();
 })();
-})();
+
+function triggerPrayerNotification(prayerName) {
+    // 1. إظهار الإشعار (بيشتغل في كل الصفحات)
+    if (Notification.permission === "granted") {
+        new Notification("حان الآن موعد صلاة " + prayerName, {
+            body: "ذكر الله خير من الدنيا وما فيها",
+            icon: "/img/icon-512.webp"
+        });
+    }
+
+    // 2. تشغيل الصوت (فقط لو المستخدم في صفحة الصلاة)
+    const isPrayerPage = window.location.pathname.includes('prayer.html'); // اتأكد من اسم صفحتك
+    
+    if (isPrayerPage) {
+        let azanAudio = new Audio('audio/azan.mp3'); // مسار ملف الصوت عندك
+        azanAudio.play().catch(e => {
+            console.log("المتصفح منع التشغيل التلقائي للصوت، لازم المستخدم يتفاعل مع الصفحة أولاً");
+        });
+    }
+}

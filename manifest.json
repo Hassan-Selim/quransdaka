@@ -23,6 +23,22 @@
       "purpose": "maskable"
     }
   ],
+  "shortcuts": [
+    {
+      "name": "مواقيت الصلاة",
+      "short_name": "الصلاة",
+      "description": "عرض مواقيت الصلاة اليومية",
+      "url": "/prayer/",
+      "icons": [{ "src": "/img/icon-192.webp", "sizes": "192x192" }]
+    },
+    {
+      "name": "قراءة القرآن",
+      "short_name": "القرآن",
+      "description": "قراءة وتصفح المصحف الشريف",
+      "url": "/quran-read/",
+      "icons": [{ "src": "/img/icon-192.webp", "sizes": "192x192" }]
+    }
+  ],
   "screenshots": [
     {
       "src": "/img/screenshot-wide.webp",
