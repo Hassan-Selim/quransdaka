@@ -11,8 +11,8 @@
   font-style: normal;
 }
 @font-face {
-  font-family: "Aviny";
-  src: url("../fonts/Aviny.ttf") format("truetype");
+  font-family: "cairo";
+  src: url("../fonts/cairo.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
