@@ -328,18 +328,33 @@ if (elBackToList) elBackToList.addEventListener("click", function () {
 // 1. خلي الـ Router والـ EventListeners بره خالص (Top Level)
 function handleRouting() {
     const hash = window.location.hash;
+
+    // 1. لو الرابط فيه سورة
     if (hash.includes("/surah/")) {
         const surahNum = parseInt(hash.split("/").pop(), 10);
         if (surahNum && surahNum !== currentSurahNumber) {
             openSurah(surahNum);
         }
-    } else {
-        showList();
+    } 
+    // 2. التعديل الجديد: لو الرابط فيه صفحة
+    else if (hash.includes("/page/")) {
+        const pageNum = parseInt(hash.split("/").pop(), 10);
+        if (pageNum && pageNum !== currentPageNumber) {
+            openPage(pageNum); // هننادي دالة فتح الصفحة
+        }
+    }
+    // 3. لو رجعنا للرئيسية (القائمة)
+    else {
+        // إخفاء واجهات القراءة وإظهار القائمة المناسبة
+        showList(); // للسور
+        document.getElementById("pages-view").style.display = "none";
+        document.getElementById("pages-list").style.display = "grid";
+        
         if (elReadAudio) {
             elReadAudio.pause();
             updateReadPlayPauseLabel();
         }
-        document.title = "القرآن الكريم | Quran Sadaka";
+        updateUIVisibility(false);
     }
 }
 
@@ -519,7 +534,12 @@ function openSurah(number) {
       item.style.justifyContent = "center";
       item.innerHTML = `<span class="surah-name-ar" style="font-size:1.1rem;">صفحة ${i}</span>`;
 
-      item.addEventListener("click", () => openPage(i));
+      // جوه دالة renderPagesList
+item.addEventListener("click", () => {
+    // بدل openPage(i)
+    window.location.hash = "/page/" + i; 
+});
+
       elPagesList.appendChild(item);
     }
   }
