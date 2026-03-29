@@ -275,19 +275,49 @@
     return m + ":" + (s < 10 ? "0" + s : s);
   }
 
-  if (elReadAudio) {
-    elReadAudio.addEventListener("loadedmetadata", () => {
-      elReadDuration.textContent = formatTime(elReadAudio.duration);
-    });
+  elReadAudio.addEventListener("timeupdate", () => {
+    if (!elReadAudio.duration) return;
+    
+    const percent = (elReadAudio.currentTime / elReadAudio.duration) * 100;
 
-    elReadAudio.addEventListener("timeupdate", () => {
-      elReadCurrentTime.textContent = formatTime(elReadAudio.currentTime);
-      const percent = (elReadAudio.currentTime / elReadAudio.duration) * 100;
-      elReadProgressFill.style.width = percent + "%";
-      if (progressKnob) progressKnob.style.left = percent + "%";
-    });
-  }
+    // تحديث الجزء الأخضر (بيكبر من الشمال لليمين)
+    elReadProgressFill.style.width = percent + "%";
 
+    // تحريك النقطة البيضاء (بتمشي من الشمال لليمين)
+    if (progressKnob) {
+        progressKnob.style.left = percent + "%";
+        progressKnob.style.right = "auto"; 
+    }
+});
+elReadProgressBar.addEventListener("click", (e) => {
+    const rect = elReadProgressBar.getBoundingClientRect();
+    
+    // حساب المسافة من حافة الشريط الشمال (rect.left)
+    const clickX = e.clientX - rect.left;
+    const percent = clickX / rect.width;
+    
+    if (isFinite(elReadAudio.duration)) {
+        elReadAudio.currentTime = percent * elReadAudio.duration;
+    }
+});
+// --- [ربط العناصر بالأحداث] ---
+
+// 1. تغيير القارئ والمصحف
+if (elReadReciter) elReadReciter.addEventListener("change", onReadReciterChange);
+if (elReadMoshaf) elReadMoshaf.addEventListener("change", onReadMoshafChange);
+
+// 2. أزرار التحكم في الصوت
+if (elReadPlayPause) elReadPlayPause.addEventListener("click", toggleReadPlayPause);
+if (elReadBack5) elReadBack5.addEventListener("click", readBack5);
+if (elReadFwd5) elReadFwd5.addEventListener("click", readFwd5);
+
+// 3. زر الرجوع
+if (elBackToList) elBackToList.addEventListener("click", function () {
+    showList();
+    elReadAudio.pause();
+    elReadAudio.currentTime = 0;
+    updateReadPlayPauseLabel(); // عشان يرجع شكل الزرار "تشغيل"
+});
   if (elReadProgressBar) {
     elReadProgressBar.addEventListener("click", (e) => {
       const rect = elReadProgressBar.getBoundingClientRect();
@@ -328,6 +358,35 @@
         }
       }
     }
+    // --- [كود الهيستوري والراوتر] ---
+
+function handleRouting() {
+    const hash = window.location.hash;
+
+    // 1. لو الرابط فيه رقم سورة (مثلاً #/surah/114)
+    if (hash.includes("/surah/")) {
+        const surahNum = parseInt(hash.split("/").pop(), 10);
+        if (surahNum) {
+            // بننادي الدالة اللي بتعرض السورة
+            // ملحوظة: تأكد إن اسم الدالة عندك openSurah
+            openSurah(surahNum, false); 
+        }
+    } 
+    // 2. لو الرابط فاضي أو رجعنا للرئيسية
+    else {
+        showList();
+        if (elReadAudio) {
+            elReadAudio.pause();
+            updateReadPlayPauseLabel();
+        }
+        // تحديث العنوان للرئيسية
+        document.title = "القرآن الكريم | Quran Sadaka";
+    }
+}
+
+// تشغيل الراوتر عند تغيير الهاش (زرار Back) وعند تحميل الصفحة لأول مرة
+window.addEventListener("hashchange", handleRouting);
+window.addEventListener("load", handleRouting);
 
     let surahInfo = suwar.find((s) => s.number === number);
     if (surahInfo) {
