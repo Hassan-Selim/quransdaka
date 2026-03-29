@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  const API_SUWAR = 'https://mp3quran.net/api/v3/suwar?language=ar';
-  const API_RECITERS = 'https://mp3quran.net/api/v3/reciters?language=ar';
+  const API_SUWAR = '../json/suwar.json';
+  var API_RECITERS = "../json/reciters.json";
   const STORAGE_RECITER = 'quran-sadaka-reciter';
   const STORAGE_MOSHAF = 'quran-sadaka-moshaf';
 

@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v1.4.1";
+const CACHE_VERSION = "v1.4.2";
 const STATIC_CACHE = `quran-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `quran-dynamic-${CACHE_VERSION}`;
 
@@ -8,16 +8,19 @@ const urlsToCache = [
   "/prayer/",
   "/prayer/index.html",
   "/quran-read/",
+  "/about/",
+  "/about/index.html",
   "/quran-read/index.html",
   "/css/style.css",
+  "/css/about.css",
   "/css/prayer.css",
   "/css/quran-read.css",
   "/js/theme.js",
   "/js/quran-read.js",
   "/js/prayer.js",
   "/img/icon.webp",
-  "/img/icon-192.webp", 
-  "/img/icon-512.webp",
+  "/img/icon-192.png", 
+  "/img/icon-512.png",
 ];
 
 // ======= الدوال المساعدة (تعديل بسيط لضمان الأمان) =======

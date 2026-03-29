@@ -34,106 +34,79 @@ if ("serviceWorker" in navigator) {
 }
 
 
-
-/* تثبيت التطبيق */
+/* تثبيت التطبيق - النسخة الشاملة */
 let deferredPrompt;
 const installBar = document.getElementById('installBar');
 const installBtn = document.getElementById('installBtn');
 const installLater = document.getElementById('installLater');
-const installLTxt = document.querySelector('.install-text');
 
-const iosBar = document.getElementById('iosBar');
 const iosBtn = document.getElementById('iosBtn');
 const iosPopup = document.getElementById('iosPopup');
 const closePopup = document.getElementById('closePopup');
 
-// Detect platform
-const ua = window.navigator.userAgent.toLowerCase();
-const isIos = /iphone|ipad|ipod/.test(ua);
-const isSafari = /^((?!chrome|android).)*safari/i.test(window.navigator.userAgent);
+// 1. فحص الحالة: هل التطبيق مثبت فعلاً؟
 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
                      (window.navigator.standalone === true);
 
-// Reset UI
+// 2. فحص النظام (بدون تعقيد الـ Regex بتاع سافاري)
+const ua = window.navigator.userAgent.toLowerCase();
+const isIos = /iphone|ipad|ipod/.test(ua);
+
+// تصفير الواجهة في البداية
 installBar.style.display = 'none';
 iosBtn.style.display = 'none';
-iosPopup.style.display = 'none';
 
-// iOS Safari logic
-if (isIos && isSafari && !isStandalone) {
-  iosBtn.style.display = 'flex'; // يظهر الزرار بس لو النظام iOS Safari
+// --- منطق أجهزة iOS (آيفون/آيباد) ---
+if (isIos && !isStandalone) {
+  // بنظهره لكل مستخدمي iOS لأن كلهم بيحتاجوا إضافة يدوية
+  iosBtn.style.display = 'flex';
 }
 
-// Android/Windows logic
+// --- منطق أجهزة أندرويد وويندوز (سامسونج، كروم، فايرفوكس...) ---
 window.addEventListener('beforeinstallprompt', (e) => {
+  // لو الحدث ده اشتغل، يبقى المتصفح بيدعم التثبيت التلقائي
   e.preventDefault();
   deferredPrompt = e;
 
-  // يظهر بعد delay معين (مثلاً 5 ثواني)
+  // إظهار البانر بعد 5 ثواني لو مش متسيف "لاحقاً"
   setTimeout(() => {
-    if (!localStorage.getItem('installLater') && !localStorage.getItem('appInstalled')) {
+    if (!localStorage.getItem('installLater') && !isStandalone) {
       installBar.style.display = 'flex';
     }
   }, 5000);
 });
 
-// زرار تثبيت (Android/Windows)
+// تنفيذ التثبيت (أندرويد/سامسونج/كروم)
 installBtn.addEventListener('click', async () => {
   if (deferredPrompt) {
     deferredPrompt.prompt();
-    const choiceResult = await deferredPrompt.userChoice;
-    if (choiceResult.outcome === 'accepted') {
-      console.log('User accepted install');
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
       installBar.style.display = 'none';
       localStorage.setItem('appInstalled', 'true');
-    } else {
-      console.log('User dismissed install');
     }
     deferredPrompt = null;
   }
 });
 
-// زرار لاحقاً
+// زرار "لاحقاً"
 installLater.addEventListener('click', () => {
   installBar.style.display = 'none';
   localStorage.setItem('installLater', 'true');
 });
 
-// منطق إخفاء/إظهار حسب الحالة
-if (localStorage.getItem('installLater') === 'true') {
-  installBar.style.display = 'none';
-}
-
-if (localStorage.getItem('appInstalled') === 'true' || isStandalone) {
-  installBar.style.display = 'none';
-  iosBtn.style.display = 'none';
-  iosPopup.style.display = 'none';
-}
-
-// iOS زرار "إضافة"
+// إظهار الـ Popup التعليمي لـ iOS
 iosBtn.addEventListener('click', () => {
   iosPopup.style.display = 'flex';
 });
 
-// إغلاق الـ popup
+// إغلاق الـ Popup
 closePopup.addEventListener('click', () => {
   iosPopup.style.display = 'none';
 });
 
-// منطق إضافي: لو المستخدم رجع للرئيسية بعد ما يتنقل
-window.addEventListener('popstate', () => {
-  if (deferredPrompt && !localStorage.getItem('appInstalled') && !localStorage.getItem('installLater')) {
-    installBar.style.display = 'flex';
-  }
-});
-
-iosBtn.addEventListener('click', () => {
-  iosPopup.style.display = 'block';
-});
-
-closePopup.addEventListener('click', () => {
-  iosPopup.style.display = 'none';
+// لو التطبيق مثبت، اخفي كل حاجة
+if (isStandalone) {
+  installBar.style.display = 'none';
   iosBtn.style.display = 'none';
-  
-});
-
+}

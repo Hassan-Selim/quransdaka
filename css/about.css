@@ -16,38 +16,12 @@
   color: var(--color-text);
   line-height: 1.6;
 }
-
-/* البانر */
-.banner-wrapper {
-  position: relative;
-  height: 350px;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  margin-bottom: 2rem;
-  box-shadow: var(--shadow-card);
-}
-
-.hero-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center center;
-}
-
-.overlay-text {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  padding: 2rem;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-  color: #ffffff;
+.about-intro{
+  margin: auto;
   text-align: center;
-}
-
-.overlay-text h1 {
-  font-size: 1.7rem;
-  margin: 0;
+  max-width: 700px;
+  padding: 0 20px;
+  margin-bottom: 2rem;
 }
 
 .sub-title {
@@ -76,11 +50,44 @@
   text-decoration: none;
   font-weight: bold;
 }
+.about-feature-intro {
+    text-align: center;
+    margin: 40px auto 30px; /* مسافات متوازنة */
+    max-width: 700px; /* عشان الكلام ميمطش بالعرض ويصعب قراءته */
+    padding: 0 20px;
+}
+
+.feature-text {
+    font-size: 1.25rem; /* حجم مريح */
+    line-height: 1.8;
+    color: var(--color-text); /* لون slate-300 هادي جداً */
+    font-weight: 500;
+    position: relative;
+    display: inline-block;
+}
+
+/* لمسة "حسن سليم" المصمم: خط سفلي متدرج يربط النص بالهوية */
+.feature-text::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #0f766e, transparent);
+    margin: 12px auto 0;
+    border-radius: 50px;
+}
+
+/* في الموبايلات الصغيرة، صغّر الخط شوية */
+@media (max-width: 600px) {
+    .feature-text {
+        font-size: 1.1rem;
+    }
+}
 
 /* شبكة الكروت (5 كروت) */
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
   margin-bottom: 1rem;
 }
@@ -133,15 +140,18 @@
   color: var(--color-teal-dark);
   margin-bottom: 1rem;
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.5rem;
   background: #c7d3cf;
   padding: 0.5rem 1rem;
   border-radius: var(--radius);
 }
 
 .story-card p {
-  font-size: 0.7rem;
+  font-size: 1rem;
+  font-weight: 400;
   color: var(--color-text);
+  line-height: 2rem;
+  text-align: center;
 }
 
 .story-card a {
@@ -149,8 +159,23 @@
   font-weight: bold;
 }
 
+
+.privacy p{
+  border-right: 5px solid var(--color-teal);
+  border-top: 5px solid var(--color-teal);
+  text-align: justify;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  width: 100%;
+}
+.privacy span{
+  color: var(--color-teal);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
 /* زر المشاركة */
-.cta-wrapper {
+.cta-wrapper, .cta-wrapper p {
   text-align: center;
 }
 .prayer{
@@ -189,21 +214,22 @@
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
   text-align: center;
-  margin-top: 3rem;
+  max-width: 600px;
   border: 1px dashed var(--color-teal-light); /* إطار مقطع ليعطي إيحاء بالتطوير المستمر */
   position: relative;
   overflow: hidden;
+  margin: auto;
+  margin-top: 1.5rem;
 }
 
 /* النص التوضيحي */
 .contact-hint {
   font-size: 1.1rem;
   color: var(--color-text);
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
   line-height: 1.8;
   max-width: 600px;
-  margin-right: auto;
-  margin-left: auto;
+  margin: auto;
 }
 
 /* تنسيق الروابط والأزرار داخل التواصل */
@@ -212,33 +238,30 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin: 10px;
+  margin: 1rem;
   transition: transform 0.3s ease;
 }
 
 /* زر الإيميل (مبني على btn-primary بتاعك) */
 .contact .btn-primary {
-  padding: 0.8rem 2rem;
   font-family: "Cairo", sans-serif;
-  font-size: 1.05rem;
+  font-size: 1rem;
   border-radius: 50px;
   background: linear-gradient(135deg, var(--color-teal), var(--color-teal-dark));
   color: #fff;
   border: none;
   cursor: pointer;
-  box-shadow: var(--shadow-soft);
 }
 
 /* زر الواتساب - تنسيق خاص احترافي */
-.contact a[href*="whatsapp"] {
-  background: #25d366; /* لون واتساب الرسمي */
+.contact a[href*="whatsapp"], .btn-primary {
+  background: #14883e; /* لون واتساب الرسمي */
   color: #fff;
   padding: 0.8rem 2rem;
   border-radius: 50px;
   font-weight: 600;
   font-size: 1.05rem;
-  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+  box-shadow: 0 4px 14px rgba(37, 211, 101, 0.089);
 }
 
 /* تأثير الـ Hover */
