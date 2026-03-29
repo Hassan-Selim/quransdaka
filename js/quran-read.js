@@ -127,7 +127,7 @@
         " آية</span>" +
         "</div>";
       item.addEventListener("click", function () {
-        openSurah(s.number);
+        window.location.hash = "/surah/" + s.number;
       });
       elSurahList.appendChild(item);
     });
@@ -176,10 +176,8 @@
   }
 
   elBackToList.addEventListener("click", function () {
-    showList();
-    elReadAudio.pause();
-    elReadAudio.currentTime = 0;
-  });
+    window.location.hash = "/"; // نغير الرابط للرئيسية
+});
 
   function onReadReciterChange() {
     var id = elReadReciter.value;
@@ -327,19 +325,47 @@ if (elBackToList) elBackToList.addEventListener("click", function () {
     });
   }
 
-  function openSurah(number) {
-    showSurah();
+// 1. خلي الـ Router والـ EventListeners بره خالص (Top Level)
+function handleRouting() {
+    const hash = window.location.hash;
+    if (hash.includes("/surah/")) {
+        const surahNum = parseInt(hash.split("/").pop(), 10);
+        if (surahNum && surahNum !== currentSurahNumber) {
+            openSurah(surahNum);
+        }
+    } else {
+        showList();
+        if (elReadAudio) {
+            elReadAudio.pause();
+            updateReadPlayPauseLabel();
+        }
+        document.title = "القرآن الكريم | Quran Sadaka";
+    }
+}
+
+window.addEventListener("hashchange", handleRouting);
+window.addEventListener("load", handleRouting);
+
+// 2. دالة openSurah بقت وظيفتها العرض فقط
+function openSurah(number) {
+    // 1. منع التكرار لو بنحاول نفتح نفس السورة اللي مفتوحة فعلاً
+    if (currentSurahNumber === number && elVersesContainer.innerHTML !== "") return;
+
+    showSurah(); // إظهار سكشن القراءة وإخفاء القائمة
     currentSurahNumber = number;
 
+    // 2. تصفير ملف الصوت فوراً
     elReadAudio.pause();
     elReadAudio.removeAttribute("src");
     elReadAudio.load();
     updateReadPlayPauseLabel();
 
-    elSurahTitle.textContent = "";
-    elVersesContainer.innerHTML = "";
+    // 3. تصفير الواجهة وتجهيز التحميل
+    elSurahTitle.textContent = ""; 
+    elVersesContainer.innerHTML = ""; // مسح أي سورة قديمة فوراً
     elVersesLoading.style.display = "block";
 
+    // 4. تحديث بيانات القراء (Dropdowns)
     if (reciters.length > 0) {
       fillReadReciterSelect();
       fillReadMoshafSelect();
@@ -358,72 +384,49 @@ if (elBackToList) elBackToList.addEventListener("click", function () {
         }
       }
     }
-    // --- [كود الهيستوري والراوتر] ---
 
-function handleRouting() {
-    const hash = window.location.hash;
-
-    // 1. لو الرابط فيه رقم سورة (مثلاً #/surah/114)
-    if (hash.includes("/surah/")) {
-        const surahNum = parseInt(hash.split("/").pop(), 10);
-        if (surahNum) {
-            // بننادي الدالة اللي بتعرض السورة
-            // ملحوظة: تأكد إن اسم الدالة عندك openSurah
-            openSurah(surahNum, false); 
-        }
-    } 
-    // 2. لو الرابط فاضي أو رجعنا للرئيسية
-    else {
-        showList();
-        if (elReadAudio) {
-            elReadAudio.pause();
-            updateReadPlayPauseLabel();
-        }
-        // تحديث العنوان للرئيسية
-        document.title = "القرآن الكريم | Quran Sadaka";
-    }
-}
-
-// تشغيل الراوتر عند تغيير الهاش (زرار Back) وعند تحميل الصفحة لأول مرة
-window.addEventListener("hashchange", handleRouting);
-window.addEventListener("load", handleRouting);
-
+    // 5. جلب بيانات السورة للتحديثات النصية
     let surahInfo = suwar.find((s) => s.number === number);
     if (surahInfo) {
-      history.replaceState(null, "", "#/surah/" + surahInfo.number);
       document.title = `سورة ${surahInfo.name} مكتوبة كاملة | Quran Sadaka`;
       localStorage.setItem("surah-lastSurah", number);
       localStorage.setItem("surah-lastAyah", 1);
     }
 
+    // 6. جلب الآيات من الـ JSON ورسمها
     fetch("../json/quran.json")
       .then((res) => res.json())
       .then((allSurahs) => {
         elVersesLoading.style.display = "none";
-        let surahData = allSurahs.find((s) => s.number === number);
+        
+        // تأكيد مسح الحاوية مرة تانية قبل الـ Append (لزيادة الأمان ضد الـ Async)
+        elVersesContainer.innerHTML = ""; 
 
+        let surahData = allSurahs.find((s) => s.number === number);
         if (!surahData || !surahData.ayahs) {
-          elVersesContainer.innerHTML =
-            '<p class="read-error">تعذر تحميل الآيات.</p>';
+          elVersesContainer.innerHTML = '<p class="read-error">تعذر تحميل الآيات.</p>';
           return;
         }
 
+        // إنشاء الـ Block الأساسي للسورة
         let block = document.createElement("div");
         block.className = "mushaf-block";
 
-        let surahTitle = document.createElement("div");
-        surahTitle.className = "surah-title";
-        surahTitle.textContent = surahInfo.name;
-        block.appendChild(surahTitle);
+        // إرجاع تنسيق عنوان السورة المظبوط
+        let surahTitleDiv = document.createElement("div");
+        surahTitleDiv.className = "surah-title";
+        surahTitleDiv.textContent = surahInfo ? surahInfo.name : "";
+        block.appendChild(surahTitleDiv);
 
+        // إضافة البسملة (إلا سورة التوبة)
         if (number !== 9) {
           let basmalaSpan = document.createElement("span");
           basmalaSpan.className = "basmala";
-          basmalaSpan.textContent =
-            "﴿ بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ ﴾";
+          basmalaSpan.textContent = "﴿ بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ ﴾";
           block.appendChild(basmalaSpan);
         }
 
+        // رسم الآيات
         surahData.ayahs.forEach((a) => {
           let verseWrapper = document.createElement("span");
           verseWrapper.className = "verse-wrapper";
@@ -440,6 +443,7 @@ window.addEventListener("load", handleRouting);
           verseWrapper.appendChild(textSpan);
           verseWrapper.appendChild(markerSpan);
 
+          // عند الضغط على الآية (حفظ مكان الوقوف)
           verseWrapper.addEventListener("click", function () {
             localStorage.setItem("surah-lastSurah", number);
             localStorage.setItem("surah-lastAyah", a.number);
@@ -448,20 +452,20 @@ window.addEventListener("load", handleRouting);
           block.appendChild(verseWrapper);
         });
 
+        // حقن المحتوى في الصفحة
         elVersesContainer.appendChild(block);
+
+        // الرجوع لآخر آية كانت مفتوحة في السورة دي
         const savedAyah = localStorage.getItem("surah-lastAyah");
-        if (
-          savedAyah &&
-          parseInt(localStorage.getItem("surah-lastSurah"), 10) === number
-        ) {
-          setTimeout(() => highlightAyah(savedAyah), 100);
+        if (savedAyah && parseInt(localStorage.getItem("surah-lastSurah"), 10) === number) {
+          setTimeout(() => highlightAyah(savedAyah), 150);
         }
       })
       .catch((err) => {
         elVersesLoading.style.display = "none";
-        console.error(err);
+        console.error("OpenSurah Error:", err);
       });
-  }
+}
 
   if (resumeBtn) {
     resumeBtn.addEventListener("click", function () {
@@ -1022,4 +1026,5 @@ window.addEventListener("load", handleRouting);
       });
     }
   });
+ 
 })();
