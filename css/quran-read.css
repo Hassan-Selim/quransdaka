@@ -643,10 +643,12 @@ body {
   position: absolute;
   z-index: 9999;
   top: 0;
-  margin: auto;
+   top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .pages-section .read-verses .verse-text {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 100;
   line-height: 2rem;
 }
