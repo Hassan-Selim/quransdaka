@@ -643,7 +643,7 @@ body {
   position: absolute;
   z-index: 9999;
   top: 0;
-  right: 0;
+  margin: auto;
 }
 .pages-section .read-verses .verse-text {
   font-size: 1.5rem;
