@@ -49,7 +49,7 @@
       "name": "الرقية الشرعية",
       "short_name": "الرقية",
       "description": "استمع للرقية الشرعية والأذكار",
-      "url": "/ruqyah/",
+      "url": "/ruqya/",
       "icons": [{ "src": "/img/icon-192.png", "sizes": "192x192" }]
     }
     

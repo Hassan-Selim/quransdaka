@@ -421,7 +421,7 @@
   justify-content: center;
   gap: 12px;
   max-width: 360px !important;
-  margin: 25px auto !important; /* التوسط السحري */
+  margin: 10px auto !important; /* التوسط السحري */
   padding: 10px 20px;
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #ffffff !important;
@@ -520,16 +520,15 @@
   z-index: 2;
 }
 .qpage {
-  width: 100%;
-  max-width: 888px;
+  width: 80%;
   margin: 0 auto;
-  margin-top: 1rem;
 }
 
 .qpage p {
   font-family: "UthmanicHafs", serif;
-  font-size: 1rem;
-  padding: 10px 0;
+  font-size: 0.8rem;
+  margin: 1rem auto;
+  max-width: 600px;
   line-height: 1.5rem;
   color: var(--color-text);
   opacity: 0.6;
@@ -537,9 +536,9 @@
   cursor: default;
 }
 
-.ruqyah-wrapper {
+.quran-wrapper {
   max-width: 500px;
-  margin: auto;
+  margin: 1rem auto;
 }
 
 .tabs-control {
@@ -557,7 +556,7 @@
   font-family: "tajawal", sans-serif;
   border: none;
   background: transparent;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
   border-radius: var(--radius);
@@ -608,8 +607,8 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 10px;
+  user-select: none;
   padding: 10px;
-  overflow-y: auto;
 }
 
 #page-verses {
@@ -645,7 +644,6 @@ body {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  
 }
 .pages-section .read-verses .verse-text {
   font-size: 1.2rem;
@@ -726,6 +724,7 @@ body {
   display: flex;
   align-items: center;
   background: #f0f4f8;
+  color: #1e293b;
   width: 90%;
   max-width: 888px;
   margin: 2rem auto;
@@ -734,9 +733,11 @@ body {
   margin-bottom: 20px;
 }
 
-.search-box input {
+#quran-search-input {
   flex: 1;
   border: none;
+  background: #f0f4f8;
+  color: #1e293b;
   background: transparent;
   padding: 12px;
   font-family: "Cairo", sans-serif;
@@ -811,12 +812,13 @@ body {
   color: #777;
 }
 .search-hint {
-  margin: auto;
-  margin-top: 2rem;
+  margin: 1rem auto;
+  font-size: 0.8rem;
   text-align: center;
   font-family: "cairo", sans-serif;
   padding: 10px 0;
   margin-bottom: 1rem;
+  width: 90%;
   max-width: 400px;
   color: var(--color-text);
   opacity: 0.6;
@@ -825,6 +827,7 @@ body {
 .search-hint span {
   font-size: 3rem;
 }
+
 .share-verse-btn {
   background: #037168;
   border: 1px solid #dbeafe;
@@ -857,19 +860,136 @@ body {
   font-size: 14px;
 }
 #search-history {
-  background: #dbeafe;
-  color: #1e293b;
-  font-size: 3rem;
-  width: 100%;
-  max-width: 888px;
-  height: 10rem;
-  margin: 1rem auto;
-  border-radius: 15px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: auto;
+  font-size: 0.8rem;
+  text-align: center;
+  font-family: "cairo", sans-serif;
+
+  width: 90%;
+  max-width: 400px;
   color: var(--color-text);
-  padding: 1rem;
-  overflow-y: scroll;
-  box-shadow: var(--shadow-card);
+}
+.search-history-title {
+  display: block;
+  margin: auto;
+  margin-bottom: 0.3rem;
+  font-size: 0.8rem;
+  text-align: center;
+  font-family: "cairo", sans-serif;
+  margin-bottom: 0.5rem;
+  width: 90%;
+  max-width: 400px;
+  color: var(--color-text);
+  opacity: 0.7;
+}
+/* حاوية زرار الصفحة */
+/* 1. الحاوية الكبيرة اللي شايلة كل الزراير (هنا بنحط الجريد) */
+#pages-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px; /* المسافة بين الزراير */
+  padding: 10px 0;
+}
+
+/* 2. غلاف الزرار الواحد (شيلنا منه الجريد خالص) */
+.page-btn-wrapper {
   position: relative;
-  border: 1px solid #eee;
+  width: 100%;
+}
+
+/* 3. زرار الصفحة نفسه */
+.page-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 50px;
+  border: none;
+  outline: none;
+  padding: 0px 5px;
+  background-color: var(--color-bg-card);
+  color: var(--color-text);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "tajawal", sans-serif;
+  transition: all 0.2s ease-in-out;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 4. تأثير لما اليوزر يدوس على الزرار (Feedback بصري) */
+.page-btn:active {
+  transform: scale(0.95); /* الزرار يصغر سنة لما تدوس عليه */
+  opacity: 0.8;
+}
+
+/* 5. النص اللي جوه الزرار */
+.surah-name-ar {
+  display: flex;
+  flex-direction: row;
+  font-size: 0.7rem;
+  pointer-events: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--color-text);
+}
+.pages-section .surah-name-ar {
+  font-family: "tajawal", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+/* الكارت المخفي (Tooltip) */
+.page-tooltip {
   display: none;
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e293b;
+  color: #f8fafc;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  width: max-content;
+  min-width: 140px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  text-align: center;
+  direction: rtl;
+  line-height: 1.8;
+}
+
+.page-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -6px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: #1e293b transparent transparent transparent;
+}
+
+.page-tooltip.flip-bottom {
+  bottom: auto;
+  top: 120%; /* يظهر تحت الزرار */
+}
+
+.page-tooltip.flip-bottom::after {
+  top: auto;
+  bottom: 100%;
+  border-color: transparent transparent #1e293b transparent;
+}
+
+.tooltip-loading {
+  color: #94a3b8;
+  font-size: 11px;
 }

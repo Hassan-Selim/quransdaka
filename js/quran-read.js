@@ -42,7 +42,7 @@
   // --- [تحديث: وظيفة الإخفاء الشاملة] ---
   function updateUIVisibility(isReading) {
     const toHide = document.querySelectorAll(
-      ".qpage, .ruqyah-wrapper, .banner, .continueBtn, .read-intro, #main-footer",
+      ".qpage, .quran-wrapper, .banner, .continueBtn, .read-intro, #main-footer",
     );
     const displayValue = isReading ? "none" : "";
 
@@ -177,7 +177,7 @@
 
   elBackToList.addEventListener("click", function () {
     window.location.hash = "/"; // نغير الرابط للرئيسية
-});
+  });
 
   function onReadReciterChange() {
     var id = elReadReciter.value;
@@ -275,7 +275,7 @@
 
   elReadAudio.addEventListener("timeupdate", () => {
     if (!elReadAudio.duration) return;
-    
+
     const percent = (elReadAudio.currentTime / elReadAudio.duration) * 100;
 
     // تحديث الجزء الأخضر (بيكبر من الشمال لليمين)
@@ -283,39 +283,42 @@
 
     // تحريك النقطة البيضاء (بتمشي من الشمال لليمين)
     if (progressKnob) {
-        progressKnob.style.left = percent + "%";
-        progressKnob.style.right = "auto"; 
+      progressKnob.style.left = percent + "%";
+      progressKnob.style.right = "auto";
     }
-});
-elReadProgressBar.addEventListener("click", (e) => {
+  });
+  elReadProgressBar.addEventListener("click", (e) => {
     const rect = elReadProgressBar.getBoundingClientRect();
-    
+
     // حساب المسافة من حافة الشريط الشمال (rect.left)
     const clickX = e.clientX - rect.left;
     const percent = clickX / rect.width;
-    
+
     if (isFinite(elReadAudio.duration)) {
-        elReadAudio.currentTime = percent * elReadAudio.duration;
+      elReadAudio.currentTime = percent * elReadAudio.duration;
     }
-});
-// --- [ربط العناصر بالأحداث] ---
+  });
+  // --- [ربط العناصر بالأحداث] ---
 
-// 1. تغيير القارئ والمصحف
-if (elReadReciter) elReadReciter.addEventListener("change", onReadReciterChange);
-if (elReadMoshaf) elReadMoshaf.addEventListener("change", onReadMoshafChange);
+  // 1. تغيير القارئ والمصحف
+  if (elReadReciter)
+    elReadReciter.addEventListener("change", onReadReciterChange);
+  if (elReadMoshaf) elReadMoshaf.addEventListener("change", onReadMoshafChange);
 
-// 2. أزرار التحكم في الصوت
-if (elReadPlayPause) elReadPlayPause.addEventListener("click", toggleReadPlayPause);
-if (elReadBack5) elReadBack5.addEventListener("click", readBack5);
-if (elReadFwd5) elReadFwd5.addEventListener("click", readFwd5);
+  // 2. أزرار التحكم في الصوت
+  if (elReadPlayPause)
+    elReadPlayPause.addEventListener("click", toggleReadPlayPause);
+  if (elReadBack5) elReadBack5.addEventListener("click", readBack5);
+  if (elReadFwd5) elReadFwd5.addEventListener("click", readFwd5);
 
-// 3. زر الرجوع
-if (elBackToList) elBackToList.addEventListener("click", function () {
-    showList();
-    elReadAudio.pause();
-    elReadAudio.currentTime = 0;
-    updateReadPlayPauseLabel(); // عشان يرجع شكل الزرار "تشغيل"
-});
+  // 3. زر الرجوع
+  if (elBackToList)
+    elBackToList.addEventListener("click", function () {
+      showList();
+      elReadAudio.pause();
+      elReadAudio.currentTime = 0;
+      updateReadPlayPauseLabel(); // عشان يرجع شكل الزرار "تشغيل"
+    });
   if (elReadProgressBar) {
     elReadProgressBar.addEventListener("click", (e) => {
       const rect = elReadProgressBar.getBoundingClientRect();
@@ -325,46 +328,47 @@ if (elBackToList) elBackToList.addEventListener("click", function () {
     });
   }
 
-// 1. خلي الـ Router والـ EventListeners بره خالص (Top Level)
-function handleRouting() {
+  // 1. خلي الـ Router والـ EventListeners بره خالص (Top Level)
+  function handleRouting() {
     const hash = window.location.hash;
 
     // 1. لو الرابط فيه سورة
     if (hash.includes("/surah/")) {
-        const surahNum = parseInt(hash.split("/").pop(), 10);
-        if (surahNum && surahNum !== currentSurahNumber) {
-            openSurah(surahNum);
-        }
-    } 
+      const surahNum = parseInt(hash.split("/").pop(), 10);
+      if (surahNum && surahNum !== currentSurahNumber) {
+        openSurah(surahNum);
+      }
+    }
     // 2. التعديل الجديد: لو الرابط فيه صفحة
     else if (hash.includes("/page/")) {
-        const pageNum = parseInt(hash.split("/").pop(), 10);
-        if (pageNum && pageNum !== currentPageNumber) {
-            openPage(pageNum); // هننادي دالة فتح الصفحة
-        }
+      const pageNum = parseInt(hash.split("/").pop(), 10);
+      if (pageNum && pageNum !== currentPageNumber) {
+        openPage(pageNum); // هننادي دالة فتح الصفحة
+      }
     }
     // 3. لو رجعنا للرئيسية (القائمة)
     else {
-        // إخفاء واجهات القراءة وإظهار القائمة المناسبة
-        showList(); // للسور
-        document.getElementById("pages-view").style.display = "none";
-        document.getElementById("pages-list").style.display = "grid";
-        
-        if (elReadAudio) {
-            elReadAudio.pause();
-            updateReadPlayPauseLabel();
-        }
-        updateUIVisibility(false);
+      // إخفاء واجهات القراءة وإظهار القائمة المناسبة
+      showList(); // للسور
+      document.getElementById("pages-view").style.display = "none";
+      document.getElementById("pages-list").style.display = "grid";
+
+      if (elReadAudio) {
+        elReadAudio.pause();
+        updateReadPlayPauseLabel();
+      }
+      updateUIVisibility(false);
     }
-}
+  }
 
-window.addEventListener("hashchange", handleRouting);
-window.addEventListener("load", handleRouting);
+  window.addEventListener("hashchange", handleRouting);
+  window.addEventListener("load", handleRouting);
 
-// 2. دالة openSurah بقت وظيفتها العرض فقط
-function openSurah(number) {
+  // 2. دالة openSurah بقت وظيفتها العرض فقط
+  function openSurah(number) {
     // 1. منع التكرار لو بنحاول نفتح نفس السورة اللي مفتوحة فعلاً
-    if (currentSurahNumber === number && elVersesContainer.innerHTML !== "") return;
+    if (currentSurahNumber === number && elVersesContainer.innerHTML !== "")
+      return;
 
     showSurah(); // إظهار سكشن القراءة وإخفاء القائمة
     currentSurahNumber = number;
@@ -376,7 +380,7 @@ function openSurah(number) {
     updateReadPlayPauseLabel();
 
     // 3. تصفير الواجهة وتجهيز التحميل
-    elSurahTitle.textContent = ""; 
+    elSurahTitle.textContent = "";
     elVersesContainer.innerHTML = ""; // مسح أي سورة قديمة فوراً
     elVersesLoading.style.display = "block";
 
@@ -413,13 +417,14 @@ function openSurah(number) {
       .then((res) => res.json())
       .then((allSurahs) => {
         elVersesLoading.style.display = "none";
-        
+
         // تأكيد مسح الحاوية مرة تانية قبل الـ Append (لزيادة الأمان ضد الـ Async)
-        elVersesContainer.innerHTML = ""; 
+        elVersesContainer.innerHTML = "";
 
         let surahData = allSurahs.find((s) => s.number === number);
         if (!surahData || !surahData.ayahs) {
-          elVersesContainer.innerHTML = '<p class="read-error">تعذر تحميل الآيات.</p>';
+          elVersesContainer.innerHTML =
+            '<p class="read-error">تعذر تحميل الآيات.</p>';
           return;
         }
 
@@ -437,7 +442,8 @@ function openSurah(number) {
         if (number !== 9) {
           let basmalaSpan = document.createElement("span");
           basmalaSpan.className = "basmala";
-          basmalaSpan.textContent = "﴿ بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ ﴾";
+          basmalaSpan.textContent =
+            "﴿ بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ ﴾";
           block.appendChild(basmalaSpan);
         }
 
@@ -472,7 +478,10 @@ function openSurah(number) {
 
         // الرجوع لآخر آية كانت مفتوحة في السورة دي
         const savedAyah = localStorage.getItem("surah-lastAyah");
-        if (savedAyah && parseInt(localStorage.getItem("surah-lastSurah"), 10) === number) {
+        if (
+          savedAyah &&
+          parseInt(localStorage.getItem("surah-lastSurah"), 10) === number
+        ) {
           setTimeout(() => highlightAyah(savedAyah), 150);
         }
       })
@@ -480,7 +489,7 @@ function openSurah(number) {
         elVersesLoading.style.display = "none";
         console.error("OpenSurah Error:", err);
       });
-}
+  }
 
   if (resumeBtn) {
     resumeBtn.addEventListener("click", function () {
@@ -521,28 +530,161 @@ function openSurah(number) {
   // --- [قسم الصفحات الجديد بالكامل] ---
   // ==========================================
 
-  function renderPagesList() {
+ // --- [1. دالة رسم قائمة الصفحات مع الضغطة المطولة] ---
+function renderPagesList() {
     const elPagesList = document.getElementById("pages-list");
     if (!elPagesList) return;
     elPagesList.innerHTML = "";
 
-    // إنشاء أزرار أو عناصر لـ 604 صفحة
     for (let i = 1; i <= totalPages; i++) {
-      let item = document.createElement("div");
-      item.className = "read-surah-item";
-      item.style.textAlign = "center";
-      item.style.justifyContent = "center";
-      item.innerHTML = `<span class="surah-name-ar" style="font-size:1.1rem;">صفحة ${i}</span>`;
+        let item = document.createElement("div");
+        item.className = "read-surah-item page-btn-wrapper"; 
+        
+        // شلنا كل الـ style المدمج عشان الـ CSS بتاعك هو اللي يشتغل
+        item.innerHTML = `
+            <div class="page-btn" 
+                 onmousedown="startPagePress(${i})" 
+                 onmouseup="endPagePress(${i})" 
+                 onmouseleave="cancelPagePress()" 
+                 ontouchstart="startPagePress(${i})" 
+                 ontouchend="endPagePress(${i})" 
+                 ontouchmove="cancelPagePress()"
+                 oncontextmenu="return false;">
+                <span class="surah-name-ar">صفحة  ${i}</span>
+            </div>
+            
+            <div id="page-info-${i}" class="page-tooltip">
+                <span class="tooltip-loading">جاري تحميل البيانات...</span>
+            </div>
+        `;
 
-      // جوه دالة renderPagesList
-item.addEventListener("click", () => {
-    // بدل openPage(i)
-    window.location.hash = "/page/" + i; 
+        elPagesList.appendChild(item);
+    }
+}
+
+// --- [2. عقل الضغطة المطولة (Long Press Logic)] ---
+let pagePressTimer;
+let isPageLongPress = false;
+
+window.startPagePress = function(pageNum) {
+    isPageLongPress = false;
+    // بدء عداد لنصف ثانية (500ms)
+    pagePressTimer = setTimeout(function() {
+        isPageLongPress = true; 
+        showPageTooltip(pageNum); // إظهار الكارت لو العداد خلص
+    }, 500); 
+};
+
+window.cancelPagePress = function() {
+    clearTimeout(pagePressTimer);
+};
+
+window.endPagePress = function(pageNum) {
+    clearTimeout(pagePressTimer);
+    
+    // لو كانت ضغطة عادية (مش مطولة)، افتح الصفحة
+    if (!isPageLongPress) {
+        // نفس كود الفتح بتاعك بالظبط
+        window.location.hash = "/page/" + pageNum;
+    }
+};
+
+// --- [3. دالة إظهار الكارت وجلب أسماء السور والآيات] ---
+// 1. متغير جلوبال لحفظ الداتا عشان الكود ميهنجش
+let globalPagesIndex = null;
+
+// 2. دالة تحميل ملف الصفحات (بتشتغل مرة واحدة بس)
+async function loadPagesIndex() {
+    if (!globalPagesIndex) {
+        try {
+            const res = await fetch("../json/quran-pages.json");
+            globalPagesIndex = await res.json();
+            console.log("تم تحميل ملف الصفحات للضغط المطول بنجاح ✅");
+        } catch (e) {
+            console.error("خطأ في تحميل بيانات الصفحات:", e);
+        }
+    }
+}
+
+// 3. بننادي عليها أول ما الصفحة تفتح
+document.addEventListener("DOMContentLoaded", () => {
+    loadPagesIndex();
 });
 
-      elPagesList.appendChild(item);
+// --- [دالة إظهار الكارت الجديدة والمحمية من الأخطاء] ---
+window.showPageTooltip = async function(pageNum) {
+    // إخفاء كل الكروت المفتوحة (بأمان عشان ميديناش خطأ forEach)
+    const allTooltips = document.querySelectorAll('.page-tooltip');
+    if (allTooltips) {
+        Array.from(allTooltips).forEach(tooltip => tooltip.style.display = 'none');
     }
-  }
+    
+    const tooltip = document.getElementById(`page-info-${pageNum}`);
+    if (!tooltip) return;
+
+    // لو الكارت لسه مكتوب فيه "جاري التحميل" هنحدث بياناته
+    if (tooltip.innerHTML.includes("جاري تحميل")) {
+        
+        // التأكد إن الملف تحمل (لو النت ضعيف مثلاً)
+        if (!globalPagesIndex) await loadPagesIndex();
+
+        if (globalPagesIndex && globalPagesIndex[String(pageNum)]) {
+            const pageMap = globalPagesIndex[String(pageNum)];
+            
+            if (pageMap && pageMap.length > 0) {
+                // أول آية في الصفحة
+                const firstRef = pageMap[0].split(":"); 
+                const firstSurahNum = firstRef[0];
+                const firstAyahNum = firstRef[1];
+
+                // آخر آية في الصفحة
+                const lastRef = pageMap[pageMap.length - 1].split(":");
+                const lastSurahNum = lastRef[0];
+                const lastAyahNum = lastRef[1];
+                
+                // تأمين جلب اسم السورة (عشان لو مصفوفة suwar لسه فاضية ميضربش إيرور)
+                const startSurah = (typeof suwar !== 'undefined' && suwar.find(s => String(s.number) === String(firstSurahNum))?.name) || "سورة " + firstSurahNum;
+                const endSurah = (typeof suwar !== 'undefined' && suwar.find(s => String(s.number) === String(lastSurahNum))?.name) || "سورة " + lastSurahNum;
+
+                // رسم الداتا جوه الكارت
+                let infoHtml = ``;
+                if (firstSurahNum === lastSurahNum) {
+                    infoHtml = `<strong style="color:#fde047;">${startSurah}</strong><br>
+                                <span style="font-size:11px;">من آية ${firstAyahNum} إلى ${lastAyahNum}</span>`;
+                } else {
+                    infoHtml = `<strong style="color:#fde047;">${startSurah}</strong> <span style="font-size:10px;">(آية ${firstAyahNum})</span><br>
+                                <span style="color:#94a3b8; font-size:10px;">إلى</span><br>
+                                <strong style="color:#fde047;">${endSurah}</strong> <span style="font-size:10px;">(آية ${lastAyahNum})</span>`;
+                }
+                tooltip.innerHTML = infoHtml;
+            } else {
+                tooltip.innerHTML = "لا توجد آيات في هذه الصفحة";
+            }
+        } else {
+            tooltip.innerHTML = "عفواً، بيانات الصفحة غير متاحة";
+        }
+    }
+    
+    // إظهار الكارت
+    tooltip.style.display = 'block';
+
+    // 4. السحر هنا: فحص مكان الكارت لتجنب القص في أول صف
+    const rect = tooltip.getBoundingClientRect();
+    // لو الكارت المسافة بينه وبين فوق أقل من 60 بكسل (هيخبط في الهيدر)
+    if (rect.top < 60) {
+        tooltip.classList.add('flip-bottom'); // اقلبه لتحت
+    } else {
+        tooltip.classList.remove('flip-bottom'); // خليه فوق زي ما هو
+    }
+
+};
+
+// --- [4. إخفاء الكارت عند الضغط في أي مكان بالشاشة] ---
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.page-btn-wrapper')) {
+        document.querySelectorAll('.page-tooltip').forEach(tooltip => tooltip.style.display = 'none');
+    }
+}, true);
 
   // --- [تحديث: دالة فتح الصفحة المظبوطة] ---
   // حط السطر ده في أول ملف الـ JS بره أي دالة خالص
@@ -836,98 +978,151 @@ item.addEventListener("click", () => {
   // --- [ كود البحث المحلي - قرآن صدقة ] ---
   // ==========================================
 
+  /* --- 1. ثوابت وإعدادات --- */
+  /* --- 1. إعدادات --- */
   var quranData = [];
   var suwarData = [];
   var HISTORY_KEY = "quran_sadaka_history_final";
 
-  // 1. تنظيف النص (الدبابة)
   function normalizeArabic(text) {
     if (!text) return "";
     return text
-      .replace(/[\u064B-\u0652]/g, "") // التشكيل
-      .replace(/[\u06D6-\u06ED]/g, "") // علامات الوقف
-      .replace(/\u0640/g, "")           // التطويل
+      .replace(/[\u064B-\u0652]/g, "")
+      .replace(/[\u06D6-\u06ED]/g, "")
+      .replace(/\u0640/g, "")
       .replace(/[أإآ]/g, "ا")
       .replace(/ى/g, "ي")
       .replace(/ة/g, "ه")
-      .replace(/\s+/g, " ")            // توحيد المسافات
-      .replace(/[^\u0621-\u064A\s]/g, "") // حذف أي رموز غير عربية
+      .replace(/\s+/g, " ")
+      .replace(/[^\u0621-\u064A\s]/g, "")
       .trim();
   }
 
-  // 2. إدارة التاريخ (History) - تم جعلها Global لتعمل مع الـ onclick
-  window.renderHistory = function() {
+  /* --- 2. وظائف الشير والانتقال (Global) --- */
+
+  window.shareVerse = function (e, text, surahName, ayahNum) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    const shareText = `قال تعالى: { ${text} } [سورة ${surahName} - آية ${ayahNum}]\n\nتمت المشاركة من تطبيق قرآن صدقة 🌙`;
+    if (navigator.share) {
+      navigator.share({ title: "آية كريمة", text: shareText }).catch(() => {});
+    } else {
+      window.open(
+        `https://wa.me/?text=${encodeURIComponent(shareText)}`,
+        "_blank",
+      );
+    }
+  };
+
+  window.checkAndOpenTarget = function () {
+    const sId = sessionStorage.getItem("target_surah");
+    const aId = sessionStorage.getItem("target_ayah");
+    if (!sId || !aId) return;
+
+    if (typeof openSurah === "function") {
+      openSurah(parseInt(sId));
+
+      let attempts = 0;
+      const checkExist = setInterval(() => {
+        // محاولة إيجاد الآية بكافة الطرق الممكنة (ID، Class، أو نص)
+        let element =
+          document.getElementById(`ayah-${aId}`) ||
+          document.getElementById(`${aId}`) ||
+          document.querySelector(`[data-ayah="${aId}"]`) ||
+          document.querySelector(`.ayah-num-${aId}`);
+
+        // لو فشل تماماً، بندور على أي عنصر جواه رقم الآية فقط
+        if (!element) {
+          const containers = document.querySelectorAll(
+            ".ayah-container, .verse-box, span, div",
+          );
+          element = Array.from(containers).find(
+            (el) => el.textContent.trim() === String(aId),
+          );
+        }
+
+        if (element) {
+          clearInterval(checkExist);
+          sessionStorage.removeItem("target_surah");
+          sessionStorage.removeItem("target_ayah");
+
+          // الانتقال
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+
+          // تمييز بصري
+          element.style.transition = "background 0.5s ease";
+          element.style.backgroundColor = "rgba(59, 130, 246, 0.2)";
+          setTimeout(() => {
+            element.style.backgroundColor = "transparent";
+          }, 3000);
+        }
+
+        if (++attempts > 40) {
+          clearInterval(checkExist);
+          console.log("تعذر العثور على الآية، تأكد من وجود ID في صفحة السور");
+        }
+      }, 250);
+    }
+  };
+
+  window.goToVerse = function (surahNum, ayahNum) {
+    const input = document.getElementById("quran-search-input");
+    if (input && input.value.length > 1) window.saveToHistory(input.value);
+    if (input) input.blur(); // إغلاق الكيبورد فوراً
+
+    sessionStorage.setItem("target_surah", surahNum);
+    sessionStorage.setItem("target_ayah", ayahNum);
+
+    const swarBtn = document.querySelector(".swar-page-btn");
+    if (swarBtn) {
+      swarBtn.click();
+      setTimeout(window.checkAndOpenTarget, 500);
+    }
+  };
+
+  /* --- 3. الهيستوري والبحث --- */
+
+  window.renderHistory = function () {
     const historyBox = document.getElementById("search-history");
     if (!historyBox) return;
     const history = JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
-    
     if (history.length === 0) {
       historyBox.innerHTML = "";
       return;
     }
 
-    let tags = `<div style="font-size:12px; color:#888; margin-bottom:8px;">آخر عمليات البحث:</div>`;
-    history.forEach(word => {
+    let tags = `<div class="search-history-title" style="font-size:12px; color:#888; margin-bottom:8px;">آخر عمليات البحث:</div>`;
+    history.forEach((word) => {
       tags += `<span class="search-tag" onclick="window.useHistoryWord('${word}')" 
-                style="display:inline-block; background:#f1f5f9; padding:5px 12px; border-radius:20px; font-size:12px; margin-left:8px; cursor:pointer; border:1px solid #e2e8f0; color:#475569; margin-bottom:5px;">
-                ${word}
-               </span>`;
+              style="display:inline-block; background:#f1f5f9; padding:5px 12px; border-radius:20px; font-size:12px; margin-left:8px; cursor:pointer; border:1px solid #e2e8f0; color:#475569; margin-bottom:5px;">
+              ${word}
+            </span>`;
     });
     historyBox.innerHTML = tags;
   };
 
-  window.saveToHistory = function(query) {
+  window.saveToHistory = function (query) {
     let q = query.trim();
     if (q.length < 2) return;
     let history = JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
-    history = history.filter(item => item !== q); // منع التكرار
-    history.unshift(q); // إضافة في الأول
-    history = history.slice(0, 5); // حفظ 5 فقط
+    history = history.filter((item) => item !== q);
+    history.unshift(q);
+    history = history.slice(0, 5);
     localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
     window.renderHistory();
   };
 
-  window.useHistoryWord = function(word) {
+  window.useHistoryWord = function (word) {
     const input = document.getElementById("quran-search-input");
     if (input) {
       input.value = word;
-      window.doSearch(word); // تنفيذ البحث فوراً
+      window.doSearch(word);
+      input.blur();
     }
   };
 
-  // 3. تحميل الداتا
-  async function initSearchData() {
-    try {
-      const [resQuran, resSuwar] = await Promise.all([
-        fetch("../json/quran.json"),
-        fetch(API_SUWAR)
-      ]);
-      const allSurahs = await resQuran.json();
-      const suwarRaw = await resSuwar.json();
-      suwarData = suwarRaw.data || suwarRaw;
+  /* --- 4. عرض النتائج وتحميل البيانات --- */
 
-      quranData = [];
-      allSurahs.forEach(surah => {
-        if(surah.ayahs) {
-          surah.ayahs.forEach(ayah => {
-            if (ayah.text && ayah.text.trim() !== "") {
-              quranData.push({
-                text: ayah.text,
-                ayah_num: ayah.number,
-                surah_num: surah.number,
-                page: ayah.page || ""
-              });
-            }
-          });
-        }
-      });
-      console.log("البحث جاهز ✅");
-      window.renderHistory(); // عرض التاريخ عند التحميل
-    } catch (e) { console.error("Error:", e); }
-  }
-
-  // 4. عرض النتائج
-  window.displayResults = function(matches, query) {
+  window.displayResults = function (matches, query) {
     const resultsList = document.getElementById("search-results-list");
     if (!resultsList) return;
     resultsList.innerHTML = "";
@@ -938,32 +1133,37 @@ item.addEventListener("click", () => {
     }
 
     matches.forEach((ayah) => {
-      const surahInfo = suwarData.find(s => String(s.number) === String(ayah.surah_num)) || { name: "سورة", revelationType: "" };
+      const surahInfo = suwarData.find(
+        (s) => String(s.number) === String(ayah.surah_num),
+      ) || { name: "سورة", revelationType: "" };
       const regex = new RegExp(`(${query})`, "gi");
-      const highlightedText = ayah.text.replace(regex, `<span style="color:#3b82f6; font-weight:bold;">$1</span>`);
+      const highlightedText = ayah.text.replace(
+        regex,
+        `<span style="color:#3b82f6; font-weight:bold;">$1</span>`,
+      );
+      const safeText = ayah.text.replace(/'/g, "\\'").replace(/"/g, "&quot;");
 
       const card = `
-        <div class="result-card" onclick="window.goToVerse(${ayah.surah_num}, ${ayah.ayah_num})"
-             style="background:#fff; border-radius:15px; padding:20px; margin-bottom:15px; box-shadow:0 4px 10px rgba(0,0,0,0.05); position:relative; border:1px solid #eee; direction:rtl; text-align:right; cursor:pointer;">
-          <div class="surah-badge" style="position:absolute; top:15px; left:15px; background:#3b82f6; color:#fff; padding:5px 12px; border-radius:8px; font-weight:bold; font-size:13px;">
-            ${surahInfo.name} ${ayah.ayah_num}
-          </div>
-          <p class="verse-text" style="font-size:1.15rem; line-height:1.8; color:#333; margin:25px 0 15px 0; font-family:'Cairo', sans-serif;">
-            ${highlightedText}
-          </p>
-          <div class="verse-meta" style="border-top:1px solid #eee; padding-top:10px; font-size:12px; color:#777; display:flex; justify-content:space-between; align-items:center;">
-            <span>آية ${ayah.ayah_num} | ${surahInfo.revelationType === "Meccan" ? "مكية" : "مدنية"} | صـ ${ayah.page}</span>
-            <button class="share-verse-btn" onclick="window.shareVerse(event, '${ayah.text.replace(/'/g, "\\'")}', '${surahInfo.name}', ${ayah.ayah_num})">
-              <i class="fas fa-share-nodes"></i> مشاركة
-            </button>
-          </div>
-        </div>`;
+      <div class="result-card" onclick="window.goToVerse(${ayah.surah_num}, ${ayah.ayah_num})"
+           style="background:#fff; border-radius:15px; padding:20px; margin-bottom:15px; box-shadow:0 4px 10px rgba(0,0,0,0.05); position:relative; border:1px solid #eee; direction:rtl; text-align:right; cursor:pointer;">
+        <div class="surah-badge" style="position:absolute; top:15px; left:15px; background:#3b82f6; color:#fff; padding:5px 12px; border-radius:8px; font-weight:bold; font-size:13px;">
+          ${surahInfo.name} ${ayah.ayah_num}
+        </div>
+        <p class="verse-text" style="font-size:1.15rem; line-height:1.8; color:#333; margin:25px 0 15px 0; font-family:'Cairo', sans-serif;">
+          ${highlightedText}
+        </p>
+        <div class="verse-meta" style="border-top:1px solid #eee; padding-top:10px; font-size:12px; color:#777; display:flex; justify-content:space-between; align-items:center;">
+          <span>آية ${ayah.ayah_num} | ${surahInfo.revelationType === "Meccan" ? "مكية" : "مدنية"} | صـ ${ayah.page}</span>
+          <button class="share-verse-btn" onclick="window.shareVerse(event, '${safeText}', '${surahInfo.name}', ${ayah.ayah_num})">
+            <i class="fas fa-share-nodes"></i> مشاركة
+          </button>
+        </div>
+      </div>`;
       resultsList.insertAdjacentHTML("beforeend", card);
     });
   };
 
-  // 5. محرك البحث الأساسي
-  window.doSearch = function(query) {
+  window.doSearch = function (query) {
     const resultsList = document.getElementById("search-results-list");
     const resultsCountDiv = document.getElementById("results-count");
     const searchHint = document.querySelector(".search-hint");
@@ -971,9 +1171,9 @@ item.addEventListener("click", () => {
 
     if (!resultsList) return;
 
-    // إخفاء الـ Hint عند الكتابة
+    // إخفاء الـ Hint عند البدء في الكتابة
     if (searchHint) {
-      searchHint.style.display = (query.trim().length > 0) ? "none" : "block";
+      searchHint.style.display = query.trim().length > 0 ? "none" : "block";
     }
 
     if (query.trim().length < 2) {
@@ -983,68 +1183,59 @@ item.addEventListener("click", () => {
     }
 
     const normQuery = normalizeArabic(query);
-    const matches = quranData.filter(a => normalizeArabic(a.text).includes(normQuery)).slice(0, 40);
+    const matches = quranData
+      .filter((a) => normalizeArabic(a.text).includes(normQuery))
+      .slice(0, 40);
 
     if (countNum) countNum.innerText = matches.length;
-    if (resultsCountDiv) resultsCountDiv.style.display = matches.length > 0 ? "block" : "none";
+    if (resultsCountDiv)
+      resultsCountDiv.style.display = matches.length > 0 ? "block" : "none";
 
     window.displayResults(matches, query);
   };
 
-  // 6. الوظائف العالمية (الشير والانتقال)
-  window.shareVerse = function (e, text, surahName, ayahNum) {
-    if (e && e.stopPropagation) e.stopPropagation();
-    const shareText = `قال تعالى: { ${text} } [سورة ${surahName} - آية ${ayahNum}]\n\nتمت المشاركة من تطبيق قرآن صدقة 🌙`;
-    if (navigator.share) {
-      navigator.share({ title: 'آية كريمة', text: shareText, url: "https://www.quransadaka.online" }).catch(() => {});
-    } else {
-      window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
-    }
-  };
+  /* --- 5. تشغيل النظام --- */
 
-  window.goToVerse = function (surahNum, ayahNum) {
-    const swarBtn = document.querySelector(".swar-page-btn");
-    if (swarBtn) swarBtn.click();
-    if (typeof openSurah === "function") {
-      openSurah(parseInt(surahNum));
-      setTimeout(() => {
-        if (typeof highlightAyah === "function") highlightAyah(ayahNum);
-      }, 600);
-    }
-  };
+  async function initSearchData() {
+    try {
+      const [resQuran, resSuwar] = await Promise.all([
+        fetch("../json/quran.json"),
+        fetch(API_SUWAR),
+      ]);
+      const allSurahs = await resQuran.json();
+      const suwarRaw = await resSuwar.json();
+      suwarData = suwarRaw.data || suwarRaw;
 
-  // 7. ربط الأحداث عند التحميل
-  initSearchData();
+      quranData = [];
+      allSurahs.forEach((surah) => {
+        if (surah.ayahs) {
+          surah.ayahs.forEach((ayah) => {
+            quranData.push({
+              text: ayah.text,
+              ayah_num: ayah.numberInSurah || ayah.number,
+              surah_num: surah.number,
+              page: ayah.page || "",
+            });
+          });
+        }
+      });
+      window.renderHistory();
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   document.addEventListener("DOMContentLoaded", function () {
+    initSearchData();
     const input = document.getElementById("quran-search-input");
-    const searchBtn = document.getElementById("search-btn");
-    const clearBtn = document.getElementById("clear-search");
-
     if (input) {
-      input.addEventListener("input", e => window.doSearch(e.target.value));
-      input.addEventListener("keypress", e => {
+      input.addEventListener("input", (e) => window.doSearch(e.target.value));
+      input.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
           window.saveToHistory(input.value);
-          window.doSearch(input.value);
+          input.blur();
         }
       });
     }
-
-    if (searchBtn) {
-      searchBtn.addEventListener("click", () => {
-        window.saveToHistory(input.value);
-        window.doSearch(input.value);
-      });
-    }
-
-    if (clearBtn) {
-      clearBtn.addEventListener("click", () => {
-        input.value = "";
-        window.doSearch("");
-        input.focus();
-      });
-    }
   });
- 
 })();

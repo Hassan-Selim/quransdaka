@@ -6,7 +6,19 @@
   background: #0d9488;
   border-radius: 20px;
 }
-/* ===== Quran Sadaka - Global Islamic Design ===== */
+
+img,
+svg,
+i,
+.result-card,
+.surah-badge {
+  color-scheme: light !important;
+}
+
+[data-theme="dark"] img {
+  filter: brightness(0.8) contrast(1.2);
+}
+
 :root {
   --color-teal: #0d9488;
   --color-teal-dark: #0f766e;
@@ -27,7 +39,6 @@
   --radius-lg: 20px;
 }
 
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -41,28 +52,27 @@ html {
 body {
   font-family: var(--font-body);
   color: var(--color-text);
-  
+
   background: linear-gradient(
-    180deg,
-    var(--color-cream) 0%,
-    var(--color-white) 100% 
-  ) no-repeat center center fixed; 
-  
-  background-size: cover; 
-  min-height: 100vh; 
+      180deg,
+      var(--color-cream) 0%,
+      var(--color-white) 100%
+    )
+    no-repeat center center fixed;
+
+  background-size: cover;
+  min-height: 100vh;
   line-height: 1.6;
   direction: rtl;
   margin: 0;
-  transition: background 0.3s, color 0.3s;
- 
+  transition:
+    background 0.3s,
+    color 0.3s;
 }
 
 [data-theme="dark"] body {
-  background: linear-gradient(
-    180deg, 
-    var(--color-bg) 0%, 
-    #1e293b 100%
-  ) no-repeat center center fixed;
+  background: linear-gradient(180deg, var(--color-bg) 0%, #1e293b 100%)
+    no-repeat center center fixed;
 }
 
 body.english {
@@ -362,7 +372,8 @@ main {
   --color-text: #1e293b;
   --color-text-muted: #64748b;
 }
-.card:hover, .btn:hover {
+.card:hover,
+.btn:hover {
   box-shadow: var(--shadow-card);
   transform: scale(0.95);
   opacity: 0.9;
@@ -396,13 +407,14 @@ main {
 .banner {
   text-align: center;
   margin-bottom: 1rem;
+  display: none;
 }
 
 .banner img {
   height: auto;
   border-radius: 10px;
+  display: none;
 }
-
 
 @media (max-width: 768px) {
   .mobile-nav {
@@ -484,13 +496,16 @@ main {
   }
 }
 body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* يخلي الجسم واخد طول الشاشة كلها */
-    margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* يخلي الجسم واخد طول الشاشة كلها */
+  margin: 0;
 }
 
 /* أي سيكشن رئيسي عندك خليه يتمدد عشان يزق الفوتر لتحت */
-main, .swar-section, .juz-section, .pages-section {
-    flex: 1;
+main,
+.swar-section,
+.juz-section,
+.pages-section {
+  flex: 1;
 }

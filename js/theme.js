@@ -14,24 +14,23 @@
       return THEME_AUTO;
     }
   }
-
-  function applyTheme() {
+function applyTheme() {
     var root = document.documentElement;
     var stored = getStored();
 
     if (stored === THEME_DARK) {
       root.setAttribute("data-theme", "dark");
+      root.style.colorScheme = "dark"; // إشارة صريحة للمتصفح
     } else if (stored === THEME_LIGHT) {
       root.setAttribute("data-theme", "light");
+      root.style.colorScheme = "light"; // إشارة صريحة للمتصفح
     } else {
-      // Auto: حسب نظام الجهاز
-      if (
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      ) {
+      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
         root.setAttribute("data-theme", "dark");
+        root.style.colorScheme = "dark";
       } else {
         root.setAttribute("data-theme", "light");
+        root.style.colorScheme = "light";
       }
     }
   }
