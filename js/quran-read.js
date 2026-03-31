@@ -407,7 +407,7 @@
     // 5. جلب بيانات السورة للتحديثات النصية
     let surahInfo = suwar.find((s) => s.number === number);
     if (surahInfo) {
-      document.title = `سورة ${surahInfo.name} مكتوبة كاملة | Quran Sadaka`;
+      document.title = `${surahInfo.name} مكتوبة كاملة | Quran Sadaka`;
       localStorage.setItem("surah-lastSurah", number);
       localStorage.setItem("surah-lastAyah", 1);
     }
