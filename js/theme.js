@@ -158,49 +158,13 @@ function applyTheme() {
       ticking = true;
     }
   });
-  (function () {
-    // تأمين: لو الـ footer موجود قبل كده امسحه عشان ميتكررش
-    if (document.getElementById("main-footer")) {
-      document.getElementById("main-footer").remove();
-    }
-
-    const year = new Date().getFullYear();
-    const ownerName = "Hassan Selim";
-    const website = "https://www.hassanselim.art/";
-
-    const copyright = document.createElement("footer");
-    copyright.id = "main-footer";
-
-    // التنسيق بتاعك (زي ما هو)
-    Object.assign(copyright.style, {
-      textAlign: "center",
-      padding: "20px 15px",
-      fontSize: "14px",
-      color: "#999",
-      marginTop: "auto", // هيشتغل دلوقتي بفضل الـ Flexbox في الـ CSS
-      width: "100%",
-      zIndex: "10",
-    });
-
-    copyright.innerHTML = `
-        <div class="copyright" style="direction: rtl; font-family: 'Cairo', sans-serif;">
-            جميع الحقوق محفوظة © ${year} — 
-            <a href="${website}" target="_blank" style="color:#0d9488; text-decoration:none; font-weight:bold;">
-                ${ownerName}
-            </a>
-            <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">صدقة جارية</div>
-        </div>`;
-
-    document.body.appendChild(copyright);
-  })();
-})();
-
+ 
 function triggerPrayerNotification(prayerName) {
     // 1. إظهار الإشعار (بيشتغل في كل الصفحات)
     if (Notification.permission === "granted") {
         new Notification("حان الآن موعد صلاة " + prayerName, {
             body: "ذكر الله خير من الدنيا وما فيها",
-            icon: "/img/icon-512.webp"
+            icon: "/img/icon-512.png"
         });
     }
 
@@ -214,3 +178,4 @@ function triggerPrayerNotification(prayerName) {
         });
     }
 }
+})();

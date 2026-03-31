@@ -22,15 +22,15 @@ function sendNotification(title, body, url) {
         navigator.serviceWorker.ready.then(registration => {
             registration.showNotification(title, {
                 body: body,
-                icon: "/img/icon-192.webp",
-                badge: "/img/icon-192.webp",
+                icon: "/img/icon-192.png",
+                badge: "/img/icon-192.png",
                 vibrate: [200, 100, 200],
                 data: { url: url }
             });
         });
     } else {
         // Fallback للمتصفحات القديمة
-        new Notification(title, { body: body, icon: "/img/icon-192.webp" });
+        new Notification(title, { body: body, icon: "/img/icon-192.png" });
     }
 }
 
@@ -56,7 +56,7 @@ function firstRandomAzkar() {
         // جرب تبعت إشعار عادي فوراً
         const options = {
             body: randomZikr,
-            icon: "/img/icon-192.webp",
+            icon: "/img/icon-192.png",
             badge: "/img/icon.webp"
         };
 

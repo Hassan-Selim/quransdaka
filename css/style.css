@@ -131,12 +131,6 @@ img {
   backdrop-filter: blur(6px);
   pointer-events: none;
 }
-
-.page-header h1 {
-  font-family: var(--font-arabic);
-  font-size: 1.5rem;
-  font-weight: 700;
-}
 header .address {
   max-width: 200px;
   filter: brightness(0) saturate(100%) invert(91%) sepia(16%) saturate(377%)
@@ -215,7 +209,6 @@ header .close-nav .close-icon {
   background: #ffffff33;
   color: var(--color-white);
 }
-
 /* Main content area */
 main {
   width: 100%;
@@ -324,6 +317,10 @@ main {
   transform: scale(1.08);
 }
 
+.share-icon{
+  width: 80%;
+  text-align: center;
+}
 /* Dark theme */
 [data-theme="dark"] {
   --color-bg: #0f172a;
@@ -370,9 +367,7 @@ main {
 }
 
 @media (max-width: 600px) {
-  .page-header h1 {
-    font-size: 1.25rem;
-  }
+  
   main {
     padding: 1rem;
   }

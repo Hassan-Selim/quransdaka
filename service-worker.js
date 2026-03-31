@@ -95,8 +95,8 @@ self.addEventListener("message", (event) => {
   if (event.data.type === "SHOW_PRAYER_NOTIFICATION") {
     const options = {
       body: "حي على الصلاة، حي على الفلاح",
-      icon: "/img/icon-192.webp",
-      badge: "/img/icon-192.webp",
+      icon: "/img/icon-192.png",
+      badge: "/img/icon-192.png",
       vibrate: [200, 100, 200, 100, 200],
       data: { 
         prayerName: event.data.prayerName,

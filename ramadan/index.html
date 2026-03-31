@@ -85,10 +85,10 @@
     >
       🌙
     </button>
-    <button class="shareBtn" onclick="shareSite()">🤝</button>
+    <button class="shareBtn" onclick="shareSite()"><img class="share-icon" src="../img/share.svg" alt="share icon"></button>
       <a href="../" class="back-link home">🏠</a>
       <img loading="lazy" class="address" src="../img/q.svg"  class="lazyload"
-  alt="شعار موقع القرآن الكريم" />
+  alt="شعار القرآن الكريم" />
       <div>
         <button class="menu-icon" id="menu-icon">
           ☰
@@ -469,7 +469,7 @@
 function shareSite() {
   if (navigator.share) {
     navigator.share({
-      title: 'موقع القرآن الكريم | صدقة جارية',
+      title: 'القرآن الكريم | صدقة جارية',
       text: 'شارك في صدقة جارية من خلال الاستماع للقرآن الكريم وقراءة الرقية الشرعية.',
       url: window.location.href
     })

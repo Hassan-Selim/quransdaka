@@ -20,6 +20,10 @@
   width: 100%;
   max-width: 888px;
   margin-bottom: 1rem;
+  
+}
+.about-intro h2{
+  color: bisque;
 }
 
 .intro-box {
@@ -29,6 +33,7 @@
   width: 90%;
   margin:1rem auto;
   text-align: justify;
+  padding:1rem ;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
   margin-bottom: 1rem;
