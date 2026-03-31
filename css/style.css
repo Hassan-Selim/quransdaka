@@ -99,6 +99,7 @@ img {
     135deg,
     var(--color-teal) 0%,
     var(--color-teal-dark) 100%
+    
   );
   color: var(--color-white);
   padding: 1rem 1.5rem;
@@ -114,7 +115,6 @@ img {
   left: 0;
   width: 100%;
   z-index: 1000;
-
   transform: translateY(0);
   opacity: 1;
   backdrop-filter: blur(0px);
@@ -150,7 +150,7 @@ header .address {
 }
 .back-link {
   position: absolute;
-  right: 5rem;
+  right: 4.6rem;
   top: 1.5rem;
   display: flex;
   align-items: center;
@@ -210,18 +210,6 @@ header .close-nav .close-icon {
   border-radius: 50%;
   cursor: pointer;
 }
-
-.page-header .back-link {
-  color: var(--color-white);
-  font-size: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 3px;
-  border-radius: var(--radius);
-  transition: background 0.2s;
-}
-
 .page-header .back-link:hover,
 .menu-icon:hover {
   background: #ffffff33;
@@ -230,6 +218,7 @@ header .close-nav .close-icon {
 
 /* Main content area */
 main {
+  width: 100%;
   max-width: 900px;
   margin: 0 auto;
   padding: 1.5rem;
