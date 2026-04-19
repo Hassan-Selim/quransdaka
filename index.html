@@ -82,7 +82,28 @@
         "إِذَا مَاتَ ابنُ آدم انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثٍ: صَدَقَةٍ جَارِيَةٍ،
          أو عِلْمٍ يُنْتَفَعُ بِهِ، أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ". رَوَاهُ مُسْلِمٌ.</p>
     </div>
+   <div class="home-prayer-bar">
+    <div id="todayDate" class="bar-date"></div> 
     
+    <div class="bar-prayer">
+        <span>الصلاة القادمة: </span>
+        <span id="nextPrayerName">--</span>
+        <span id="homeCountdown" class="countdown-digital">00:00:00</span>
+    </div>
+    
+    <div id="dailyZikrMain" class="bar-zikr"></div>
+</div>
+
+<script>
+    // كود بسيط لتحديث العداد في الصفحة الرئيسية بناءً على اللي بيحصل في prayer.js
+    setInterval(() => {
+        const countOriginal = document.getElementById('nextPrayerCountdown');
+        const countHome = document.getElementById('homeCountdown');
+        if (countOriginal && countHome) {
+            countHome.innerText = countOriginal.innerText;
+        }
+    }, 1000);
+</script>
    <div class="home-buttons">
 
   <a href="ramadan" class="home-btn ramadan">
@@ -182,6 +203,64 @@
 
 <script src="js/theme.js" defer></script>
   <script src="js/home.js"></script>
+  <script type="module" src="js/prayer.js"></script>
+ <script>
+const dailyDhikrList = [
+    "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
+    "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ",
+    "اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ",
+    "لا حول ولا قوة إلا بالله العلي العظيم",
+    "أستغفر الله العظيم وأتوب إليه"
+];
+
+function initHomePrayerBar() {
+    const zikrMainEl = document.getElementById('dailyZikrMain');
+    const homeCountEl = document.getElementById('homeCountdown');
+    const nextNameEl = document.getElementById('nextPrayerName');
+    const dateEl = document.getElementById('todayDate');
+
+    // 1. التاريخ والذكر (مرة واحدة)
+    if (dateEl && typeof window.getManualHijri === 'function') {
+        const h = window.getManualHijri();
+        dateEl.innerText = `${h.dayName}، ${h.day} ${h.monthName}`;
+    }
+    if (zikrMainEl) {
+        zikrMainEl.innerText = dailyDhikrList[Math.floor(Math.random() * dailyDhikrList.length)];
+    }
+
+    // 2. العداد التنازلي
+    const timer = setInterval(() => {
+        if (typeof window.getNextPrayer === 'function') {
+            const next = window.getNextPrayer();
+            if (next && homeCountEl) {
+                if (nextNameEl) nextNameEl.innerText = next.name;
+                
+                const diff = next.time - new Date();
+                if (diff > 0) {
+                    const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
+                    const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+                    const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+                    homeCountEl.innerText = `${h}:${m}:${s}`;
+                } else {
+                    location.reload(); // تحديث عند دخول وقت الصلاة
+                }
+            }
+        }
+    }, 1000);
+}
+
+// 3. المحرك الذكي: بيراقب البيانات كل 100 مللي ثانية وأول ما تجهز يشغل الشريط
+const checkDataReady = setInterval(() => {
+    if (window.prayerTimes && Object.keys(window.prayerTimes).length > 0) {
+        console.log("البيانات وصلت! تشغيل الشريط...");
+        initHomePrayerBar();
+        clearInterval(checkDataReady); // وقف المراقبة خلاص اشتغلنا
+    }
+}, 100);
+
+// أمان إضافي: لو بعد 10 ثواني مفيش داتا، حاول تشغل اللي موجود
+setTimeout(() => clearInterval(checkDataReady), 10000);
+</script>
   
   <script>
 function shareSite() {
