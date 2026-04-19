@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v1.4.6";
+const CACHE_VERSION = "v1.4.7";
 const STATIC_CACHE = `quran-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `quran-dynamic-${CACHE_VERSION}`;
 
@@ -109,21 +109,17 @@ self.addEventListener("message", (event) => {
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  const targetUrl = event.notification.data.url;
+  const targetUrl = event.notification.data.url || "/";
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
-      // 1. لو فيه تابة مفتوحة فعلاً للموقع، نركز عليها ونبعتلها تشغل الصوت
       for (let client of windowClients) {
-        if (client.url.includes('/prayer/') && 'focus' in client) {
-          client.postMessage({ type: 'PLAY_AZAN_NOW' });
+        if ('focus' in client) {
+          client.postMessage({ type: 'PLAY_AZAN_NOW' }); // تنبيه التابة لتشغيل الصوت
           return client.focus();
         }
       }
-      // 2. لو مفيش تابة مفتوحة، نفتح صفحة الصلاة بالبارامتر
-      if (clients.openWindow) {
-        return clients.openWindow(targetUrl);
-      }
+      if (clients.openWindow) return clients.openWindow(targetUrl);
     })
   );
 });

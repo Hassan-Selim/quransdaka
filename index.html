@@ -219,7 +219,7 @@ function initHomePrayerBar() {
     const nextNameEl = document.getElementById('nextPrayerName');
     const dateEl = document.getElementById('todayDate');
 
-    // 1. التاريخ والذكر (مرة واحدة)
+    
     if (dateEl && typeof window.getManualHijri === 'function') {
         const h = window.getManualHijri();
         dateEl.innerText = `${h.dayName}، ${h.day} ${h.monthName}`;
@@ -228,7 +228,7 @@ function initHomePrayerBar() {
         zikrMainEl.innerText = dailyDhikrList[Math.floor(Math.random() * dailyDhikrList.length)];
     }
 
-    // 2. العداد التنازلي
+  
     const timer = setInterval(() => {
         if (typeof window.getNextPrayer === 'function') {
             const next = window.getNextPrayer();
@@ -242,14 +242,14 @@ function initHomePrayerBar() {
                     const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
                     homeCountEl.innerText = `${h}:${m}:${s}`;
                 } else {
-                    location.reload(); // تحديث عند دخول وقت الصلاة
+                    location.reload(); 
                 }
             }
         }
     }, 1000);
 }
 
-// 3. المحرك الذكي: بيراقب البيانات كل 100 مللي ثانية وأول ما تجهز يشغل الشريط
+
 const checkDataReady = setInterval(() => {
     if (window.prayerTimes && Object.keys(window.prayerTimes).length > 0) {
         console.log("البيانات وصلت! تشغيل الشريط...");
@@ -258,7 +258,7 @@ const checkDataReady = setInterval(() => {
     }
 }, 100);
 
-// أمان إضافي: لو بعد 10 ثواني مفيش داتا، حاول تشغل اللي موجود
+
 setTimeout(() => clearInterval(checkDataReady), 10000);
 </script>
   
