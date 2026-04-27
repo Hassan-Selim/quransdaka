@@ -1,0 +1,464 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Cairo", sans-serif;
+  color: var(--text);
+  direction: rtl;
+  transition:
+    background 0.3s,
+    color 0.3s;
+}
+
+.mosque-widget {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.sec-head {
+  margin-top: 1rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.sec-head .icon-circle {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(
+    135deg,
+    var(--color-teal),
+    var(--color-teal-dark)
+  );
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto ;
+  box-shadow: var(--shadow);
+}
+.sec-head h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-teal-dark);
+  margin-bottom: 0.3rem;
+}
+[data-theme="dark"] .sec-head h2 {
+  color: var(--color-teal-light);
+}
+.sec-head p {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+}
+
+/* ══════════════════════════════════════
+   FIND BUTTON
+══════════════════════════════════════ */
+.find-btn {
+  width: 80%;
+  margin: auto;
+  padding: 0.85rem 1.5rem;
+  background: linear-gradient(
+    135deg,
+    var(--color-teal),
+    var(--color-teal-dark)
+  );
+  color: #cfd6d5;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition:
+    opacity 0.2s,
+    transform 0.1s,
+    box-shadow 0.2s;
+  box-shadow: var(--shadow-soft);
+}
+.find-btn:hover {
+  opacity: 0.9;
+  box-shadow: 0 6px 20px #0d948840;
+}
+.find-btn:active {
+  transform: scale(0.97);
+}
+.find-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ══════════════════════════════════════
+   STATUS BAR
+══════════════════════════════════════ */
+.status-bar {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  min-height: 1.3rem;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.status-bar.err {
+  color: #ef4444;
+}
+
+.dots span {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: var(--color-teal);
+  border-radius: 50%;
+  animation: blink 1.2s infinite both;
+}
+.dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+@keyframes blink {
+  0%,
+  80%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.7);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ══════════════════════════════════════
+   STOP BUTTON
+══════════════════════════════════════ */
+.stop-btn {
+  display: none;
+  width: 20rem;
+  margin: auto;
+  margin-bottom: 0.85rem;
+  padding: 0.7rem 1.5rem;
+  background: transparent;
+  border: 1.5px solid #ef4444;
+  color: #ef4444;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.stop-btn:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* ══════════════════════════════════════
+   ARRIVAL BANNER
+══════════════════════════════════════ */
+.arrival-banner {
+  display: none;
+  background: var(--color-bg-card);
+  border: 1.5px solid #22c55e;
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  text-align: center;
+  margin-bottom: 0.85rem;
+  box-shadow: var(--shadow-card);
+}
+.arrival-banner .arr-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.arrival-banner .arr-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #16a34a;
+}
+.arrival-banner .arr-sub {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  margin-top: 0.3rem;
+}
+.arr-close-btn {
+  margin-top: 0.85rem;
+  padding: 0.5rem 1.5rem;
+  background: #22c55e;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.arr-close-btn:hover {
+  background: #16a34a;
+}
+
+/* ══════════════════════════════════════
+   MAP CONTAINER
+══════════════════════════════════════ */
+.map-wrap {
+  display: none;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid #0d948833;
+  margin-bottom: 1.1rem;
+  position: relative;
+  box-shadow: var(--shadow-card);
+}
+[data-theme="dark"] .map-wrap {
+  border-color: #ffffff14;
+}
+#map {
+  width: 100%;
+  height: 400px;
+  
+}
+
+/* ══════════════════════════════════════
+   NAV HUD (فوق الخريطة)
+══════════════════════════════════════ */
+.nav-hud {
+  display: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  left: 10px;
+  z-index: 1000;
+  background: rgba(255, 251, 235, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(13, 148, 136, 0.25);
+  border-radius: var(--radius);
+  padding: 0.7rem 1rem;
+  pointer-events: none;
+  box-shadow: var(--shadow-soft);
+}
+[data-theme="dark"] .nav-hud {
+  background: rgba(30, 41, 59, 0.93);
+  border-color: rgba(94, 234, 212, 0.2);
+}
+.hud-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hud-arrow {
+  font-size: 1.7rem;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+.hud-text {
+  flex: 1;
+  min-width: 0;
+}
+.hud-step {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.4;
+}
+.hud-dist {
+  font-size: 0.78rem;
+  color: var(--color-gold);
+  margin-top: 2px;
+  font-weight: 600;
+}
+[data-theme="dark"] .hud-dist {
+  color: var(--color-gold-light);
+}
+.hud-total {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+/* ══════════════════════════════════════
+   MOSQUE LIST
+══════════════════════════════════════ */
+.list-wrap {
+  display: none;
+}
+
+.list-lbl {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.6rem;
+  padding-right: 0.15rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.list-lbl::before {
+  content: "";
+  display: inline-block;
+  width: 3px;
+  height: 14px;
+  background: var(--color-teal);
+  border-radius: 2px;
+}
+
+/* بطاقة مسجد */
+.m-card {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  background: var(--color-bg-card);
+  border: 1px solid rgba(13, 148, 136, 0.15);
+  border-radius: var(--radius-lg);
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.65rem;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
+  box-shadow: var(--shadow-card);
+}
+[data-theme="dark"] .m-card {
+  border-color: rgba(255, 255, 255, 0.07);
+}
+.m-card:hover {
+  border-color: var(--color-teal);
+  box-shadow: var(--shadow-soft);
+}
+.m-card.sel {
+  border-color: var(--color-teal);
+  background: var(--color-bg-soft);
+  box-shadow: var(--shadow-soft);
+}
+[data-theme="dark"] .m-card.sel {
+  background: var(--color-bg-soft);
+}
+
+/* أيقونة دائرة */
+.m-icon-wrap {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, var(--color-beige), var(--color-cream));
+  border: 1px solid rgba(13, 148, 136, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+[data-theme="dark"] .m-icon-wrap {
+  background: linear-gradient(135deg, #1e293b, #334155);
+  border-color: rgba(94, 234, 212, 0.15);
+}
+.m-card.sel .m-icon-wrap {
+  background: linear-gradient(
+    135deg,
+    var(--color-teal),
+    var(--color-teal-dark)
+  );
+}
+
+.m-info {
+  flex: 1;
+  min-width: 0;
+}
+.m-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s;
+}
+.m-card.sel .m-name {
+  color: var(--color-teal-dark);
+}
+[data-theme="dark"] .m-card.sel .m-name {
+  color: var(--color-teal-light);
+}
+
+.m-dist {
+  font-size: 0.74rem;
+  color: var(--color-gold);
+  margin-top: 2px;
+  font-weight: 600;
+}
+[data-theme="dark"] .m-dist {
+  color: var(--color-gold-light);
+}
+
+/* زر ابدأ */
+.go-btn {
+  flex-shrink: 0;
+  padding: 0.42rem 0.9rem;
+  background: linear-gradient(
+    135deg,
+    var(--color-teal),
+    var(--color-teal-dark)
+  );
+  border: none;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition:
+    opacity 0.2s,
+    transform 0.1s;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.25);
+}
+.go-btn:hover {
+  opacity: 0.88;
+}
+.go-btn:active {
+  transform: scale(0.96);
+}
+
+/* ══════════════════════════════════════
+   LEAFLET OVERRIDES
+══════════════════════════════════════ */
+.leaflet-routing-container {
+  display: none !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: var(--color-bg-card) !important;
+  color: var(--color-text) !important;
+  border: 1px solid rgba(13, 148, 136, 0.2) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-card) !important;
+  font-size: 0.84rem !important;
+}
+.leaflet-popup-tip {
+  background: var(--color-bg-card) !important;
+}
+.leaflet-popup-close-button {
+  color: var(--color-text-muted) !important;
+}
+
+@media (max-width: 500px){
+    .find-btn{
+        font-size: 0.8rem;
+    }
+}

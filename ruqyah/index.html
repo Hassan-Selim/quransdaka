@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,8 +17,7 @@
   <meta name="author" content="Hassan Selim" />
 
   <meta property="og:title" content="الرقية الشرعية كاملة | قرآن صدقة" />
-  <meta property="og:description"
-    content="اقرأ واستمع للرقية الشرعية الموثوقة للشفاء والحماية من العين والحسد." />
+  <meta property="og:description" content="اقرأ واستمع للرقية الشرعية الموثوقة للشفاء والحماية من العين والحسد." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.quransadaka.online/ruqyah/" />
   <meta property="og:image" content="https://www.quransadaka.online/img/banner.webp" />
@@ -25,8 +25,7 @@
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="الرقية الشرعية كاملة | قرآن صدقة" />
-  <meta name="twitter:description"
-    content="اقرأ واستمع للرقية الشرعية الموثوقة للشفاء والحماية من العين والحسد." />
+  <meta name="twitter:description" content="اقرأ واستمع للرقية الشرعية الموثوقة للشفاء والحماية من العين والحسد." />
   <meta name="twitter:image" content="https://www.quransadaka.online/img/banner.webp" />
   <meta name="twitter:url" content="https://www.quransadaka.online/ruqyah/" />
 
@@ -46,47 +45,42 @@
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=home" />
-  
+
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/ruqyah.css">
   <link rel="shortcut icon" href="../img/icon.webp" type="image/x-icon">
 </head>
+
 <body>
-  
- <header class="page-header">
-      <button
-      type="button"
-      id="themeToggle"
-      class="theme-toggle"
-      aria-label="الوضع الداكن"
-    >
+
+  <header class="page-header">
+    <button type="button" id="themeToggle" class="theme-toggle" aria-label="الوضع الداكن">
       🌙
     </button>
-    <button class="shareBtn" onclick="shareSite()"><img class="share-icon" src="../img/share.svg" alt="share icon"></button>
-      <a href="../" class="back-link home">🏠</a>
-      <img loading="lazy" class="address" src="../img/q.svg"  class="lazyload"
-  alt="شعار القرآن الكريم" />
-      <div>
-        <button class="menu-icon" id="menu-icon">
-          ☰
-        </button>
-        <nav class="close-nav" id="close-nav"><span class="close-icon">❌</span>
-         <a href="../quran">🔊 استمع للقرآن</a>
-    <a href="../quran-read">📜 إقرأ القرآن</a>
-    <a href="../prayer/">🕌 أقم صلاتك</a>
-    <a href="../ruqyah">🛡️ الرقية الشرعية</a>
-    <a href="../radio">📻 الراديو</a>
-    <a href="../about">ℹ️ عن الموقع</a>
-        </nav>
-      </div>
-    </header>
-  
+    <button class="shareBtn" onclick="shareSite()"><img class="share-icon" src="../img/share.svg"
+        alt="share icon"></button>
+    <a href="../" class="back-link home">🏠</a>
+    <img loading="lazy" class="address" src="../img/q.svg" class="lazyload" alt="شعار القرآن الكريم" />
+    <div>
+      <button class="menu-icon" id="menu-icon">
+        ☰
+      </button>
+      <nav class="close-nav" id="close-nav"><span class="close-icon">❌</span>
+        <a href="../quran">🔊 استمع للقرآن</a>
+        <a href="../quran-read">📜 إقرأ القرآن</a>
+        <a href="../prayer/">🕌 أقم صلاتك</a>
+        <a href="../ruqyah">🛡️ الرقية الشرعية</a>
+        <a href="../radio">📻 الراديو</a>
+        <a href="../about">ℹ️ عن الموقع</a>
+      </nav>
+    </div>
+  </header>
+
   <main>
-    
+
     <div class="ruqyah-intro">
       <div class="banner">
-        <img loading="lazy" data-src="../img/qruqya.webp"  class="lazyload"
-  alt="بانر الرقية الشرعية" class="banner-img>
+        <img loading="lazy" data-src="../img/qruqya.webp" class="lazyload" alt="بانر الرقية الشرعية" class="banner-img>
       </div>
       <div class="">
       <h2>الرقية الشرعية من القرآن والسنة</h2>
@@ -94,95 +88,116 @@
       </div>
       
     </div>
-   <div class="read-ruqyah">
-    <div class="ruqyah-wrapper">
-        <div class="tabs-control">
+   <div class=" read-ruqyah">
+        <div class="ruqyah-wrapper">
+          <div class="tabs-control">
             <button class="tab-btn active" onclick="openTab(event, 'audio-section')">
-                <span class="icon">🎧</span> استماع
+              <span class="icon">🎧</span> استماع
             </button>
             <button class="tab-btn" onclick="openTab(event, 'text-section')">
-                <span class="icon">📖</span> قراءة
+              <span class="icon">📖</span> قراءة
             </button>
-        </div>
+          </div>
 
-        <div id="audio-section" class="tab-content active">
+          <div id="audio-section" class="tab-content active">
             <div class="ruqyah-player-bar card" id="ruqyahPlayerBar">
-                <div class="ruqyah-player-title" id="ruqyahPlayerTitle">اختر مقطعاً للاستماع</div>
-                <div class="ruqyah-player-controls">
-                    <button type="button" id="ruqyahBtnPrev" class="ctrl-btn">⏮ السابق</button>
-                    <button type="button" id="ruqyahBtnPlayPause" class="ctrl-btn ctrl-play">▶ تشغيل</button>
-                    <button type="button" id="ruqyahBtnNext" class="ctrl-btn">التالي ⏭</button>
-                </div>
+              <div class="ruqyah-player-title" id="ruqyahPlayerTitle">اختر مقطعاً للاستماع</div>
+              <div class="ruqyah-player-controls">
+                <button type="button" id="ruqyahBtnPrev" class="ctrl-btn">⏮ السابق</button>
+                <button type="button" id="ruqyahBtnPlayPause" class="ctrl-btn ctrl-play">▶ تشغيل</button>
+                <button type="button" id="ruqyahBtnNext" class="ctrl-btn">التالي ⏭</button>
+              </div>
             </div>
-            
+
             <div class="ruqyah-list" id="ruqyahList">
-                </div>
-        </div>
-
-        <div id="text-section" class="tab-content">
-            <div class="card text-card">
-        <span class="badge">سورة الفاتحة</span>
-        <p class="quran-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ (1) الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ (2) الرَّحْمَنِ الرَّحِيمِ (3) مَالِكِ يَوْمِ الدِّينِ (4) إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ (5) اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ (6) صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ (7)</p>
-        <span class="repeat-hint">تُكرر 7 مرات</span>
-    </div>
-
-    <div class="card text-card">
-        <span class="badge">سورة البقرة (1-5)</span>
-        <p class="quran-text">الم (1) ذَلِكَ الْكِتَابُ لَا رَيْبَ فِيهِ هُدًى لِلْمُتَّقِينَ (2) الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنْفِقُونَ (3) وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنْزِلَ إِلَيْكَ وَمَا أُنْزِلَ مِنْ قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ (4) أُولَئِكَ عَلَى هُدًى مِنْ رَبِّهِمْ وَأُولَئِكَ هُمُ الْمُفْلِحُونَ (5)</p>
-    </div>
-
-    <div class="card text-card">
-        <span class="badge">آية الكرسي</span>
-        <p class="quran-text">اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ</p>
-        <span class="repeat-hint">تُكرر 3 مرات</span>
-    </div>
-
-    <div class="card text-card">
-        <span class="badge">سورة البقرة (285-286)</span>
-        <p class="quran-text">آمَنَ الرَّسُولُ بِمَا أُنْزِلَ إِلَيْهِ مِنْ رَبِّهِ وَالْمُؤْمِنُونَ كُلٌّ آمَنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ لَا نُفَرِّقُ بَيْنَ أَحَدٍ مِنْ رُسُلِهِ وَقَالُوا سَمِعْنَا وَأَطَعْنَا غُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ...</p>
-    </div>
-
-    <div class="card text-card">
-    <span class="badge">سورة الإخلاص</span>
-    <p class="quran-text">قُلْ هُوَ اللَّهُ أَحَدٌ (1) اللَّهُ الصَّمَدُ (2) لَمْ يَلِدْ وَلَمْ يُولَدْ (3) وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ (4)</p>
-    <span class="repeat-hint">تُكرر 3 مرات</span>
-</div>
-
-<div class="card text-card">
-    <span class="badge">سورة الفلق</span>
-    <p class="quran-text">قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ (1) مِنْ شَرِّ مَا خَلَقَ (2) وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ (3) وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ (4) وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ (5)</p>
-    <span class="repeat-hint">تُكرر 3 مرات</span>
-</div>
-
-<div class="card text-card">
-    <span class="badge">سورة الناس</span>
-    <p class="quran-text">قُلْ أَعُوذُ بِرَبِّ النَّاسِ (1) مَلِكِ النَّاسِ (2) إِلَهِ النَّاسِ (3) مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ (4) الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ (5) مِنَ الْجِنَّةِ وَالنَّاسِ (6)</p>
-    <span class="repeat-hint">تُكرر 3 مرات</span>
-</div>
             </div>
-    </div>
-</div>
-  </main>
- 
+          </div>
 
-<script>
-function shareSite() {
-  if (navigator.share) {
-    navigator.share({
-      title: 'القرآن الكريم | صدقة جارية',
-      text: 'شارك في صدقة جارية من خلال الاستماع للقرآن الكريم وقراءة الرقية الشرعية.',
-      url: window.location.href
-    })
-    .then(() => console.log('تمت المشاركة بنجاح'))
-    .catch((error) => console.log('خطأ في المشاركة:', error));
-  } else {
-    alert('هذا التصفح لا يدعم ميزة المشاركة. الرجاء نسخ الرابط ومشاركته يدوياً.');
-  }
-}
-</script>
+          <div id="text-section" class="tab-content">
+            <div class="card text-card">
+              <span class="badge">سورة الفاتحة</span>
+              <p class="quran-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ (1) الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ (2)
+                الرَّحْمَنِ الرَّحِيمِ (3) مَالِكِ يَوْمِ الدِّينِ (4) إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ (5)
+                اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ (6) صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ
+                عَلَيْهِمْ وَلَا الضَّالِّينَ (7)</p>
+              <span class="repeat-hint">تُكرر 7 مرات</span>
+            </div>
+
+            <div class="card text-card">
+              <span class="badge">سورة البقرة (1-5)</span>
+              <p class="quran-text">الم (1) ذَلِكَ الْكِتَابُ لَا رَيْبَ فِيهِ هُدًى لِلْمُتَّقِينَ (2) الَّذِينَ
+                يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنْفِقُونَ (3) وَالَّذِينَ
+                يُؤْمِنُونَ بِمَا أُنْزِلَ إِلَيْكَ وَمَا أُنْزِلَ مِنْ قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ (4)
+                أُولَئِكَ عَلَى هُدًى مِنْ رَبِّهِمْ وَأُولَئِكَ هُمُ الْمُفْلِحُونَ (5)</p>
+            </div>
+
+            <div class="card text-card">
+              <span class="badge">آية الكرسي</span>
+              <p class="quran-text">اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا
+                نَوْمٌ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا
+                بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ
+                إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ
+                الْعَلِيُّ الْعَظِيمُ</p>
+              <span class="repeat-hint">تُكرر 3 مرات</span>
+            </div>
+
+            <div class="card text-card">
+              <span class="badge">سورة البقرة (285-286)</span>
+              <p class="quran-text">آمَنَ الرَّسُولُ بِمَا أُنزِلَ إِلَيْهِ مِن رَّبِّهِ وَالْمُؤْمِنُونَ ۚ كُلٌّ آمَنَ
+                بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ لَا نُفَرِّقُ بَيْنَ أَحَدٍ مِّن رُّسُلِهِ ۚ وَقَالُوا
+                سَمِعْنَا وَأَطَعْنَا ۖ غُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ (286) لَا يُكَلِّفُ اللَّهُ نَفْسًا
+                إِلَّا وُسْعَهَا ۚ لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ ۗ رَبَّنَا لَا تُؤَاخِذْنَا إِن
+                نَّسِينَا أَوْ أَخْطَأْنَا ۚ رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ
+                مِن قَبْلِنَا ۚ رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ ۖ وَاعْفُ عَنَّا وَاغْفِرْ لَنَا
+                وَارْحَمْنَا ۚ أَنتَ مَوْلَانَا فَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ</p>
+            </div>
+
+            <div class="card text-card">
+              <span class="badge">سورة الإخلاص</span>
+              <p class="quran-text">قُلْ هُوَ اللَّهُ أَحَدٌ (1) اللَّهُ الصَّمَدُ (2) لَمْ يَلِدْ وَلَمْ يُولَدْ (3)
+                وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ (4)</p>
+              <span class="repeat-hint">تُكرر 3 مرات</span>
+            </div>
+
+            <div class="card text-card">
+              <span class="badge">سورة الفلق</span>
+              <p class="quran-text">قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ (1) مِنْ شَرِّ مَا خَلَقَ (2) وَمِنْ شَرِّ غَاسِقٍ
+                إِذَا وَقَبَ (3) وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ (4) وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ (5)</p>
+              <span class="repeat-hint">تُكرر 3 مرات</span>
+            </div>
+
+            <div class="card text-card">
+              <span class="badge">سورة الناس</span>
+              <p class="quran-text">قُلْ أَعُوذُ بِرَبِّ النَّاسِ (1) مَلِكِ النَّاسِ (2) إِلَهِ النَّاسِ (3) مِنْ شَرِّ
+                الْوَسْوَاسِ الْخَنَّاسِ (4) الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ (5) مِنَ الْجِنَّةِ وَالنَّاسِ (6)
+              </p>
+              <span class="repeat-hint">تُكرر 3 مرات</span>
+            </div>
+          </div>
+        </div>
+      </div>
+  </main>
+
+
+  <script>
+    function shareSite() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'القرآن الكريم | صدقة جارية',
+          text: 'شارك في صدقة جارية من خلال الاستماع للقرآن الكريم وقراءة الرقية الشرعية.',
+          url: window.location.href
+        })
+          .then(() => console.log('تمت المشاركة بنجاح'))
+          .catch((error) => console.log('خطأ في المشاركة:', error));
+      } else {
+        alert('هذا التصفح لا يدعم ميزة المشاركة. الرجاء نسخ الرابط ومشاركته يدوياً.');
+      }
+    }
+  </script>
   <script src="../js/lazysizes.js"></script>
-<script src="../js/theme.js"></script>
+  <script src="../js/theme.js"></script>
   <script src="../js/ruqyah.js"></script>
- <script src="../js/notifications.js"></script>
+  <script src="../js/notifications.js"></script>
 </body>
+
 </html>

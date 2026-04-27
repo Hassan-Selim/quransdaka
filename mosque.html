@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>أقرب مسجد | قرآن صدقة</title>
+
+<!-- نفس الخطوط المستخدمة في الموقع -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Segoe+UI&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="/css/style.css">
+<style>
+/* ══════════════════════════════════════
+   متغيرات الموقع الأصلية (light default)
+══════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'cairo';
+  background: var(--bg);
+  color: var(--text);
+  direction: rtl;
+  transition: background .3s, color .3s;
+}
+
+/* ══════════════════════════════════════
+   WRAPPER
+══════════════════════════════════════ */
+.mosque-widget {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+/* ── toggle theme (للمعاينة فقط، موقعك عنده زر خاص) ── */
+.theme-toggle {
+  display: flex; justify-content: flex-left; margin-bottom: 1rem;
+}
+
+.sec-head {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.sec-head .icon-circle {
+  width: 56px; height: 56px;
+  background: linear-gradient(135deg, var(--color-teal), var(--color-teal-dark));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  margin: 0 auto .75rem;
+  box-shadow: var(--shadow-soft);
+}
+.sec-head h2 {
+  font-family: var(--font-arabic);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-teal-dark);
+  margin-bottom: .3rem;
+}
+[data-theme="dark"] .sec-head h2 {
+  color: var(--color-teal-light);
+}
+.sec-head p {
+  font-size: .83rem;
+  color: var(--color-text-muted);
+}
+
+/* ══════════════════════════════════════
+   FIND BUTTON
+══════════════════════════════════════ */
+.find-btn {
+  width: 100%;
+  padding: .85rem 1.5rem;
+  background: linear-gradient(135deg, var(--color-teal), var(--color-teal-dark));
+  color: #ffffff;
+  font-family: var(--font-arabic);
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: opacity .2s, transform .1s, box-shadow .2s;
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 1rem;
+}
+.find-btn:hover  { opacity: .9; box-shadow: 0 6px 20px rgba(13,148,136,.25); }
+.find-btn:active { transform: scale(.97); }
+.find-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ══════════════════════════════════════
+   STATUS BAR
+══════════════════════════════════════ */
+.status-bar {
+  text-align: center;
+  font-size: .82rem;
+  color: var(--color-text-muted);
+  min-height: 1.3rem;
+  margin-bottom: .8rem;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.status-bar.err { color: #ef4444; }
+
+.dots span {
+  display: inline-block;
+  width: 5px; height: 5px;
+  background: var(--color-teal);
+  border-radius: 50%;
+  animation: blink 1.2s infinite both;
+}
+.dots span:nth-child(2){ animation-delay:.2s }
+.dots span:nth-child(3){ animation-delay:.4s }
+@keyframes blink {
+  0%,80%,100%{ opacity:.2; transform:scale(.7) }
+  40%         { opacity:1;  transform:scale(1)  }
+}
+
+/* ══════════════════════════════════════
+   STOP BUTTON
+══════════════════════════════════════ */
+.stop-btn {
+  display: none;
+  width: 100%;
+  margin-bottom: .85rem;
+  padding: .7rem 1.5rem;
+  background: transparent;
+  border: 1.5px solid #ef4444;
+  color: #ef4444;
+  font-family: var(--font-arabic);
+  font-size: .9rem;
+  font-weight: 600;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.stop-btn:hover { background: #ef4444; color: #fff; }
+
+/* ══════════════════════════════════════
+   ARRIVAL BANNER
+══════════════════════════════════════ */
+.arrival-banner {
+  display: none;
+  background: var(--color-bg-card);
+  border: 1.5px solid #22c55e;
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  text-align: center;
+  margin-bottom: .85rem;
+  box-shadow: var(--shadow-card);
+}
+.arrival-banner .arr-icon { font-size: 2rem; display: block; margin-bottom: .5rem; }
+.arrival-banner .arr-title {
+  font-family: var(--font-arabic);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #16a34a;
+}
+.arrival-banner .arr-sub {
+  font-size: .82rem;
+  color: var(--color-text-muted);
+  margin-top: .3rem;
+}
+.arr-close-btn {
+  margin-top: .85rem;
+  padding: .5rem 1.5rem;
+  background: #22c55e;
+  color: #fff;
+  font-family: var(--font-arabic);
+  font-weight: 700;
+  font-size: .85rem;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background .2s;
+}
+.arr-close-btn:hover { background: #16a34a; }
+
+/* ══════════════════════════════════════
+   MAP CONTAINER
+══════════════════════════════════════ */
+.map-wrap {
+  display: none;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(13,148,136,.2);
+  margin-bottom: 1.1rem;
+  position: relative;
+  box-shadow: var(--shadow-card);
+}
+[data-theme="dark"] .map-wrap {
+  border-color: rgba(255,255,255,.08);
+}
+#map { width: 100%; height: 400px; }
+
+/* ══════════════════════════════════════
+   NAV HUD (فوق الخريطة)
+══════════════════════════════════════ */
+.nav-hud {
+  display: none;
+  position: absolute;
+  top: 10px; right: 10px; left: 10px;
+  z-index: 1000;
+  background: rgba(255,251,235,.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(13,148,136,.25);
+  border-radius: var(--radius);
+  padding: .7rem 1rem;
+  pointer-events: none;
+  box-shadow: var(--shadow-soft);
+}
+[data-theme="dark"] .nav-hud {
+  background: rgba(30,41,59,.93);
+  border-color: rgba(94,234,212,.2);
+}
+.hud-row {
+  display: flex; align-items: center; gap: 10px;
+}
+.hud-arrow {
+  font-size: 1.7rem; line-height: 1;
+  flex-shrink: 0;
+  transition: all .3s;
+}
+.hud-text { flex: 1; min-width: 0; }
+.hud-step {
+  font-family: var(--font-arabic);
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.4;
+}
+.hud-dist {
+  font-size: .78rem;
+  color: var(--color-gold);
+  margin-top: 2px;
+  font-weight: 600;
+}
+[data-theme="dark"] .hud-dist {
+  color: var(--color-gold-light);
+}
+.hud-total {
+  font-size: .72rem;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+/* ══════════════════════════════════════
+   MOSQUE LIST
+══════════════════════════════════════ */
+.list-wrap { display: none; }
+
+.list-lbl {
+  font-size: .8rem;
+  color: var(--color-text-muted);
+  margin-bottom: .6rem;
+  padding-right: .15rem;
+  display: flex; align-items: center; gap: 6px;
+}
+.list-lbl::before {
+  content: '';
+  display: inline-block;
+  width: 3px; height: 14px;
+  background: var(--color-teal);
+  border-radius: 2px;
+}
+
+/* بطاقة مسجد */
+.m-card {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  background: var(--color-bg-card);
+  border: 1px solid rgba(13,148,136,.15);
+  border-radius: var(--radius-lg);
+  padding: .9rem 1rem;
+  margin-bottom: .65rem;
+  cursor: pointer;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+  box-shadow: var(--shadow-card);
+}
+[data-theme="dark"] .m-card {
+  border-color: rgba(255,255,255,.07);
+}
+.m-card:hover {
+  border-color: var(--color-teal);
+  box-shadow: var(--shadow-soft);
+}
+.m-card.sel {
+  border-color: var(--color-teal);
+  background: var(--color-bg-soft);
+  box-shadow: var(--shadow-soft);
+}
+[data-theme="dark"] .m-card.sel {
+  background: var(--color-bg-soft);
+}
+
+/* أيقونة دائرة */
+.m-icon-wrap {
+  width: 42px; height: 42px;
+  background: linear-gradient(135deg, var(--color-beige), var(--color-cream));
+  border: 1px solid rgba(13,148,136,.2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  transition: background .2s;
+}
+[data-theme="dark"] .m-icon-wrap {
+  background: linear-gradient(135deg, #1e293b, #334155);
+  border-color: rgba(94,234,212,.15);
+}
+.m-card.sel .m-icon-wrap {
+  background: linear-gradient(135deg, var(--color-teal), var(--color-teal-dark));
+}
+
+.m-info { flex: 1; min-width: 0; }
+.m-name {
+  font-family: var(--font-arabic);
+  font-size: .92rem;
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transition: color .2s;
+}
+.m-card.sel .m-name { color: var(--color-teal-dark); }
+[data-theme="dark"] .m-card.sel .m-name { color: var(--color-teal-light); }
+
+.m-dist {
+  font-size: .74rem;
+  color: var(--color-gold);
+  margin-top: 2px;
+  font-weight: 600;
+}
+[data-theme="dark"] .m-dist { color: var(--color-gold-light); }
+
+/* زر ابدأ */
+.go-btn {
+  flex-shrink: 0;
+  padding: .42rem .9rem;
+  background: linear-gradient(135deg, var(--color-teal), var(--color-teal-dark));
+  border: none;
+  color: #ffffff;
+  font-family: var(--font-arabic);
+  font-size: .8rem;
+  font-weight: 700;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 5px;
+  transition: opacity .2s, transform .1s;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(13,148,136,.25);
+}
+.go-btn:hover  { opacity: .88; }
+.go-btn:active { transform: scale(.96); }
+
+/* ══════════════════════════════════════
+   LEAFLET OVERRIDES
+══════════════════════════════════════ */
+.leaflet-routing-container { display: none !important; }
+
+.leaflet-popup-content-wrapper {
+  background: var(--color-bg-card) !important;
+  color: var(--color-text) !important;
+  border: 1px solid rgba(13,148,136,.2) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-card) !important;
+  font-family: var(--font-arabic) !important;
+  font-size: .84rem !important;
+}
+.leaflet-popup-tip { background: var(--color-bg-card) !important; }
+.leaflet-popup-close-button { color: var(--color-text-muted) !important; }
+
+/* تعتيم الخريطة في الـ dark mode */
+[data-theme="dark"] .leaflet-tile-pane {
+  filter: brightness(.72) saturate(.6) hue-rotate(5deg);
+}
+</style>
+</head>
+<body>
+
+<div class="mosque-widget">
+
+  <!-- toggle للمعاينة فقط — موقعك عنده زر التبديل الخاص به -->
+  <div class="theme-toggle">
+    <button onclick="toggleTheme()">🌙 تبديل الوضع</button>
+  </div>
+
+  <!-- رأس القسم -->
+  <div class="sec-head">
+    <div class="icon-circle">🕌</div>
+    <h2>أقرب مسجد إليك</h2>
+    <p>ملاحة تفاعلية — السهم يتابعك خطوةً بخطوة</p>
+  </div>
+
+  <!-- زر التحديد -->
+  <button class="find-btn" id="find-btn" onclick="startFind()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+      <circle cx="12" cy="12" r="8" opacity=".3"/>
+    </svg>
+    تحديد موقعي وإيجاد المساجد
+  </button>
+
+  <div class="status-bar" id="status-bar"></div>
+
+  <!-- زر إيقاف الملاحة -->
+  <button class="stop-btn" id="stop-btn" onclick="stopNav()">
+    ⏹ إيقاف الملاحة
+  </button>
+
+  <!-- بانر الوصول -->
+  <div class="arrival-banner" id="arrival-banner">
+    <span class="arr-icon">🏁</span>
+    <div class="arr-title">وصلت إلى وجهتك!</div>
+    <div class="arr-sub" id="arr-name"></div>
+    <button class="arr-close-btn" onclick="stopNav()">العودة للقائمة</button>
+  </div>
+
+  <!-- الخريطة -->
+  <div class="map-wrap" id="map-wrap">
+    <div id="map"></div>
+    <!-- HUD فوق الخريطة -->
+    <div class="nav-hud" id="nav-hud">
+      <div class="hud-row">
+        <div class="hud-arrow" id="hud-arrow">⬆️</div>
+        <div class="hud-text">
+          <div class="hud-step"  id="hud-step">جارٍ حساب المسار…</div>
+          <div class="hud-dist"  id="hud-dist"></div>
+          <div class="hud-total" id="hud-total"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- قائمة المساجد -->
+  <div class="list-wrap" id="list-wrap">
+    <p class="list-lbl" id="list-lbl"></p>
+    <div id="cards"></div>
+  </div>
+
+</div><!-- /mosque-widget -->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.min.js"></script>
+<script>
+/* ════════════════════════════════
+   STATE
+════════════════════════════════ */
+let map, userMarker, destMarker, watchId;
+let routePolyline = null;
+let userPos   = null;
+let mosques   = [];
+let routeSteps= [];
+let destLatLng= null;
+let destName  = '';
+let isNavActive = false;
+
+/* ════════════════════════════════
+   THEME TOGGLE (للمعاينة)
+════════════════════════════════ */
+function toggleTheme() {
+  const html = document.documentElement;
+  html.setAttribute('data-theme',
+    html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+}
+
+/* ════════════════════════════════
+   FIND
+════════════════════════════════ */
+function startFind() {
+  setBtnLoading(true);
+  setStatus('جاري تحديد موقعك', true);
+  if (!navigator.geolocation) return setStatus('المتصفح لا يدعم GPS', false, true);
+
+  navigator.geolocation.getCurrentPosition(pos => {
+    userPos = { lat: pos.coords.latitude, lng: pos.coords.longitude, heading: pos.coords.heading || 0 };
+    setStatus('جاري البحث عن المساجد القريبة…', true);
+    fetchMosques();
+  }, () => {
+    setStatus('تعذّر تحديد موقعك — تحقق من الإذن وأعد المحاولة', false, true);
+    setBtnLoading(false);
+  }, { enableHighAccuracy: true, timeout: 12000 });
+}
+
+async function fetchMosques() {
+  const { lat, lng } = userPos;
+  const q = `[out:json][timeout:25];(node["amenity"="place_of_worship"]["religion"="muslim"](around:2500,${lat},${lng});way["amenity"="place_of_worship"]["religion"="muslim"](around:2500,${lat},${lng}););out center 15;`;
+  try {
+    const res  = await fetch('https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(q));
+    const data = await res.json();
+    mosques = data.elements
+      .map(el => ({
+        name: el.tags?.['name:ar'] || el.tags?.name || 'مسجد',
+        lat:  el.lat ?? el.center?.lat,
+        lng:  el.lon ?? el.center?.lon,
+        dist: haversine(lat, lng, el.lat??el.center?.lat, el.lon??el.center?.lon)
+      }))
+      .filter(m => m.lat && m.lng)
+      .sort((a,b) => a.dist - b.dist)
+      .slice(0, 10);
+
+    if (!mosques.length) {
+      setStatus('لم يُعثر على مساجد في نطاق 2.5 كم', false, true);
+      setBtnLoading(false);
+      return;
+    }
+    setStatus('');
+    setBtnLoading(false, 'تحديث النتائج');
+    initMap();
+    renderList();
+  } catch {
+    setStatus('خطأ في الاتصال — أعد المحاولة', false, true);
+    setBtnLoading(false);
+  }
+}
+
+/* ════════════════════════════════
+   MAP
+════════════════════════════════ */
+function initMap() {
+  document.getElementById('map-wrap').style.display = 'block';
+  if (map) { map.remove(); map = null; }
+
+  map = L.map('map', { zoomControl: false, attributionControl: false })
+         .setView([userPos.lat, userPos.lng], 16);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+  L.control.zoom({ position: 'bottomleft' }).addTo(map);
+
+  /* سهم المستخدم */
+  userMarker = L.marker([userPos.lat, userPos.lng], {
+    icon: buildArrowIcon(userPos.heading),
+    zIndexOffset: 1000
+  }).addTo(map);
+
+  /* أيقونات المساجد */
+  mosques.forEach((m, i) => {
+    const ic = L.divIcon({
+      className: '',
+      html: `<div style="
+        width:36px;height:36px;
+        background:linear-gradient(135deg,#0d9488,#0f766e);
+        border-radius:50% 50% 50% 0;
+        transform:rotate(-45deg);
+        display:flex;align-items:center;justify-content:center;
+        box-shadow:0 3px 10px rgba(13,148,136,.4);
+        border:2px solid #fff;
+      "><span style="transform:rotate(45deg);font-size:16px;line-height:1">🕌</span></div>`,
+      iconSize: [36,36], iconAnchor: [18,36], popupAnchor: [0,-38]
+    });
+    L.marker([m.lat,m.lng], { icon: ic }).addTo(map)
+      .bindPopup(`<b style="font-family:var(--font-arabic)">${m.name}</b><br><span style="color:var(--color-gold-light)">${fmtDist(m.dist)}</span>`)
+      .on('click', () => highlightCard(i));
+  });
+}
+
+/* ════════════════════════════════
+   LIST
+════════════════════════════════ */
+function renderList() {
+  const c = document.getElementById('cards');
+  c.innerHTML = '';
+  mosques.forEach((m, i) => {
+    const d = document.createElement('div');
+    d.className = 'm-card';
+    d.id = `mc${i}`;
+    d.innerHTML = `
+      <div class="m-icon-wrap">🕌</div>
+      <div class="m-info">
+        <div class="m-name">${m.name}</div>
+        <div class="m-dist">📍 ${fmtDist(m.dist)}</div>
+      </div>
+      <button class="go-btn" onclick="event.stopPropagation();startNav(${i})">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+        ابدأ
+      </button>`;
+    d.addEventListener('click', () => { highlightCard(i); map.flyTo([m.lat,m.lng],17,{duration:.8}); });
+    c.appendChild(d);
+  });
+  document.getElementById('list-lbl').textContent = `${mosques.length} مسجد في محيط 2.5 كم`;
+  document.getElementById('list-wrap').style.display = 'block';
+}
+
+function highlightCard(i) {
+  document.querySelectorAll('.m-card').forEach(c => c.classList.remove('sel'));
+  document.getElementById(`mc${i}`)?.classList.add('sel');
+  document.getElementById(`mc${i}`)?.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+/* ════════════════════════════════
+   START NAV
+════════════════════════════════ */
+function startNav(idx) {
+  const m = mosques[idx];
+  destLatLng  = [m.lat, m.lng];
+  destName    = m.name;
+  isNavActive = true;
+
+  highlightCard(idx);
+  document.getElementById('nav-hud').style.display  = 'block';
+  document.getElementById('stop-btn').style.display = 'block';
+  document.getElementById('arrival-banner').style.display = 'none';
+  setStatus('');
+  setHUD('⬆️', 'جارٍ حساب المسار…', '', '');
+
+  calcRoute(userPos.lat, userPos.lng, m.lat, m.lng);
+
+  if (watchId) navigator.geolocation.clearWatch(watchId);
+  watchId = navigator.geolocation.watchPosition(onPositionUpdate, null, {
+    enableHighAccuracy: true, maximumAge: 2000, timeout: 10000
+  });
+}
+
+/* ════════════════════════════════
+   OSRM ROUTE
+════════════════════════════════ */
+async function calcRoute(fLat, fLng, tLat, tLng) {
+  try {
+    const url  = `https://router.project-osrm.org/route/v1/foot/${fLng},${fLat};${tLng},${tLat}?overview=full&geometries=geojson&steps=true`;
+    const res  = await fetch(url);
+    const data = await res.json();
+    if (data.code !== 'Ok') throw new Error();
+
+    const route = data.routes[0];
+
+    /* خط المسار — بـ teal color */
+    if (routePolyline) map.removeLayer(routePolyline);
+    const coords = route.geometry.coordinates.map(c => [c[1],c[0]]);
+    routePolyline = L.polyline(coords, {
+      color: '#0d9488', weight: 5, opacity: .9, lineCap: 'round', lineJoin: 'round'
+    }).addTo(map);
+
+    /* خط شفاف خلفي */
+    L.polyline(coords, {
+      color: '#5eead4', weight: 9, opacity: .25, lineCap: 'round', lineJoin: 'round'
+    }).addTo(map);
+
+    /* علامة الوجهة */
+    if (destMarker) map.removeLayer(destMarker);
+    destMarker = L.marker(destLatLng, {
+      icon: L.divIcon({
+        className: '',
+        html: `<div style="
+          width:38px;height:38px;
+          background:linear-gradient(135deg,#b45309,#d97706);
+          border-radius:50%;
+          display:flex;align-items:center;justify-content:center;
+          font-size:18px;
+          box-shadow:0 3px 12px rgba(180,83,9,.5);
+          border:2.5px solid #fff;
+        ">🏁</div>`,
+        iconSize:[38,38], iconAnchor:[19,19]
+      })
+    }).addTo(map);
+
+    /* خطوات المسار */
+    routeSteps = [];
+    for (const leg of route.legs) {
+      for (const step of leg.steps) {
+        routeSteps.push({
+          instruction: translateOSRM(step.maneuver.type, step.maneuver.modifier, step.name),
+          arrow:       maneuverArrow(step.maneuver.type, step.maneuver.modifier),
+          distance:    step.distance,
+          lat:         step.maneuver.location[1],
+          lng:         step.maneuver.location[0],
+          done:        false
+        });
+      }
+    }
+
+    const totalMin = Math.round(route.duration / 60);
+    setHUD(
+      routeSteps[0]?.arrow || '⬆️',
+      routeSteps[0]?.instruction || 'ابدأ',
+      `بعد ${fmtDist(routeSteps[0]?.distance || 0)}`,
+      `الإجمالي: ${fmtDist(route.distance)} · ~${totalMin} دقيقة مشياً`
+    );
+
+    map.fitBounds(L.latLngBounds(coords), { padding:[70,70] });
+
+  } catch {
+    setHUD('⬆️', 'تعذّر حساب المسار — تأكد من الاتصال', '', '');
+  }
+}
+
+/* ════════════════════════════════
+   WATCH POSITION
+════════════════════════════════ */
+function onPositionUpdate(pos) {
+  if (!isNavActive) return;
+  const lat = pos.coords.latitude;
+  const lng = pos.coords.longitude;
+  const hdg = pos.coords.heading || userPos.heading || 0;
+  userPos = { lat, lng, heading: hdg };
+
+  /* تحريك سهم المستخدم */
+  userMarker.setLatLng([lat, lng]);
+  userMarker.setIcon(buildArrowIcon(hdg));
+
+  /* الخريطة تتبع المستخدم */
+  map.panTo([lat, lng], { animate: true, duration: .5 });
+
+  /* فحص الوصول */
+  if (haversine(lat, lng, destLatLng[0], destLatLng[1]) < 25) {
+    arrivedAtDest(); return;
+  }
+
+  /* تقليص خط المسار */
+  trimRoute(lat, lng);
+
+  /* تحديث HUD */
+  advanceSteps(lat, lng);
+}
+
+function trimRoute(lat, lng) {
+  if (!routePolyline) return;
+  const pts = routePolyline.getLatLngs();
+  if (pts.length < 2) return;
+  let minD = Infinity, minI = 0;
+  pts.forEach((p,i) => { const d = haversine(lat,lng,p.lat,p.lng); if(d<minD){minD=d;minI=i;} });
+  if (minI > 0) routePolyline.setLatLngs(pts.slice(minI));
+}
+
+function advanceSteps(lat, lng) {
+  let next = routeSteps.find(s => !s.done);
+  if (!next) return;
+  const d = haversine(lat, lng, next.lat, next.lng);
+  if (d < 20) {
+    next.done = true;
+    speak(next.instruction);
+    next = routeSteps.find(s => !s.done);
+    if (!next) return;
+  }
+  const distToNext = haversine(lat, lng, next.lat, next.lng);
+  setHUD(next.arrow, next.instruction, `بعد ${fmtDist(distToNext)}`,
+         document.getElementById('hud-total').textContent);
+}
+
+/* ════════════════════════════════
+   ARRIVED
+════════════════════════════════ */
+function arrivedAtDest() {
+  stopWatch();
+  isNavActive = false;
+  document.getElementById('nav-hud').style.display    = 'none';
+  document.getElementById('stop-btn').style.display   = 'none';
+  document.getElementById('arr-name').textContent     = destName;
+  document.getElementById('arrival-banner').style.display = 'block';
+  speak('وصلت إلى وجهتك، بلغك الله المسجد بخير');
+}
+
+/* ════════════════════════════════
+   STOP NAV
+════════════════════════════════ */
+function stopNav() {
+  isNavActive = false;
+  stopWatch();
+  if (routePolyline) { map.removeLayer(routePolyline); routePolyline = null; }
+  if (destMarker)    { map.removeLayer(destMarker);    destMarker    = null; }
+  document.getElementById('nav-hud').style.display        = 'none';
+  document.getElementById('stop-btn').style.display       = 'none';
+  document.getElementById('arrival-banner').style.display = 'none';
+  routeSteps = [];
+  document.querySelectorAll('.m-card').forEach(c => c.classList.remove('sel'));
+  map.setView([userPos.lat, userPos.lng], 15);
+}
+
+function stopWatch() {
+  if (watchId) { navigator.geolocation.clearWatch(watchId); watchId = null; }
+}
+
+/* ════════════════════════════════
+   ARROW ICON
+════════════════════════════════ */
+function buildArrowIcon(heading) {
+  const h = heading || 0;
+  return L.divIcon({
+    className: '',
+    html: `<svg width="38" height="38" viewBox="0 0 38 38" style="transform:rotate(${h}deg);transition:transform .4s;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))">
+      <circle cx="19" cy="19" r="17" fill="rgba(13,148,136,.18)" stroke="rgba(13,148,136,.5)" stroke-width="1.5"/>
+      <polygon points="19,5 27,30 19,25 11,30" fill="#0d9488" stroke="#ffffff" stroke-width="1.8" stroke-linejoin="round"/>
+    </svg>`,
+    iconSize:[38,38], iconAnchor:[19,19]
+  });
+}
+
+/* ════════════════════════════════
+   OSRM TRANSLATIONS
+════════════════════════════════ */
+function maneuverArrow(type, mod) {
+  if (type==='arrive') return '🏁';
+  if (type==='depart') return '⬆️';
+  const m = mod || '';
+  if (m==='sharp left')   return '↰';
+  if (m==='sharp right')  return '↱';
+  if (m==='slight left')  return '↖️';
+  if (m==='slight right') return '↗️';
+  if (m.includes('left')) return '⬅️';
+  if (m.includes('right'))return '➡️';
+  if (m==='uturn')        return '↩️';
+  return '⬆️';
+}
+
+function translateOSRM(type, mod, name) {
+  const s = name ? `على ${name}` : '';
+  if (type==='depart')  return `ابدأ المسير ${s}`;
+  if (type==='arrive')  return `وصلت إلى وجهتك`;
+  if (type==='continue'||type==='new name') return `استمر ${s}`;
+  if (type==='turn') {
+    if (mod==='left')         return `انعطف يساراً ${s}`;
+    if (mod==='right')        return `انعطف يميناً ${s}`;
+    if (mod==='sharp left')   return `انعطف بحدة يساراً`;
+    if (mod==='sharp right')  return `انعطف بحدة يميناً`;
+    if (mod==='slight left')  return `انحرف يساراً ${s}`;
+    if (mod==='slight right') return `انحرف يميناً ${s}`;
+    if (mod==='uturn')        return `اعمل نصف دورة`;
+  }
+  if (type==='roundabout'||type==='rotary') return `ادخل الدوار ${s}`;
+  if (type==='exit roundabout') return `اخرج من الدوار ${s}`;
+  if (type==='merge') return `اندمج ${mod?.includes('left')?'يساراً':'يميناً'} ${s}`;
+  if (type==='fork')  return `في المفترق ${mod?.includes('left')?'خذ اليسار':'خذ اليمين'}`;
+  return `استمر ${s}`;
+}
+
+/* ════════════════════════════════
+   SPEECH
+════════════════════════════════ */
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ar-SA'; u.rate = 1;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+/* ════════════════════════════════
+   HELPERS
+════════════════════════════════ */
+function haversine(lat1,lng1,lat2,lng2) {
+  const R=6371000, dLat=(lat2-lat1)*Math.PI/180, dLng=(lng2-lng1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+function fmtDist(m) { return m<1000 ? `${Math.round(m)} م` : `${(m/1000).toFixed(1)} كم`; }
+
+function setStatus(msg, loading=false, isErr=false) {
+  const el = document.getElementById('status-bar');
+  el.className = 'status-bar' + (isErr ? ' err' : '');
+  el.innerHTML = loading
+    ? `${msg} <span class="dots"><span></span><span></span><span></span></span>`
+    : msg;
+}
+
+function setBtnLoading(loading, label='تحديد موقعي وإيجاد المساجد') {
+  const b = document.getElementById('find-btn');
+  b.disabled = loading;
+  b.childNodes[b.childNodes.length-1].textContent = ' ' + label;
+}
+
+function setHUD(arrow, step, dist, total) {
+  document.getElementById('hud-arrow').textContent = arrow;
+  document.getElementById('hud-step').textContent  = step;
+  if (dist)  document.getElementById('hud-dist').textContent  = dist;
+  if (total) document.getElementById('hud-total').textContent = total;
+}
+</script>
+</body>
+</html>

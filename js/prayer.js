@@ -453,6 +453,11 @@ const sectionsMap = [
     content: document.querySelector("#qiblaSection"),
   },
   {
+    btn: document.querySelector(".mosque-btn"),
+    content: document.querySelector(".mosque-section"),
+  },
+  
+  {
     btn: document.querySelector(".zikr-btn"),
     content: document.querySelector(".azkar-wrapper"),
   },
