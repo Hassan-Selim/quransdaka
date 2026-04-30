@@ -5,9 +5,10 @@
   "id": "/",
   "start_url": "/?source=pwa",
   "display": "standalone",
+  "background_enabled": true,
   "background_color": "#0f766e",
   "theme_color": "#0f766e",
-  "orientation": "portrait",
+  "orientation": "any",
   "categories": ["books", "education", "utilities"],
   "icons": [
     {

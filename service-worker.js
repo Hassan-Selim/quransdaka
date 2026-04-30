@@ -1,1 +1,212 @@
-const CACHE_VERSION="v1.5.0",STATIC_CACHE="quran-static-v1.5.0",DYNAMIC_CACHE="quran-dynamic-v1.5.0",urlsToCache=["/","/index.html","/prayer/","/prayer/index.html","/quran-read/","/quran-read/index.html","/about/","/about/index.html","/css/style.css","/css/about.css","/css/prayer.css","/css/quran-read.css","/js/theme.js","/js/quran-read.js","/js/prayer.js","/img/icon.webp","/img/icon-192.png","/img/icon-512.png"],azkarList=["سبحان الله وبحمده","اللهم ارحم موتانا وموتى المسلمين","اللهم إنك عفو تحب العفو فاعف عنا","أستغفر الله العظيم","لا إله إلا الله وحده لا شريك له"];let scheduledPrayerTimes=null;const limitCacheSize=async(e,t)=>{const a=await caches.open(e),i=await a.keys();i.length>t&&(await a.delete(i[0]),limitCacheSize(e,t))},putInCache=async(e,t,a)=>{const i=await caches.open(a);await i.put(e,t),limitCacheSize(a,50)};self.addEventListener("install",e=>{e.waitUntil(caches.open(STATIC_CACHE).then(e=>e.addAll(urlsToCache))),self.skipWaiting()}),self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(e=>Promise.all(e.map(e=>{if(e!==STATIC_CACHE&&e!==DYNAMIC_CACHE)return caches.delete(e)})))),self.clients.claim(),startPeriodicCheck()}),self.addEventListener("fetch",e=>{const t=e.request;t.url.startsWith(self.location.origin)&&"audio"!==t.destination&&e.respondWith(caches.match(t).then(e=>e?(fetch(t).then(e=>{e&&200===e.status&&putInCache(t,e,DYNAMIC_CACHE)}).catch(()=>{}),e):fetch(t).then(e=>(e&&200===e.status&&putInCache(t,e.clone(),DYNAMIC_CACHE),e)).catch(()=>{if("navigate"===t.mode)return caches.match("/index.html")})))}),self.addEventListener("message",e=>{const t=e.data;"SET_PRAYER_TIMES"===t.type&&(scheduledPrayerTimes=t.prayerTimes,savePrayerTimesToIDB(t.prayerTimes),console.log("SW ✅ استلم مواعيد الصلاة")),"SHOW_PRAYER_NOTIFICATION"===t.type&&showPrayerNotification(t.prayerName)}),self.addEventListener("notificationclick",e=>{e.notification.close();const t=e.notification.data?.url||"/";e.waitUntil(clients.matchAll({type:"window",includeUncontrolled:!0}).then(e=>{for(let t of e)if("focus"in t)return t.postMessage({type:"PLAY_AZAN_NOW"}),t.focus();if(clients.openWindow)return clients.openWindow(t)}))});let checkInterval=null;function startPeriodicCheck(){checkInterval||(checkInterval=setInterval(async()=>{scheduledPrayerTimes||(scheduledPrayerTimes=await getPrayerTimesFromIDB());const e=new Date,t=e.getHours(),a=e.getMinutes();if(scheduledPrayerTimes)for(const[i,n]of Object.entries(scheduledPrayerTimes))if(t===n.hour&&a===n.minute){const t=`lastNotified_${i}`,a=await getFromIDB(t),n=e.toDateString();a!==n&&(await saveToIDB(t,n),showPrayerNotification(i))}if(0===a){const a=`lastHourlyZikr_${t}_${e.toDateString()}`;if(!await getFromIDB(a)){await saveToIDB(a,!0);const e=azkarList[Math.floor(Math.random()*azkarList.length)];self.registration.showNotification("ذكر الساعة 🌙",{body:e,icon:"/img/icon-192.png",badge:"/img/icon-192.png",vibrate:[200,100,200],data:{url:"/azkar"}})}}if(6===t&&0===a){const t=`morningAzkar_${e.toDateString()}`;await getFromIDB(t)||(await saveToIDB(t,!0),self.registration.showNotification("أذكار الصباح 🌅",{body:"حان وقت أذكار الصباح، سبحان الله والحمد لله...",icon:"/img/icon-192.png",badge:"/img/icon-192.png",vibrate:[200,100,200],data:{url:"/azkar"}}))}if(18===t&&0===a){const t=`eveningAzkar_${e.toDateString()}`;await getFromIDB(t)||(await saveToIDB(t,!0),self.registration.showNotification("أذكار المساء 🌙",{body:"حان وقت أذكار المساء، أستغفر الله...",icon:"/img/icon-192.png",badge:"/img/icon-192.png",vibrate:[200,100,200],data:{url:"/azkar"}}))}},3e4))}function showPrayerNotification(e){return self.registration.showNotification(`موعد صلاة ${e} 🕌`,{body:"حي على الصلاة، حي على الفلاح",icon:"/img/icon-192.png",badge:"/img/icon-192.png",vibrate:[200,100,200,100,200],data:{prayerName:e,url:"/prayer/index.html?playAzan=true"}})}function openIDB(){return new Promise((e,t)=>{const a=indexedDB.open("quran-sw-db",1);a.onupgradeneeded=e=>{e.target.result.createObjectStore("kv")},a.onsuccess=t=>e(t.target.result),a.onerror=t})}async function saveToIDB(e,t){try{(await openIDB()).transaction("kv","readwrite").objectStore("kv").put(t,e)}catch(e){console.warn("IDB save error:",e)}}async function getFromIDB(e){try{const t=await openIDB();return new Promise(a=>{const i=t.transaction("kv","readonly").objectStore("kv").get(e);i.onsuccess=()=>a(i.result??null),i.onerror=()=>a(null)})}catch(e){return null}}async function savePrayerTimesToIDB(e){await saveToIDB("prayerTimes",e)}async function getPrayerTimesFromIDB(){return await getFromIDB("prayerTimes")}
+const CACHE_VERSION = "v1.5.1",
+  STATIC_CACHE = "quran-static-v1.5.0",
+  DYNAMIC_CACHE = "quran-dynamic-v1.5.0",
+  urlsToCache = [
+    "/",
+    "/index.html",
+    "/prayer/",
+    "/prayer/index.html",
+    "/quran-read/",
+    "/quran-read/index.html",
+    "/about/",
+    "/about/index.html",
+    "/css/style.css",
+    "/css/about.css",
+    "/css/prayer.css",
+    "/css/quran-read.css",
+    "/js/theme.js",
+    "/js/quran-read.js",
+    "/js/prayer.js",
+    "/img/icon.webp",
+    "/img/icon-192.png",
+    "/img/icon-512.png",
+  ],
+  azkarList = [
+    "سبحان الله وبحمده",
+    "اللهم ارحم موتانا وموتى المسلمين",
+    "اللهم إنك عفو تحب العفو فاعف عنا",
+    "أستغفر الله العظيم",
+    "لا إله إلا الله وحده لا شريك له",
+  ];
+let scheduledPrayerTimes = null;
+const limitCacheSize = async (e, t) => {
+    const a = await caches.open(e),
+      i = await a.keys();
+    i.length > t && (await a.delete(i[0]), limitCacheSize(e, t));
+  },
+  putInCache = async (e, t, a) => {
+    const i = await caches.open(a);
+    (await i.put(e, t), limitCacheSize(a, 50));
+  };
+(self.addEventListener("install", (e) => {
+  (e.waitUntil(caches.open(STATIC_CACHE).then((e) => e.addAll(urlsToCache))),
+    self.skipWaiting());
+}),
+  self.addEventListener("activate", (e) => {
+    (e.waitUntil(
+      caches.keys().then((e) =>
+        Promise.all(
+          e.map((e) => {
+            if (e !== STATIC_CACHE && e !== DYNAMIC_CACHE)
+              return caches.delete(e);
+          }),
+        ),
+      ),
+    ),
+      self.clients.claim(),
+      startPeriodicCheck());
+  }),
+  self.addEventListener("fetch", (e) => {
+    const t = e.request;
+    t.url.startsWith(self.location.origin) &&
+      "audio" !== t.destination &&
+      e.respondWith(
+        caches.match(t).then((e) =>
+          e
+            ? (fetch(t)
+                .then((e) => {
+                  e && 200 === e.status && putInCache(t, e, DYNAMIC_CACHE);
+                })
+                .catch(() => {}),
+              e)
+            : fetch(t)
+                .then(
+                  (e) => (
+                    e &&
+                      200 === e.status &&
+                      putInCache(t, e.clone(), DYNAMIC_CACHE),
+                    e
+                  ),
+                )
+                .catch(() => {
+                  if ("navigate" === t.mode) return caches.match("/index.html");
+                }),
+        ),
+      );
+  }),
+  self.addEventListener("message", (e) => {
+    const t = e.data;
+    ("SET_PRAYER_TIMES" === t.type &&
+      ((scheduledPrayerTimes = t.prayerTimes),
+      savePrayerTimesToIDB(t.prayerTimes),
+      console.log("SW ✅ استلم مواعيد الصلاة")),
+      "SHOW_PRAYER_NOTIFICATION" === t.type &&
+        showPrayerNotification(t.prayerName));
+  }),
+  self.addEventListener("notificationclick", (e) => {
+    e.notification.close();
+    const t = e.notification.data?.url || "/";
+    e.waitUntil(
+      clients
+        .matchAll({ type: "window", includeUncontrolled: !0 })
+        .then((e) => {
+          for (let t of e)
+            if ("focus" in t)
+              return (t.postMessage({ type: "PLAY_AZAN_NOW" }), t.focus());
+          if (clients.openWindow) return clients.openWindow(t);
+        }),
+    );
+  }));
+let checkInterval = null;
+function startPeriodicCheck() {
+  checkInterval ||
+    (checkInterval = setInterval(async () => {
+      scheduledPrayerTimes ||
+        (scheduledPrayerTimes = await getPrayerTimesFromIDB());
+      const e = new Date(),
+        t = e.getHours(),
+        a = e.getMinutes();
+      if (scheduledPrayerTimes)
+        for (const [i, n] of Object.entries(scheduledPrayerTimes))
+          if (t === n.hour && a === n.minute) {
+            const t = `lastNotified_${i}`,
+              a = await getFromIDB(t),
+              n = e.toDateString();
+            a !== n && (await saveToIDB(t, n), showPrayerNotification(i));
+          }
+      if (0 === a) {
+        const a = `lastHourlyZikr_${t}_${e.toDateString()}`;
+        if (!(await getFromIDB(a))) {
+          await saveToIDB(a, !0);
+          const e = azkarList[Math.floor(Math.random() * azkarList.length)];
+          self.registration.showNotification("ذكر الساعة 🌙", {
+            body: e,
+            icon: "/img/icon-192.png",
+            badge: "/img/icon-192.png",
+            vibrate: [200, 100, 200],
+            data: { url: "/azkar" },
+          });
+        }
+      }
+      if (6 === t && 0 === a) {
+        const t = `morningAzkar_${e.toDateString()}`;
+        (await getFromIDB(t)) ||
+          (await saveToIDB(t, !0),
+          self.registration.showNotification("أذكار الصباح 🌅", {
+            body: "حان وقت أذكار الصباح، سبحان الله والحمد لله...",
+            icon: "/img/icon-192.png",
+            badge: "/img/icon-192.png",
+            vibrate: [200, 100, 200],
+            data: { url: "/azkar" },
+          }));
+      }
+      if (18 === t && 0 === a) {
+        const t = `eveningAzkar_${e.toDateString()}`;
+        (await getFromIDB(t)) ||
+          (await saveToIDB(t, !0),
+          self.registration.showNotification("أذكار المساء 🌙", {
+            body: "حان وقت أذكار المساء، أستغفر الله...",
+            icon: "/img/icon-192.png",
+            badge: "/img/icon-192.png",
+            vibrate: [200, 100, 200],
+            data: { url: "/azkar" },
+          }));
+      }
+    }, 3e4));
+}
+function showPrayerNotification(e) {
+  return self.registration.showNotification(`موعد صلاة ${e} 🕌`, {
+    body: "حي على الصلاة، حي على الفلاح",
+    icon: "/img/icon-192.png",
+    badge: "/img/icon-192.png",
+    vibrate: [200, 100, 200, 100, 200],
+    data: { prayerName: e, url: "/prayer/index.html?playAzan=true" },
+  });
+}
+function openIDB() {
+  return new Promise((e, t) => {
+    const a = indexedDB.open("quran-sw-db", 1);
+    ((a.onupgradeneeded = (e) => {
+      e.target.result.createObjectStore("kv");
+    }),
+      (a.onsuccess = (t) => e(t.target.result)),
+      (a.onerror = t));
+  });
+}
+async function saveToIDB(e, t) {
+  try {
+    (await openIDB())
+      .transaction("kv", "readwrite")
+      .objectStore("kv")
+      .put(t, e);
+  } catch (e) {
+    console.warn("IDB save error:", e);
+  }
+}
+async function getFromIDB(e) {
+  try {
+    const t = await openIDB();
+    return new Promise((a) => {
+      const i = t.transaction("kv", "readonly").objectStore("kv").get(e);
+      ((i.onsuccess = () => a(i.result ?? null)), (i.onerror = () => a(null)));
+    });
+  } catch (e) {
+    return null;
+  }
+}
+async function savePrayerTimesToIDB(e) {
+  await saveToIDB("prayerTimes", e);
+}
+async function getPrayerTimesFromIDB() {
+  return await getFromIDB("prayerTimes");
+}
