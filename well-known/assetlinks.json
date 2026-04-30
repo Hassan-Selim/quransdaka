@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "online.quransadaka.www.twa",
+        "sha256_cert_fingerprints": ["3E:BF:C7:AE:83:A2:96:01:2B:01:5C:38:FC:A7:44:9E:02:68:8D:AB:63:96:98:4B:B3:D9:89:E9:46:85:0F:D4"]
+      }
+    }]
